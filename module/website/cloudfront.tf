@@ -21,7 +21,7 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   logging_config {
-    bucket          = "escale-cloudfront-logs.s3.amazonaws.com"
+    bucket          = var.logging_bucket
     include_cookies = false
     prefix          = "cloudfront"
   }
