@@ -11,10 +11,11 @@ Esse modulo configura:
 module "staging-config" {
   source = "github.com/escaletech/terraform-utils/module/website"
 
-  environment = "staging"
-  dns_zone    = "mydnszone.com.br"
-  host        = "staging.mydnszone.com.br"
-  origin_host = "apps.eks.mydnszone.com.br"
+  environment       = "staging"
+  dns_zone          = "mydnszone.com.br"
+  host              = "staging.mydnszone.com.br"
+  origin_host       = "apps.eks.mydnszone.com.br"
+  whitelisted_names = ['site.com']
 
   tags = {
     Name        = "sample"
