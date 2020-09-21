@@ -70,11 +70,7 @@ resource "aws_cloudfront_distribution" "main" {
 
       cookies {
         forward           = "whitelist"
-        whitelisted_names = [
-          "io.prismic.preview",
-          "session",
-          "session.sig"
-        ]
+        whitelisted_names = var.whitelisted_names
       }
     }
   }
