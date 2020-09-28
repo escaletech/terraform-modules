@@ -15,8 +15,8 @@ module "staging-config" {
   dns_zone          = "mydnszone.com.br"
   host              = "staging.mydnszone.com.br"
   origin_host       = "apps.eks.mydnszone.com.br"
-  whitelisted_names = ['site.com']
-  logging_bucket    = 'mylogs.s3.amazonaws.com'
+  whitelisted_names = ["site.com"]
+  logging_bucket    = "mylogs.s3.amazonaws.com"
 
   tags = {
     Name        = "sample"

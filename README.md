@@ -1,6 +1,6 @@
 # terraform-utils
-[terraform](https://www.terraform.io/) modules.
+Useful [terraform](https://www.terraform.io/) modules.
 
 ### Available Modules
 
-- [website](./module/website)
+- [CloudFront Website](./module/website)
