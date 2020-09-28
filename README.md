@@ -1,6 +1,6 @@
 # terraform-utils
-Conjunto de módulos reaproveitáveis de [terraform](https://www.terraform.io/).
+[terraform](https://www.terraform.io/) modules.
 
-### Módulos disponíveis
+### Available Modules
 
 - [website](./module/website)

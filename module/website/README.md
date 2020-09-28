@@ -1,11 +1,11 @@
 # website
-Esse modulo configura:
+This module configs:
 
 - Cloudfront
 - Route53
 - AWS ACM
 
-### Utilização
+### Usage
 
 ```tf
 module "staging-config" {
