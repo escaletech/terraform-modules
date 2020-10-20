@@ -3,5 +3,12 @@ variable "dns_zone" { type = string }
 variable "host" { type = string }
 variable "origin_host" { type = string }
 variable "tags" { type = map }
-variable "whitelisted_names" { type = list(string) }
+variable "cookies_forward" {
+  type = string
+  default = "none"
+}
+variable "cookies_whitelisted" {
+  type = list(string)
+  default = null
+}
 variable "logging_bucket" { type = string }

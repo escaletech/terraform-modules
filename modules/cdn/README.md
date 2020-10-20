@@ -1,4 +1,4 @@
-# website
+# CDN
 This module configs:
 
 - Cloudfront
