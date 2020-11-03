@@ -14,10 +14,10 @@ resource "aws_acm_certificate" "cert" {
 resource "aws_route53_record" "cert_validation" {
   for_each = {
     for c in aws_acm_certificate.cert.domain_validation_options : c.domain_name => {
-      name    = c.resource_record_name
-      type    = c.resource_record_type
-      record  = c.resource_record_value
-      ttl     = 60
+      name   = c.resource_record_name
+      type   = c.resource_record_type
+      record = c.resource_record_value
+      ttl    = 60
     }
   }
   allow_overwrite = true
