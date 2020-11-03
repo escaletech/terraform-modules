@@ -44,10 +44,10 @@ module "staging-config" {
 |------|-------------|------|---------|:--------:|
 | cookies\_forward | If you want cloudfront to forward cookies | `string` | `"none"` | no |
 | cookies\_whitelisted | If cookies\_forward is whitelist, specify those here | `list(string)` | `null` | no |
-| dns\_zone | Existing DNS Zone | `string` | n/a | yes |
+| dns\_zone | DNS Zone for subdomain creation | `string` | n/a | yes |
 | environment | Deployment environment | `string` | `"staging"` | no |
 | host | Host for endpoint access | `string` | n/a | yes |
-| logging\_bucket | The AWS S3 bucket to store access logs | `string` | n/a | yes |
+| logging\_bucket | AWS S3 bucket to store access logs | `string` | n/a | yes |
 | origin\_host | Origin host for cloudfront | `string` | n/a | yes |
 | tags | Map of tags to identify this resource on AWS | `map` | <pre>{<br>  "Environment": "add-environment",<br>  "Name": "add-application-name",<br>  "Owner": "add-application-owner",<br>  "Repository": "add-github-repository"<br>}</pre> | no |
 

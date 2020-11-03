@@ -1,17 +1,29 @@
-# Database host
-variable "db_host" { type = "string" }
+variable "db_host" {
+  description = "Database host"
+  type        = "string"
+}
 
-# Database name to be created
-variable "db_name" { type = "string" }
+variable "db_name" {
+  description = "Database name to be created"
+  type        = "string"
+}
 
-# master username with database/user creation permission
-variable "db_master" { type = "string" }
+variable "db_master" {
+  description = "Master username with database/user creation permission"
+  type        = "string"
+}
 
-# master password for user with database/user creation permission
-variable "db_master_password" { type = "string" }
+variable "db_master_password" {
+  description = "Master password for user with database/user creation permission"
+  type        = "string"
+}
 
-# New user to be created
-variable "db_username" { type = "string" }
+variable "db_username" {
+  description = "New user to be created"
+  type        = "string"
+}
 
-# Password for new user to be created
-variable "db_password" { type = "string" }
+variable "db_password" {
+  description = "Password for new user to be created"
+  type        = "string"
+}

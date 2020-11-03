@@ -1,21 +1,27 @@
-# Deployment environment
 variable "environment" {
-  type    = string
-  default = "staging"
+  description = "Deployment environment"
+  type        = string
+  default     = "staging"
 }
 
-# Existing DNS Zone
-variable "dns_zone" { type = string }
+variable "dns_zone" {
+  description = "DNS Zone for subdomain creation"
+  type        = string
+}
 
-# Host for endpoint access
-variable "host" { type = string }
+variable "host" {
+  description = "Host for endpoint access"
+  type        = string
+}
 
-# Origin host for cloudfront
-variable "origin_host" { type = string }
+variable "origin_host" {
+  description = "Origin host for cloudfront"
+  type        = string
+}
 
-# Map of tags to identify this resource on AWS
 variable "tags" {
-  type = map
+  description = "Map of tags to identify this resource on AWS"
+  type        = map
   default = {
     Name        = "add-application-name"
     Owner       = "add-application-owner"
@@ -24,17 +30,19 @@ variable "tags" {
   }
 }
 
-# If you want cloudfront to forward cookies
 variable "cookies_forward" {
-  type    = string
-  default = "none"
+  description = "If you want cloudfront to forward cookies"
+  type        = string
+  default     = "none"
 }
 
-# If cookies_forward is whitelist, specify those here
 variable "cookies_whitelisted" {
-  type    = list(string)
-  default = null
+  description = "If cookies_forward is whitelist, specify those here"
+  type        = list(string)
+  default     = null
 }
 
-# The AWS S3 bucket to store access logs
-variable "logging_bucket" { type = string }
+variable "logging_bucket" {
+  description = "AWS S3 bucket to store access logs"
+  type        = string
+}

@@ -54,8 +54,8 @@ module "staging-config" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | db\_host | Database host | `string` | n/a | yes |
-| db\_master | master username with database/user creation permission | `string` | n/a | yes |
-| db\_master\_password | master password for user with database/user creation permission | `string` | n/a | yes |
+| db\_master | Master username with database/user creation permission | `string` | n/a | yes |
+| db\_master\_password | Master password for user with database/user creation permission | `string` | n/a | yes |
 | db\_name | Database name to be created | `string` | n/a | yes |
 | db\_password | Password for new user to be created | `string` | n/a | yes |
 | db\_username | New user to be created | `string` | n/a | yes |
