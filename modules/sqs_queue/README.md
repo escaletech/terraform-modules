@@ -7,7 +7,7 @@ This module configs:
 
 ```tf
 module "staging-config" {
-  source = "github.com/escaletech/terraform-utils/module/sqs_queue"
+  source = "github.com/escaletech/terraform-utils/modules/sqs_queue"
 
   name = "myproject-queue"
   environment = "staging"

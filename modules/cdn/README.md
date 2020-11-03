@@ -9,7 +9,7 @@ This module configs:
 
 ```tf
 module "staging-config" {
-  source = "github.com/escaletech/terraform-utils/module/cdn"
+  source = "github.com/escaletech/terraform-utils/modules/cdn"
 
   environment       = "staging"
   dns_zone          = "mydnszone.com.br"
