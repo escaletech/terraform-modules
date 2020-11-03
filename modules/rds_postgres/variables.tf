@@ -1,16 +1,16 @@
 variable "allocated_storage" {
-  type = number
+  type    = number
   default = 100
 }
 variable "availability_zone" {
-  type = string
+  type    = string
   default = "us-east-1c"
 }
 variable "identifier" {
   type = string
 }
 variable "instance_class" {
-  type = string
+  type    = string
   default = "db.t3.micro"
 }
 variable "final_snapshot_identifier" {

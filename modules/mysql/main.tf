@@ -5,7 +5,7 @@ provider "mysql" {
 }
 
 resource "mysql_database" "main" {
-  name               = var.db_name
+  name = var.db_name
 }
 
 resource "mysql_user" "main" {

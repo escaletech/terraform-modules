@@ -58,7 +58,7 @@ resource "aws_cloudfront_distribution" "main" {
 
     forwarded_values {
       query_string = true
-      headers      = [
+      headers = [
         "Host",
         "Origin",
         "X-Request-Id",
