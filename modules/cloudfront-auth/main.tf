@@ -1,5 +1,5 @@
 locals {
-  source_zip = "${path.module}/../../environments/${var.environment}/${var.lambda_file}"
+  source_zip = "${path.root}/${var.lambda_file}"
 }
 
 #
