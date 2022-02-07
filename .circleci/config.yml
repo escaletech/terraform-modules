@@ -4,6 +4,24 @@ orbs:
   terraform: escaletech/terraform@0.4
   gh-release: escaletech/gh-conventional-release@0.1
 
+jobs:
+  tf-check:
+    docker:
+      - image: circleci/python:3
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pip install pre-commit
+            pre-commit install
+            curl https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+            tflint --init
+      - terraform/install-terraform
+      - run:
+          name: Terraform checks
+          command: pre-commit run --all-files
+
 workflows:
   version: 2
   ci:
