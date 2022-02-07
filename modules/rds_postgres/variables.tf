@@ -28,7 +28,7 @@ variable "final_snapshot_identifier" {
 
 variable "tags" {
   description = "Map of tags to identify this resource on AWS"
-  type        = map
+  type        = map(any)
   default = {
     Name        = "add-application-name"
     Owner       = "add-application-owner"

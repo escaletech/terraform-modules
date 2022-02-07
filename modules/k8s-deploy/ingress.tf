@@ -8,9 +8,9 @@ resource "kubernetes_namespace" "ingress" {
 }
 
 module "nginx-controller" {
-  source  = "terraform-iaac/nginx-controller/helm"
+  source     = "terraform-iaac/nginx-controller/helm"
   depends_on = [kubernetes_namespace.ingress]
-  namespace = "ingress-nginx"
+  namespace  = "ingress-nginx"
   additional_set = [
     {
       name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
@@ -32,7 +32,7 @@ module "nginx-controller" {
 
 resource "kubernetes_ingress" "ingress" {
   metadata {
-    name = "ingress-nginx"
+    name      = "ingress-nginx"
     namespace = "ingress-nginx"
   }
   spec {

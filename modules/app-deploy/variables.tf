@@ -7,7 +7,7 @@ variable "namespace" {
 }
 
 variable "host" {
-  type = string
+  type    = string
   default = null
 }
 

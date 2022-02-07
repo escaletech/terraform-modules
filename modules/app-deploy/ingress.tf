@@ -26,7 +26,7 @@ resource "kubernetes_ingress" "main" {
           }
         }
       }
-    }  
+    }
     dynamic "rule" {
       for_each = toset(var.hosts) == null ? [] : var.hosts
       content {

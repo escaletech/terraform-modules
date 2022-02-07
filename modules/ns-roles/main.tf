@@ -50,8 +50,8 @@ resource "aws_iam_role" "ns" {
 resource "kubernetes_service_account" "sa" {
   for_each = toset(var.namespaces)
   metadata {
-    name = "default"
-    namespace = each.value
+    name        = "default"
+    namespace   = each.value
     annotations = { "eks.amazonaws.com/role-arn" = "arn:aws:iam::${local.account_id}:role/${each.value}" }
   }
 }

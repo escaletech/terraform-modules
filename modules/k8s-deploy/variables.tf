@@ -42,5 +42,5 @@ variable "cluster-domain" {
 }
 
 variable "nlb_subnets" {
-  type    = list(string)
+  type = list(string)
 }
