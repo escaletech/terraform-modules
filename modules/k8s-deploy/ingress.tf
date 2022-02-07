@@ -9,6 +9,7 @@ resource "kubernetes_namespace" "ingress" {
 
 module "nginx-controller" {
   source     = "terraform-iaac/nginx-controller/helm"
+  version    = "1.2.7"
   depends_on = [kubernetes_namespace.ingress]
   namespace  = "ingress-nginx"
   additional_set = [
