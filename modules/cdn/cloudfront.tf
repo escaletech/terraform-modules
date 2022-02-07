@@ -2,10 +2,13 @@ locals {
   origin_id = "Custom-${var.origin_host}"
 }
 
-// Create CloudFront distribution
+data "aws_cloudfront_cache_policy" "main" {
+  name = var.cache_policy_name
+}
+
 resource "aws_cloudfront_distribution" "main" {
   enabled         = true
-  aliases         = [var.host]
+  aliases         = [var.custom_cname != null ? var.custom_cname : var.host]
   tags            = var.tags
   is_ipv6_enabled = true
 
@@ -21,9 +24,8 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   logging_config {
-    bucket          = var.logging_bucket
-    include_cookies = false
-    prefix          = "cloudfront"
+    bucket          = aws_s3_bucket.cloudfront-logs.bucket_domain_name
+    include_cookies = true
   }
 
   custom_error_response {
@@ -36,42 +38,92 @@ resource "aws_cloudfront_distribution" "main" {
     domain_name = var.origin_host
     origin_id   = local.origin_id
 
-    custom_header {
-      name  = "X-CloudFront-Forwarded-Proto"
-      value = "https"
-    }
-
     custom_origin_config {
       http_port              = 80
       https_port             = 443
-      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
-      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+      origin_protocol_policy = var.origin_protocol_policy
+    }
+  }
+
+  dynamic "origin" {
+    for_each = var.dynamic_origins
+    iterator = or
+    content {
+      domain_name = or.value["host"]
+      origin_id   = "Custom-${or.value["host"]}"
+
+      custom_origin_config {
+        http_port              = 80
+        https_port             = 443
+        origin_ssl_protocols   = ["TLSv1.2"]
+        origin_protocol_policy = or.value["origin_protocol_policy"]
+      }
     }
   }
 
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "DELETE"]
-    cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = local.origin_id
-
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = true
-      headers = [
-        "Host",
-        "Origin",
-        "X-Request-Id",
-        "X-Session-Id",
-        "Authorization",
-        "Access-Control-Request-Headers",
-        "Access-Control-Request-Method"
-      ]
-
-      cookies {
-        forward           = var.cookies_forward
-        whitelisted_names = var.cookies_whitelisted
+    allowed_methods          = ["GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "DELETE"]
+    cached_methods           = ["GET", "HEAD", "OPTIONS"]
+    target_origin_id         = local.origin_id
+    viewer_protocol_policy   = "redirect-to-https"
+    cache_policy_id          = data.aws_cloudfront_cache_policy.main.id
+    origin_request_policy_id = var.origin_request_policy_id
+    dynamic "function_association" {
+      for_each = var.functions
+      content {
+        event_type   = function_association.value["event_type"]
+        function_arn = function_association.value["arn"]
       }
     }
+    dynamic "lambda_function_association" {
+      for_each = var.lambda_functions
+      content {
+        event_type   = lambda_function_association.value["event_type"]
+        lambda_arn   = lambda_function_association.value["lambda_arn"]
+        include_body = lambda_function_association.value["include_body"]
+      }
+    }
+  }
+
+  dynamic "ordered_cache_behavior" {
+    for_each = var.dynamic_behavior
+    iterator = db
+    content {
+      path_pattern           = db.value.path_pattern
+      allowed_methods        = db.value.allowed_methods
+      cached_methods         = db.value.cached_methods
+      target_origin_id       = "Custom-${db.value.target_origin_id}"
+      compress               = lookup(db.value, "compress", null)
+      viewer_protocol_policy = db.value.viewer_protocol_policy
+
+      cache_policy_id          = lookup(db.value, "cache_policy_id", null)
+      origin_request_policy_id = lookup(db.value, "origin_request_policy_id", null)
+      dynamic "lambda_function_association" {
+        iterator = lambda
+        for_each = lookup(db.value, "lambda_function_association", [])
+        content {
+          event_type   = lambda.value.event_type
+          lambda_arn   = lambda.value.lambda_arn
+          include_body = lookup(lambda.value, "include_body", null)
+        }
+      }
+
+      dynamic "function_association" {
+        iterator = cffunction
+        for_each = lookup(db.value, "function_association", [])
+        content {
+          event_type   = cffunction.value.event_type
+          function_arn = cffunction.value.function_arn
+        }
+      }
+
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      viewer_certificate.0.acm_certificate_arn
+    ]
   }
 }

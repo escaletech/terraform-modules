@@ -1,51 +1,40 @@
 version: 2.1
 
 orbs:
-  terraform: circleci/terraform@1.1
+  terraform: escaletech/terraform@0.4
   gh-release: escaletech/gh-conventional-release@0.1
+
+jobs:
+  tf-check:
+    docker:
+      - image: circleci/python:3
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            pip install pre-commit
+            pre-commit install
+            curl https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+            tflint --init
+      - terraform/install-terraform
+      - run:
+          name: Terraform checks
+          command: pre-commit run --all-files
 
 workflows:
   version: 2
   ci:
     jobs:
-      - terraform/fmt:
-          <<: &tf-ci
-            checkout: true
-            matrix:
-              parameters:
-                path: [
-                  "modules/cdn",
-                  "modules/mysql",
-                  "modules/sqs_queue" ,
-                  "modules/rds_postgres"
-                ]
+      - tf-check:
           filters:
-            &ci-filters {
-              branches: { ignore: master },
-              tags: { ignore: /.*/ }
-            }
-      - terraform/validate:
-          <<: *tf-ci
-          filters: *ci-filters
-
-  dev:
-    jobs:
-      - terraform/fmt:
-          <<: *tf-ci
-          filters:
-            &dev-filters {
-              branches: { only: master },
-              tags: { ignore: /.*/ }
-            }
-      - terraform/validate:
-          <<: *tf-ci
-          filters: *dev-filters
-
+            branches: { ignore: master }
+            tags: { ignore: /.*/ }
   release:
     jobs:
       - gh-release/create-release:
+          context: github-create-release
+          continue-on-error: true
           filters:
-            &release-filters {
-              branches: { ignore: /.*/ },
-              tags: { only: /v.+/ }
-            }
+            branches: { ignore: /.*/ }
+            tags: { only: /^v.*/ }
