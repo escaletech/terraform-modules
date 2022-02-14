@@ -136,3 +136,9 @@ variable "iam_instance_profile" {
   type    = string
   default = ""
 }
+
+variable "volume_size" {
+  description = "root block device's volume size"
+  type        = number
+  default     = 8
+}
