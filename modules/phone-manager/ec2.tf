@@ -5,6 +5,9 @@ resource "aws_instance" "instance" {
   vpc_security_group_ids = data.aws_security_group.sg.*.id
   key_name               = aws_key_pair.key.key_name
   iam_instance_profile   = var.iam_instance_profile
+  root_block_device {
+    volume_size = var.volume_size
+  }
   tags = merge(var.tags, {
     AllowSSH   = "true"
     Inspection = "true"
