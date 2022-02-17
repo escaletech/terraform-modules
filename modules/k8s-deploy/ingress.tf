@@ -25,7 +25,7 @@ module "nginx-controller" {
     },
     {
       name  = "controller.service.annotations.service.\\beta\\.kubernetes\\.io/aws-load-balancer-subnets"
-      value = join(", ", var.nlb_subnets)
+      value = join("\\, ", var.nlb_subnets)
       type  = "string"
     }
   ]
