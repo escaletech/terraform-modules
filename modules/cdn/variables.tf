@@ -76,3 +76,14 @@ variable "dynamic_behavior" {
   }))
   default = []
 }
+
+variable "additional_error_responses" {
+  description = "Includes new custom errors responses"
+  type = list(object({
+    error_caching_min_ttl = number
+    error_code            = number
+    response_code         = number
+    response_page_path    = string
+  }))
+  default = []
+}
