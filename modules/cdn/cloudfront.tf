@@ -34,6 +34,17 @@ resource "aws_cloudfront_distribution" "main" {
     response_code         = 0
   }
 
+  dynamic "custom_error_response" {
+    for_each = var.additional_error_responses
+    iterator = er
+    content {
+      error_caching_min_ttl = er.value.error_caching_min_ttl
+      error_code            = er.value.error_code
+      response_code         = er.value.response_code
+      response_page_path    = er.value.response_page_path
+    }
+  }
+
   origin {
     domain_name = var.origin_host
     origin_id   = local.origin_id
