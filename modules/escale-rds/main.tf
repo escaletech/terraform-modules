@@ -3,7 +3,7 @@ resource "aws_db_instance" "db" {
   identifier                      = var.identifier
   storage_type                    = "gp2"
   engine                          = var.replicate_source_db == null ? var.engine : null
-  engine_version                  = var.engine_version
+  engine_version                  = var.replicate_source_db == null ? var.engine_version : null
   instance_class                  = var.instance_class
   username                        = var.replicate_source_db == null ? var.username : null
   password                        = var.replicate_source_db == null ? aws_secretsmanager_secret_version.dbpass.secret_string : null
