@@ -1,7 +1,11 @@
 resource "aws_s3_bucket" "internal-logs" {
   bucket = "${var.domain}-logs"
-  acl    = "log-delivery-write"
   tags   = var.tags
+}
+
+resource "aws_s3_bucket_acl" "internal-logs" {
+  bucket = aws_s3_bucket.internal-logs.bucket
+  acl    = "log-delivery-write"
 }
 
 resource "aws_s3_bucket" "internal" {
