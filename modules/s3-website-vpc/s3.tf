@@ -39,7 +39,7 @@ resource "aws_s3_bucket_logging" "internal" {
 
 resource "aws_s3_bucket_policy" "internal" {
   bucket = aws_s3_bucket.internal.bucket
-  policy = data.aws_iam_policy_document.internal
+  policy = data.aws_iam_policy_document.internal.json
 }
 
 data "aws_iam_policy_document" "internal" {
