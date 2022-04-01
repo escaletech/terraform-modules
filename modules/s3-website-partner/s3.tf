@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "internal" {
   statement {
     sid    = "PublicReadVpce"
     effect = "Allow"
-    principal {
+    principals {
       type        = "*"
       identifiers = ["*"]
     }
@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "internal" {
   statement {
     sid    = "DenyPublicReadNonVpce"
     effect = "Deny"
-    principal {
+    principals {
       type        = "*"
       identifiers = ["*"]
     }
