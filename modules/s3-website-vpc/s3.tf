@@ -31,8 +31,10 @@ resource "aws_s3_bucket_website_configuration" "internal" {
 }
 
 resource "aws_s3_bucket_logging" "internal" {
-  bucket        = aws_s3_bucket.internal.bucket
+  bucket = aws_s3_bucket.internal.bucket
+
   target_bucket = aws_s3_bucket.internal-logs.id
+  target_prefix = "log/"
 }
 
 resource "aws_s3_bucket_policy" "internal" {
