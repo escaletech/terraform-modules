@@ -7,8 +7,16 @@ locals {
 #
 resource "aws_s3_bucket" "default" {
   bucket = var.bucket_name
-  acl    = "private"
   tags   = var.tags
+}
+
+resource "aws_s3_bucket_acl" "default" {
+  bucket = aws_s3_bucket.default.bucket
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_cors_configuration" "default" {
+  bucket = aws_s3_bucket.default.bucket
 
   dynamic "cors_rule" {
     for_each = var.cors_rule == null ? [] : [var.cors_rule]
@@ -19,6 +27,10 @@ resource "aws_s3_bucket" "default" {
       expose_headers  = var.cors_rule.expose_headers
     }
   }
+}
+
+resource "aws_s3_bucket_website_configuration" "default" {
+  bucket = aws_s3_bucket.default.bucket
 
   dynamic "website" {
     for_each = var.website == null ? [] : [var.website]

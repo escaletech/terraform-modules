@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "internal-logs" {
   bucket = "${var.domain}-logs"
-  acl    = "log-delivery-write"
   tags   = var.tags
 }
 
@@ -50,7 +49,7 @@ data "aws_iam_policy_document" "internal" {
 
     sid       = "PublicReadVpce"
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.static_website.arn}/*"]
+    resources = ["${aws_s3_bucket.internal.arn}/*"]
     effect    = "Allow"
 
     condition {
@@ -68,7 +67,7 @@ data "aws_iam_policy_document" "internal" {
 
     sid       = "DenyPublicReadNonVpce"
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.static_website.arn}/*"]
+    resources = ["${aws_s3_bucket.internal.arn}/*"]
     effect    = "Deny"
 
     condition {
