@@ -30,7 +30,7 @@ resource "aws_s3_bucket_cors_configuration" "default" {
 }
 
 resource "aws_s3_bucket_website_configuration" "default" {
-  for_each = var.website == null ? [] : [var.website]
+  for_each = var.website == null ? {} : var.website
   bucket   = aws_s3_bucket.default.bucket
 
   index_document {
