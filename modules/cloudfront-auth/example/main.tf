@@ -20,6 +20,10 @@ resource "aws_acm_certificate" "cert" {
   subject_alternative_names = [
     "*.example.com"
   ]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 // A test object for the bucket.
