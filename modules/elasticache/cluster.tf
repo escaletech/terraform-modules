@@ -19,8 +19,10 @@ resource "aws_elasticache_replication_group" "main" {
   snapshot_window          = "03:00-06:00"
   snapshot_retention_limit = 1
 
-  replicas_per_node_group = var.replicas
-  num_node_groups         = var.nodes
+  cluster_mode {
+    replicas_per_node_group = var.replicas
+    num_node_groups         = var.nodes
+  }
 
   tags = var.tags
 }
