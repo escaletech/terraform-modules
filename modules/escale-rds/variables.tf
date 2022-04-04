@@ -140,3 +140,9 @@ variable "enabled_cloudwatch_logs_exports" {
   type        = set(string)
   default     = null
 }
+
+variable "deletion_protection" {
+  description = "Set of the DB instance should have deletion protection enabled"
+  type        = bool
+  default     = true
+}

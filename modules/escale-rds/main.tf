@@ -14,7 +14,7 @@ resource "aws_db_instance" "db" {
   db_subnet_group_name            = var.subnet_group
   final_snapshot_identifier       = "Ignore"
   tags                            = var.rds_tags
-  deletion_protection             = true
+  deletion_protection             = var.deletion_protection
   auto_minor_version_upgrade      = true
   apply_immediately               = true
   maintenance_window              = var.maintenance_window
