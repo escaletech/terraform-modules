@@ -10,7 +10,7 @@ resource "kubernetes_ingress" "main" {
   }
 
   spec {
-    ingress_class_name = "nginx"
+    ingress_class_name = var.ingress-class-name
 
     dynamic "rule" {
       for_each = toset([var.host]) == null ? [] : [var.host]

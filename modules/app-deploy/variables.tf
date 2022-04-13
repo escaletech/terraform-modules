@@ -90,3 +90,8 @@ variable "logger" {
   type    = string
   default = ""
 }
+
+variable "ingress-class-name" {
+  type    = string
+  default = "nginx"
+}
