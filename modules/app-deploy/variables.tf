@@ -95,3 +95,12 @@ variable "ingress-class-name" {
   type    = string
   default = "nginx"
 }
+
+variable "tolerations" {
+  type = list(object({
+    effect   = string
+    key      = string
+    operator = string
+  }))
+  default = null
+}

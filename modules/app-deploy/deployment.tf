@@ -101,6 +101,14 @@ resource "kubernetes_deployment" "main" {
             }
           }
         }
+        dynamic "toleration" {
+          for_each = var.tolerations == null ? [] : var.tolerations
+          content {
+            effect   = toleration.value.effect
+            key      = toleration.value.key
+            operator = toleration.value.operator
+          }
+        }
       }
     }
   }
