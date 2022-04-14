@@ -104,3 +104,18 @@ variable "tolerations" {
   }))
   default = null
 }
+
+variable "node-affinity" {
+  type    = any
+  default = {}
+}
+
+variable "pod-affinity" {
+  type    = any
+  default = {}
+}
+
+variable "pod-anti-affinity" {
+  type    = any
+  default = {}
+}
