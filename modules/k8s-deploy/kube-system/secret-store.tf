@@ -2,7 +2,7 @@ resource "helm_release" "secret-store" {
   name      = "secrets-store"
   namespace = "kube-system"
 
-  repository = "https://raw.githubusercontent.com/kubernetes-sigs/secrets-store-csi-driver/master/charts"
+  repository = "https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts"
   chart      = "secrets-store-csi-driver"
 
   set {
