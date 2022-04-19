@@ -14,6 +14,10 @@ resource "helm_release" "secret-store" {
     name  = "enableSecretRotation"
     value = true
   }
+
+  values = [
+    file("${path.module}/secret-store-values.yaml")
+  ]
 }
 
 resource "kubernetes_service_account" "csi-aws" {
@@ -98,6 +102,11 @@ resource "kubernetes_daemonset" "csi-aws" {
       spec {
         service_account_name = "csi-secrets-store-provider-aws"
         host_network         = true
+        toleration {
+          key      = "NoScheduleNode"
+          operator = "Exists"
+          effect   = "NoSchedule"
+        }
         container {
           name              = "provider-aws-installer"
           image             = "public.ecr.aws/aws-secrets-manager/secrets-store-csi-driver-provider-aws:1.0.r2-2021.08.13.20.34-linux-amd64"
