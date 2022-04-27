@@ -1,4 +1,4 @@
-resource "kubernetes_ingress" "main" {
+resource "kubernetes_ingress_v1" "main" {
   metadata {
     name      = var.app-name
     namespace = var.namespace
@@ -19,8 +19,12 @@ resource "kubernetes_ingress" "main" {
         http {
           path {
             backend {
-              service_name = var.app-name
-              service_port = 80
+              service {
+                name = var.app-name
+                port {
+                  number = 80
+                }
+              }
             }
             path = var.path
           }
@@ -34,8 +38,12 @@ resource "kubernetes_ingress" "main" {
         http {
           path {
             backend {
-              service_name = var.app-name
-              service_port = 80
+              service {
+                name = var.app-name
+                port {
+                  number = 80
+                }
+              }
             }
             path = var.path
           }
