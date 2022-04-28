@@ -28,7 +28,7 @@ resource "kubernetes_deployment" "main" {
 
       spec {
         container {
-          image             = var.image-fulladdress != null ? var.image-fulladdress : "${data.aws_ecr_repository.repository.repository_url}:${var.image-tag}"
+          image             = var.image-fulladdress != null ? var.image-fulladdress : "${data.aws_ecr_repository.repository[0].repository_url}:${var.image-tag}"
           image_pull_policy = var.tags.Environment == "production" ? "IfNotPresent" : "Always"
           name              = var.app-name
           dynamic "env" {
