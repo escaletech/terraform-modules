@@ -119,3 +119,8 @@ variable "pod-anti-affinity" {
   type    = any
   default = {}
 }
+
+variable "image-fulladdress" {
+  type    = string
+  default = null
+}
