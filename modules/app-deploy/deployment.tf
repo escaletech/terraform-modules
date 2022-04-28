@@ -1,7 +1,3 @@
-locals {
-  image-deployed = "${data.aws_ecr_repository.repository.repository_url}:${var.image-tag}"
-}
-
 resource "kubernetes_deployment" "main" {
   depends_on = [aws_secretsmanager_secret.secret]
   metadata {
@@ -32,7 +28,7 @@ resource "kubernetes_deployment" "main" {
 
       spec {
         container {
-          image             = var.image-fulladdress != null ? var.image-fulladdress : local.image-deployed
+          image             = var.image-fulladdress != null ? var.image-fulladdress : "${data.aws_ecr_repository.repository.repository_url}:${var.image-tag}"
           image_pull_policy = var.tags.Environment == "production" ? "IfNotPresent" : "Always"
           name              = var.app-name
           dynamic "env" {
