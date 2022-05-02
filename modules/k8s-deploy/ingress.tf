@@ -31,7 +31,7 @@ module "nginx-controller" {
   ]
 }
 
-resource "kubernetes_ingress" "ingress" {
+resource "kubernetes_ingress_v1" "ingress" {
   metadata {
     name      = "ingress-nginx"
     namespace = "ingress-nginx"
@@ -44,8 +44,12 @@ resource "kubernetes_ingress" "ingress" {
       http {
         path {
           backend {
-            service_name = "ingress-nginx-controller"
-            service_port = 18080
+            service {
+              name = "ingress-nginx-controller"
+              port {
+                number = 18080
+              }
+            }
           }
 
           path = "/nginx_status"
