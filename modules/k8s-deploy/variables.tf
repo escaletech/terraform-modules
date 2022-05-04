@@ -44,3 +44,7 @@ variable "cluster-domain" {
 variable "nlb_subnets" {
   type = list(string)
 }
+
+variable "datadog-api-secrets-manager" {
+  type = string
+}
