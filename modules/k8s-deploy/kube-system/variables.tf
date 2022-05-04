@@ -6,4 +6,6 @@ variable "datadog-enabled" {
   type = bool
 }
 
-
+variable "datadog-api-secrets-manager" {
+  type = string
+}
