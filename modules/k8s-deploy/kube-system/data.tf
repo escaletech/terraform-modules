@@ -1,6 +1,6 @@
 data "aws_secretsmanager_secret" "api-key-datadog" {
   count = var.datadog-enabled != true ? 0 : 1
-  name  = "api-key-datadog/env/production"
+  name  = var.datadog-api-secrets-manager
 }
 
 data "aws_secretsmanager_secret_version" "api-key-datadog-version" {
