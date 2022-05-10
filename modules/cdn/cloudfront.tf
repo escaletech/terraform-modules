@@ -7,11 +7,10 @@ data "aws_cloudfront_cache_policy" "main" {
 }
 
 resource "aws_cloudfront_distribution" "main" {
-  enabled                  = true
-  aliases                  = [var.custom_cname != null ? var.custom_cname : var.host]
-  tags                     = var.tags
-  is_ipv6_enabled          = true
-  minimum_protocol_version = "TLSv1.2_2021"
+  enabled         = true
+  aliases         = [var.custom_cname != null ? var.custom_cname : var.host]
+  tags            = var.tags
+  is_ipv6_enabled = true
 
   restrictions {
     geo_restriction {
@@ -20,8 +19,9 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   viewer_certificate {
-    ssl_support_method  = "sni-only"
-    acm_certificate_arn = aws_acm_certificate_validation.cert.certificate_arn
+    ssl_support_method       = "sni-only"
+    acm_certificate_arn      = aws_acm_certificate_validation.cert.certificate_arn
+    minimum_protocol_version = "TLSv1.2_2021"
   }
 
   logging_config {
