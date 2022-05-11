@@ -48,20 +48,3 @@ resource "kubernetes_cluster_role_binding" "eks-developers-binding" {
     namespace = ""
   }
 }
-
-resource "kubernetes_cluster_role_binding" "eks-dashboard-developers-binding" {
-  metadata {
-    name = "eks-dashboard-developers-binding"
-  }
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "system:sso-eks-developers"
-  }
-  subject {
-    kind      = "Group"
-    name      = "kubernetes-dashboard"
-    api_group = "rbac.authorization.k8s.io"
-    namespace = ""
-  }
-}
