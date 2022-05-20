@@ -10,6 +10,11 @@ variable "lb_private_tag" {
   type = map(string)
 }
 
+variable "ingress-lb-record" {
+  type    = bool
+  default = false
+}
+
 variable "tags" {
   type    = map(string)
   default = {}

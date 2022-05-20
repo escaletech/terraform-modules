@@ -16,6 +16,7 @@ data "aws_lb" "private" {
 }
 
 resource "aws_route53_record" "private" {
+  count   = var.ingress-lb-record == true ? 1 : 0
   zone_id = aws_route53_zone.private.zone_id
   name    = var.host
   type    = "A"
