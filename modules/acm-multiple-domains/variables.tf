@@ -16,6 +16,12 @@ variable "record" {
 variable "ttl" {
   description = "TTL for DNS record."
 }
+variable "certificate_host" {
+  type = string
+}
+variable "alternative_domain" {
+  type = list(string)
+}
 
 locals {
   certificate_arn = var.certificate_arn
