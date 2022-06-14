@@ -4,9 +4,9 @@ data "aws_route53_zone" "domain" {
 }
 
 resource "aws_acm_certificate" "cert" {
-  domain_name       = var.certificate_host
-  validation_method = "DNS"
-  subject_alternative_names = [ var.alternative_domain  ]
+  domain_name               = var.certificate_host
+  validation_method         = "DNS"
+  subject_alternative_names = [var.alternative_domain]
 
   lifecycle {
     create_before_destroy = true
