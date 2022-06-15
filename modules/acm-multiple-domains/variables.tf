@@ -29,5 +29,5 @@ locals {
   name            = var.name
   type            = var.type
   record          = var.record
-  ttl             = var.ttl
+  ttl             = 60
 }
