@@ -1,9 +1,4 @@
-data "aws_route53_zone" "domain" {
-  name         = local.domain
-  private_zone = false
-}
-
-resource "aws_acm_certificate" "cert" {
+resource "aws_acm_certificate" "certificate" {
   domain_name               = var.certificate_host
   validation_method         = "DNS"
   subject_alternative_names = [var.alternative_domain]
@@ -13,23 +8,18 @@ resource "aws_acm_certificate" "cert" {
   }
 }
 
-resource "aws_route53_record" "tls-entry" {
-  for_each = {
-    for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      type   = dvo.resource_record_type
-      record = dvo.resource_record_value
-    }
-  }
-
-  zone_id = data.aws_route53_zone.domain.zone_id
-  name    = each.value.name
-  type    = each.value.type
-  records = [each.value.record]
-  ttl     = 60
+module "acm-multiple-domains" {
+  for_each = {for domain in aws_acm_certificate.certificate.domain_validation_options: domain.domain_name => domain}
+  source  = "./terraform-aws-acm-multiple-domains"
+  certificate_arn = aws_acm_certificate.certificate.arn
+  domain          = each.key
+  name            = each.value.resource_record_name
+  type            = each.value.resource_record_type
+  record          = each.value.resource_record_value
+  ttl             = 3600
 }
 
-resource "aws_acm_certificate_validation" "private-ingress" {
-  certificate_arn         = aws_acm_certificate.cert.arn
-  validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
+resource "aws_acm_certificate_validation" "validate" {
+  certificate_arn         = aws_acm_certificate.certificate.arn
+  validation_record_fqdns = [for domain in module.acm-multiple-domains : domain.record.fqdn ]
 }
