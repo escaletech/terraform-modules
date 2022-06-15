@@ -1,7 +1,7 @@
 variable "certificate_host" {
-  type  = string
+  type = string
 }
 
 variable "alternative_domain" {
-  type  = list(string)
+  type = list(string)
 }
