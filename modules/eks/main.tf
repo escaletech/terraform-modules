@@ -116,10 +116,6 @@ resource "aws_iam_instance_profile" "nodes" {
   role = aws_iam_role.nodes.name
 }
 
-#############################################
-# kube-system namespace role for ASG Policy #
-#############################################
-
 
 #########################
 # Nodes Security Groups #
@@ -184,6 +180,33 @@ resource "aws_eks_node_group" "node_group" {
   node_group_name = "node-group-${count.index}"
   node_role_arn   = aws_iam_role.nodes.arn
   subnet_ids      = [var.public_subnet_ids[count.index]]
+  instance_types  = [var.node-instance-type]
+
+  scaling_config {
+    desired_size = var.asg-desired-capacity
+    max_size     = var.asg-max-size
+    min_size     = var.asg-min-size
+  }
+
+  tags = merge(var.tags, {
+    "kubernetes.io/cluster/${aws_eks_cluster.cluster.name}" = "owned",
+    "k8s.io/cluster-autoscaler/enabled"                     = "true"
+    }
+  )
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [scaling_config[0].desired_size]
+  }
+}
+
+resource "aws_eks_node_group" "node_group_private" {
+  count = length(var.private_subnet_ids)
+
+  cluster_name    = aws_eks_cluster.cluster.name
+  node_group_name = "node-group-private-${count.index}"
+  node_role_arn   = aws_iam_role.nodes.arn
+  subnet_ids      = [var.private_subnet_ids[count.index]]
   instance_types  = [var.node-instance-type]
 
   scaling_config {
