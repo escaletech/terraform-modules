@@ -71,5 +71,6 @@ variable "core_dns_version" {
 }
 
 variable "enable_taint" {
-  type = bool
+  type    = bool
+  default = false
 }
