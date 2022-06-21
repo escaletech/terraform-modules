@@ -69,3 +69,7 @@ variable "core_dns_version" {
   type    = string
   default = "v1.8.4-eksbuild.1"
 }
+
+variable "enable_taint" {
+  type = bool
+}

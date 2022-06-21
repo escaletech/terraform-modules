@@ -188,6 +188,14 @@ resource "aws_eks_node_group" "node_group" {
     min_size     = var.asg-min-size
   }
 
+  dynamic "taint" {
+    for_each = var.enable_taint ? ["do-it"] : []
+    content {
+      effect = "NO_SCHEDULE"
+      key    = "NoschedulePublicNode"
+    }
+  }
+
   tags = merge(var.tags, {
     "kubernetes.io/cluster/${aws_eks_cluster.cluster.name}" = "owned",
     "k8s.io/cluster-autoscaler/enabled"                     = "true"
