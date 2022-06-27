@@ -50,6 +50,6 @@ variable "datadog-api-secrets-manager" {
 }
 
 variable "ingress_class_is_default" {
-  type  = bool
+  type    = bool
   default = true
 }
