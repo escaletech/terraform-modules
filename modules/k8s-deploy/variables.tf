@@ -48,3 +48,8 @@ variable "nlb_subnets" {
 variable "datadog-api-secrets-manager" {
   type = string
 }
+
+variable "ingress_class_is_default" {
+  type  = bool
+  default = true
+}
