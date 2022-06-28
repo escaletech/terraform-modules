@@ -21,7 +21,7 @@ resource "aws_eks_node_group" "extra-node-group" {
     for_each = var.enable_taint ? ["do-it"] : []
     content {
       effect = "NO_SCHEDULE"
-      key    = "NoschedulePublicNode"
+      key    = "NoscheduleSnowPlowNode"
     }
   }
 

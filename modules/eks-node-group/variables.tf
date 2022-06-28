@@ -49,6 +49,6 @@ variable "tags" {
 }
 
 variable "enable_taint" {
-  type        = bool
-  default     = false
+  type    = bool
+  default = false
 }
