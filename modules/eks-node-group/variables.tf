@@ -47,3 +47,8 @@ variable "tags" {
   description = "The tags to apply to the node group"
   default     = {}
 }
+
+variable "enable_taint" {
+  type        = bool
+  default     = false
+}

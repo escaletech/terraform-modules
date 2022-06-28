@@ -17,8 +17,17 @@ resource "aws_eks_node_group" "extra-node-group" {
     }
   )
 
+  dynamic "taint" {
+    for_each = var.enable_taint ? ["do-it"] : []
+    content {
+      effect = "NO_SCHEDULE"
+      key    = "NoschedulePublicNode"
+    }
+  }
+
   lifecycle {
     create_before_destroy = true
     ignore_changes        = [scaling_config[0].desired_size]
   }
 }
+
