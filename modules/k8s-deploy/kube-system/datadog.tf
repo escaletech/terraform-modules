@@ -65,4 +65,8 @@ resource "helm_release" "datadog_agent" {
     name  = "datadog.hostVolumeMountPropagation"
     value = "HostToContainer"
   }
+
+  values = [
+    file("${path.module}/datadog-files/values.yaml")
+  ]
 }
