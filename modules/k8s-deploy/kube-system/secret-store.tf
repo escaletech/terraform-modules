@@ -16,7 +16,7 @@ resource "helm_release" "secret-store" {
   }
 
   values = [
-    file("${path.module}/secret-store-values.yaml")
+    file("${path.module}/secret-store-files/values.yaml")
   ]
 }
 
