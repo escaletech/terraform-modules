@@ -66,6 +66,11 @@ resource "helm_release" "datadog_agent" {
     value = "HostToContainer"
   }
 
+  set {
+    name  = "datadog.containerExcludeLogs"
+    value = "kube_namespace:kube-system kube_namespace:ingress-nginx kube_namespace:cert-manager kube_namespace:lens-metrics kube_namespace:oauth2-proxy"
+  }
+
   values = [
     file("${path.module}/datadog-files/values.yaml")
   ]
