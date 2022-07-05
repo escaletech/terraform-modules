@@ -9,4 +9,9 @@ resource "helm_release" "cluster-autoscaler" {
     name  = "autoDiscovery.clusterName"
     value = var.cluster-name
   }
+
+  set {
+    name  = "fullnameOverride"
+    value = "cluster-autoscaler"
+  }
 }
