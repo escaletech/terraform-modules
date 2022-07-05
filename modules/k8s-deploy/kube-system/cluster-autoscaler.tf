@@ -2,7 +2,7 @@ resource "helm_release" "cluster-autoscaler" {
   name       = "cluster-autoscaler"
   chart      = "cluster-autoscaler"
   repository = "https://kubernetes.github.io/autoscaler"
-  version    = "1.23.0"
+  version    = "9.19.2"
   namespace  = "kube-system"
 
   set {
