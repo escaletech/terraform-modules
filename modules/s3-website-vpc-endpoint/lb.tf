@@ -56,7 +56,7 @@ resource "aws_lb_listener_rule" "index" {
 }
 
 resource "aws_lb_target_group" "internal" {
-  name_prefix          = var.tags.Name
+  name_prefix          = "${substr(var.tags.Name, 0, 5)}-"
   port                 = 443
   protocol             = "HTTPS"
   vpc_id               = data.aws_vpc.vpc.id
