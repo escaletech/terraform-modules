@@ -2,7 +2,7 @@ resource "aws_lb" "internal" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.internal-sg.id]
   subnets            = var.subnets
-  internal           = var.internal_ip
+  internal           = true
   tags               = var.tags
 }
 
