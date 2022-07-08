@@ -1,20 +1,20 @@
 variable "tags" { type = map(any) }
 variable "domain" {
-  type  = string
+  type = string
 }
 
 variable "dns_zone_id" {
-  type  = string
+  type = string
 }
 
 variable "endpoint-name" {
-  type  = string
+  type = string
 }
 
 variable "vpc-endpoint" {
-  type  = string
+  type = string
 }
 
 variable "vpc-name" {
-  type  = string
+  type = string
 }
