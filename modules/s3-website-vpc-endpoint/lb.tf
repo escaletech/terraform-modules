@@ -1,4 +1,5 @@
 resource "aws_lb" "internal" {
+  nam                = var.tags.Name
   load_balancer_type = "application"
   security_groups    = [aws_security_group.internal-sg.id]
   subnets            = var.subnets
@@ -56,7 +57,7 @@ resource "aws_lb_listener_rule" "index" {
 }
 
 resource "aws_lb_target_group" "internal" {
-  name_prefix          = "${substr(var.tags.Name, 0, 5)}-"
+  name                 = var.tags.Name
   port                 = 443
   protocol             = "HTTPS"
   vpc_id               = data.aws_vpc.vpc.id
