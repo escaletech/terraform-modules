@@ -4,7 +4,7 @@ variable "domain" {
 }
 
 variable "domain-zone" {
-  type  = string
+  type = string
 }
 
 variable "dns_zone_id" {

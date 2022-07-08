@@ -18,6 +18,6 @@ data "aws_lb" "alb_staging" {
 }
 
 data "aws_route53_zone" "zone" {
-  name  = var.domain-zone
+  name         = var.domain-zone
   private_zone = true
 }
