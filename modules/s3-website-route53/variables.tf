@@ -3,6 +3,10 @@ variable "domain" {
   type = string
 }
 
+variable "domain-zone" {
+  type  = string
+}
+
 variable "dns_zone_id" {
   type = string
 }
