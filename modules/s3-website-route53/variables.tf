@@ -7,15 +7,7 @@ variable "domain-zone" {
   type = string
 }
 
-variable "dns_zone_id" {
-  type = string
-}
-
-variable "endpoint-name" {
-  type = string
-}
-
-variable "vpc-endpoint" {
+variable "vpc-endpoint-name" {
   type = string
 }
 

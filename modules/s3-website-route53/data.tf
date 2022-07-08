@@ -1,4 +1,4 @@
-data "aws_vpc" "escale-staging" {
+data "aws_vpc" "vpc" {
   filter {
     name   = "tag:Name"
     values = [var.vpc-name]
@@ -6,10 +6,10 @@ data "aws_vpc" "escale-staging" {
 }
 
 data "aws_vpc_endpoint" "s3" {
-  vpc_id = data.aws_vpc.escale-staging.id
+  vpc_id = data.aws_vpc.vpc.id
   filter {
     name   = "tag:Name"
-    values = [var.endpoint-name]
+    values = [var.vpc-endpoint-name]
   }
 }
 
