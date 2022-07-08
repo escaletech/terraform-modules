@@ -1,5 +1,5 @@
 resource "aws_route53_record" "internal" {
-  zone_id = var.dns_zone_id
+  zone_id = data.aws_route53_zone.zone.id
   name    = var.domain
   type    = "A"
 
