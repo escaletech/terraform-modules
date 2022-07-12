@@ -1,5 +1,8 @@
-data "aws_acm_certificate" "escale-staging" {
-  domain      = "*.staging.escale.com.br"
-  types       = ["AMAZON_ISSUED"]
-  most_recent = true
+data "aws_region" "current" {}
+
+data "aws_vpc" "vpc" {
+  filter {
+    name   = "tag:Name"
+    values = [var.vpc_name]
+  }
 }

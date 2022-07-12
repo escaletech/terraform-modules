@@ -29,12 +29,16 @@ resource "aws_lb_listener" "internal_https" {
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-FS-1-2-2019-08"
 
-  certificate_arn = data.aws_acm_certificate.escale-staging.arn
-
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.internal.arn
   }
+}
+
+resource "aws_lb_listener_certificate" "internal" {
+  for_each        = var.domains
+  listener_arn    = aws_lb_listener.internal_https.arn
+  certificate_arn = each.value.arn
 }
 
 resource "aws_lb_listener_rule" "index" {
