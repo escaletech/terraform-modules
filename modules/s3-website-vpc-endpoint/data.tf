@@ -6,3 +6,10 @@ data "aws_vpc" "vpc" {
     values = [var.vpc_name]
   }
 }
+
+data "aws_acm_certificate" "domains" {
+  for_each    = var.domains
+  domain      = each.value
+  types       = ["AMAZON_ISSUED"]
+  most_recent = true
+}

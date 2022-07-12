@@ -36,7 +36,7 @@ resource "aws_lb_listener" "internal_https" {
 }
 
 resource "aws_lb_listener_certificate" "internal" {
-  for_each        = var.domains
+  for_each        = data.aws_acm_certificate.domains
   listener_arn    = aws_lb_listener.internal_https.arn
   certificate_arn = each.value.arn
 }
