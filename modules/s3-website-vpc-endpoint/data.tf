@@ -8,7 +8,7 @@ data "aws_vpc" "vpc" {
 }
 
 data "aws_acm_certificate" "domains" {
-  for_each    = var.domains
+  for_each    = toset(var.domains)
   domain      = each.value
   types       = ["AMAZON_ISSUED"]
   most_recent = true
