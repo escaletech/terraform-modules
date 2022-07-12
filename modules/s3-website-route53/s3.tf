@@ -1,13 +1,3 @@
-resource "aws_s3_bucket" "internal-logs" {
-  bucket = "${var.domain}-logs"
-  tags   = var.tags
-}
-
-resource "aws_s3_bucket_acl" "internal-logs" {
-  bucket = aws_s3_bucket.internal-logs.bucket
-  acl    = "log-delivery-write"
-}
-
 resource "aws_s3_bucket" "internal" {
   bucket = var.domain
   tags   = var.tags
@@ -28,13 +18,6 @@ resource "aws_s3_bucket_website_configuration" "internal" {
   error_document {
     key = "index.html"
   }
-}
-
-resource "aws_s3_bucket_logging" "internal" {
-  bucket = aws_s3_bucket.internal.bucket
-
-  target_bucket = aws_s3_bucket.internal-logs.id
-  target_prefix = "log/"
 }
 
 resource "aws_s3_bucket_policy" "internal" {
