@@ -7,8 +7,14 @@ data "aws_vpc" "vpc" {
   }
 }
 
-data "aws_acm_certificate" "domains" {
-  for_each    = toset(var.domains)
+data "aws_acm_certificate" "default_domain" {
+  domain      = var.default_domain
+  types       = ["AMAZON_ISSUED"]
+  most_recent = true
+}
+
+data "aws_acm_certificate" "additional_domains" {
+  for_each    = toset(var.additional_domains)
   domain      = each.value
   types       = ["AMAZON_ISSUED"]
   most_recent = true
