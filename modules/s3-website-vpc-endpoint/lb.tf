@@ -33,10 +33,12 @@ resource "aws_lb_listener" "internal_https" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.internal.arn
   }
+
+  certificate_arn = data.aws_acm_certificate.default_domain.arn
 }
 
 resource "aws_lb_listener_certificate" "internal" {
-  for_each        = data.aws_acm_certificate.domains
+  for_each        = data.aws_acm_certificate.additional_domains
   listener_arn    = aws_lb_listener.internal_https.arn
   certificate_arn = each.value.arn
 }
