@@ -200,10 +200,12 @@ resource "aws_eks_node_group" "node_group_private" {
   }
 }
 
-resource "aws_autoscaling_group_tag" "nodes_group" {
+resource "aws_autoscaling_group_tag" "nodes_group_name" {
   for_each = toset(
     [for asg in flatten(
-      [for resources in aws_eks_node_group.node_group_private.resources : resources.autoscaling_groups]
+      [for resources in flatten(
+        [for ng in aws_eks_node_group.node_group_private : ng.resources]
+      ) : resources.autoscaling_groups]
     ) : asg.name]
   )
 
@@ -211,9 +213,21 @@ resource "aws_autoscaling_group_tag" "nodes_group" {
 
   tag {
     key                 = "Name"
-    value               = var.cluster_name
+    value               = "Engineering"
     propagate_at_launch = true
   }
+}
+
+resource "aws_autoscaling_group_tag" "nodes_group_owner" {
+  for_each = toset(
+    [for asg in flatten(
+      [for resources in flatten(
+        [for ng in aws_eks_node_group.node_group_private : ng.resources]
+      ) : resources.autoscaling_groups]
+    ) : asg.name]
+  )
+
+  autoscaling_group_name = each.value
 
   tag {
     key                 = "Owner"
