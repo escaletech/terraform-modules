@@ -213,7 +213,7 @@ resource "aws_autoscaling_group_tag" "nodes_group_name" {
 
   tag {
     key                 = "Name"
-    value               = "Engineering"
+    value               = var.cluster-name
     propagate_at_launch = true
   }
 }
