@@ -22,7 +22,7 @@ locals {
 }
 
 data "aws_iam_policy_document" "ns_assume_role_policy" {
-  for_each = toset(var.namespaces)
+  for_each = toset(var.namespaces-with-roles)
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     effect  = "Allow"
@@ -41,14 +41,14 @@ data "aws_iam_policy_document" "ns_assume_role_policy" {
 }
 
 resource "aws_iam_role" "ns" {
-  for_each           = toset(var.namespaces)
+  for_each           = toset(var.namespaces-with-roles)
   assume_role_policy = data.aws_iam_policy_document.ns_assume_role_policy[each.value].json
   name               = each.value
   tags               = var.tags
 }
 
 resource "kubernetes_service_account" "sa" {
-  for_each = toset(var.namespaces)
+  for_each = toset(var.namespaces-with-roles)
   metadata {
     name        = "default"
     namespace   = each.value
