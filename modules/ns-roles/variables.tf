@@ -3,6 +3,11 @@ variable "namespaces" {
   default = []
 }
 
+variable "namespaces-with-roles" {
+  type    = list(string)
+  default = []
+}
+
 variable "cluster-name" {
   type = string
 }
