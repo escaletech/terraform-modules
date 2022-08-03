@@ -1,3 +1,5 @@
+data "aws_default_tags" "escale-default-tags" {}
+
 data "aws_vpc" "vpc" {
   filter {
     name   = "tag:Name"
