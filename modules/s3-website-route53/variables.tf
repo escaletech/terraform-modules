@@ -6,7 +6,7 @@ variable "tags" {
 resource "null_resource" "check-tags" {
   lifecycle {
     precondition {
-      condition     = length(var.tags) != 0 || length(data.aws_default_tags.test.tags) != 0
+      condition     = length(var.tags) != 0 || length(data.aws_default_tags.escale-default-tags.tags) != 0
       error_message = "Tags are required!"
     }
   }
