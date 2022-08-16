@@ -17,3 +17,22 @@ data "aws_eks_cluster" "default" {
 }
 
 data "aws_region" "current" {}
+
+data "aws_vpc" "staging" {
+  filter {
+    name   = "tag:Name"
+    values = ["escale-staging"]
+  }
+}
+
+data "aws_subnets" "staging" {
+  filter {
+    name   = "vpc-id"
+    values = ["escale-staging"]
+  }
+
+  filter {
+    name   = "tag:Name"
+    values = ["escale-staging-subnet-private-*"]
+  }
+}

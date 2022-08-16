@@ -58,3 +58,8 @@ variable "ingress_class_is_default" {
   type    = bool
   default = true
 }
+
+variable "efs-enabled" {
+  type    = bool
+  default = false
+}

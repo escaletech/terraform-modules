@@ -9,3 +9,7 @@ variable "datadog-enabled" {
 variable "datadog-api-secrets-manager" {
   type = string
 }
+
+variable "efs-enabled" {
+  type = bool
+}
