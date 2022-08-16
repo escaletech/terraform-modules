@@ -53,7 +53,7 @@ resource "helm_release" "aws-efs-csi-driver" {
 
   set {
     name  = "image.repository"
-    value = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/eks/aws-efs-csi-driver"
+    value = "602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/aws-efs-csi-driver"
   }
 
   set {
