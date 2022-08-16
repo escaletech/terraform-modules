@@ -31,8 +31,7 @@ data "aws_subnets" "main" {
     values = [data.aws_vpc.main.id]
   }
 
-  filter {
-    name   = "tag:Name"
-    values = [var.private-subnet-prefix]
+  tags = {
+    Name = var.private-subnet-prefix
   }
 }
