@@ -21,18 +21,18 @@ data "aws_region" "current" {}
 data "aws_vpc" "staging" {
   filter {
     name   = "tag:Name"
-    values = ["escale-staging"]
+    values = [var.vpc-name]
   }
 }
 
 data "aws_subnets" "staging" {
   filter {
     name   = "vpc-id"
-    values = ["escale-staging"]
+    values = [var.vpc-name]
   }
 
   filter {
     name   = "tag:Name"
-    values = ["escale-staging-subnet-private-*"]
+    values = [var.private-subnet-prefix]
   }
 }
