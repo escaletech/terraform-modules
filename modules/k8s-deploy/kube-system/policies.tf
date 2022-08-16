@@ -14,3 +14,9 @@ resource "aws_iam_role_policy" "AWSLoadBalancerControllerIAMPolicy" {
   role   = aws_iam_role.kube-system.id
   policy = file("${path.module}/policies/awsloadbalancecontroler.json")
 }
+
+resource "aws_iam_policy" "efs_policy" {
+  count  = var.datadog-enabled != true ? 0 : 1
+  name   = "AmazonEKS_EFS_CSI_Driver_Policy"
+  policy = file("${path.module}/policies/efs-policy.json")
+}
