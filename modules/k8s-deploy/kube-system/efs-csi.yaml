@@ -41,3 +41,25 @@ resource "kubernetes_service_account" "efs-sa" {
     }
   }
 }
+
+resource "helm_release" "aws-efs-csi-driver" {
+  count = var.efs-enabled != true ? 0 : 1
+  name = "aws-efs-csi-driver"
+  chart = "aws-efs-csi-driver"
+  repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver/"
+  version = "2.2.7"
+  namespace = "kube-system"
+
+  dynamic "set" {
+    for_each = {
+      "image.repository" = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/eks/aws-efs-csi-driver"
+      "controller.serviceAccount.create" = false
+      "controller.serviceAccount.name" = resource.kubernetes_service_account.efs-sa[0].name
+    }
+
+    content {
+      name = set.key
+      value = set.value
+    }
+  }
+}
