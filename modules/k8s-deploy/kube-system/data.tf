@@ -28,7 +28,7 @@ data "aws_vpc" "staging" {
 data "aws_subnets" "staging" {
   filter {
     name   = "vpc-id"
-    values = [var.vpc-name]
+    values = [data.aws_vpc.main.id]
   }
 
   filter {
