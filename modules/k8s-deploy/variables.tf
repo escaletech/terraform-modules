@@ -16,6 +16,14 @@ variable "cluster-role-nodes" {
   type = string
 }
 
+variable "vpc-name" {
+  type = string
+}
+
+variable "private-subnet-prefix" {
+  type = string
+}
+
 variable "tags" {
   type    = map(string)
   default = {}
