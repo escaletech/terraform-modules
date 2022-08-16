@@ -71,14 +71,14 @@ resource "aws_security_group" "allow_efs" {
   count       = var.efs-enabled != true ? 0 : 1
   name        = "allow_efs"
   description = "Allow EFS inbound traffic"
-  vpc_id      = data.aws_vpc.staging.id
+  vpc_id      = data.aws_vpc.main.id
 
   ingress {
     description = "EFS from VPC"
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.staging.cidr_block]
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
 
   tags = var.tags
@@ -91,7 +91,7 @@ resource "aws_efs_file_system" "efs-eks" {
 }
 
 resource "aws_efs_mount_target" "efs-eks" {
-  count          = var.efs-enabled != true ? 0 : length(data.aws_subnets.staging.ids)
+  count          = var.efs-enabled != true ? 0 : length(data.aws_subnets.main.ids)
   file_system_id = aws_efs_file_system.efs-eks[0].id
-  subnet_id      = data.aws_subnets.staging.ids[count.index]
+  subnet_id      = data.aws_subnets.main.ids[count.index]
 }
