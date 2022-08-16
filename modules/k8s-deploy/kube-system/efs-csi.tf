@@ -51,17 +51,19 @@ resource "helm_release" "aws-efs-csi-driver" {
   version    = "2.2.7"
   namespace  = "kube-system"
 
-  dynamic "set" {
-    for_each = {
-      "image.repository"                 = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/eks/aws-efs-csi-driver"
-      "controller.serviceAccount.create" = false
-      "controller.serviceAccount.name"   = resource.kubernetes_service_account.efs-sa[0].name
-    }
+  set {
+    name  = "image.repository"
+    value = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/eks/aws-efs-csi-driver"
+  }
 
-    content {
-      name  = set.key
-      value = set.value
-    }
+  set {
+    name  = "controller.serviceAccount.create"
+    value = false
+  }
+
+  set {
+    name  = "controller.serviceAccount.name"
+    value = "efs-csi-controller-sa"
   }
 }
 
@@ -89,7 +91,7 @@ resource "aws_efs_file_system" "efs-eks" {
 }
 
 resource "aws_efs_mount_target" "efs-eks" {
-  count          = var.efs-enabled != true ? 0 : data.aws_subnets.staging.ids
-  file_system_id = aws_efs_file_system.efs-eks.id
-  subnet_id      = each.value
+  count          = var.efs-enabled != true ? 0 : length(data.aws_subnets.staging.ids)
+  file_system_id = aws_efs_file_system.efs-eks[0].id
+  subnet_id      = data.aws_subnets.staging.ids[count.index]
 }

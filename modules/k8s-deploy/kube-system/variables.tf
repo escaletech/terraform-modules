@@ -13,3 +13,7 @@ variable "datadog-api-secrets-manager" {
 variable "efs-enabled" {
   type = bool
 }
+
+variable "tags" {
+  type = map(string)
+}

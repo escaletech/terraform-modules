@@ -16,7 +16,7 @@ resource "aws_iam_role_policy" "AWSLoadBalancerControllerIAMPolicy" {
 }
 
 resource "aws_iam_policy" "efs_policy" {
-  count  = var.datadog-enabled != true ? 0 : 1
+  count  = var.efs-enabled != true ? 0 : 1
   name   = "AmazonEKS_EFS_CSI_Driver_Policy"
   policy = file("${path.module}/policies/efs-policy.json")
 }
