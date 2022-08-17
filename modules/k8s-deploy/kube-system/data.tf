@@ -18,21 +18,20 @@ data "aws_eks_cluster" "default" {
 
 data "aws_region" "current" {}
 
-data "aws_vpc" "staging" {
+data "aws_vpc" "main" {
   filter {
     name   = "tag:Name"
     values = [var.vpc-name]
   }
 }
 
-data "aws_subnets" "staging" {
+data "aws_subnets" "main" {
   filter {
     name   = "vpc-id"
-    values = [var.vpc-name]
+    values = [data.aws_vpc.main.id]
   }
 
-  filter {
-    name   = "tag:Name"
-    values = [var.private-subnet-prefix]
+  tags = {
+    Name = var.private-subnet-prefix
   }
 }
