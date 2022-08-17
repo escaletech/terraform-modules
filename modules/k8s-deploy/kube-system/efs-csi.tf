@@ -94,4 +94,5 @@ resource "aws_efs_mount_target" "efs-eks" {
   count          = var.efs-enabled != true ? 0 : length(data.aws_subnets.main.ids)
   file_system_id = aws_efs_file_system.efs-eks[0].id
   subnet_id      = data.aws_subnets.main.ids[count.index]
+  security_group = [aws_security_group.allow_efs.id]
 }
