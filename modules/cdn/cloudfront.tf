@@ -135,7 +135,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   lifecycle {
     ignore_changes = [
-      viewer_certificate.0.acm_certificate_arn
+      viewer_certificate[0].acm_certificate_arn
     ]
   }
 }

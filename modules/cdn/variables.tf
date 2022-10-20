@@ -2,7 +2,6 @@ variable "dns_zone" { type = string }
 variable "host" { type = string }
 variable "origin_host" { type = string }
 variable "tags" { type = map(any) }
-variable "environment" { type = string }
 variable "origin_protocol_policy" {
   type    = string
   default = "http-only"

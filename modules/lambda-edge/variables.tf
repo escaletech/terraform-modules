@@ -1,7 +1,5 @@
 variable "tags" { type = map(any) }
 
-variable "environment" { type = string }
-
 variable "lambda_file" {
   type        = string
   description = "Interceptor file"
