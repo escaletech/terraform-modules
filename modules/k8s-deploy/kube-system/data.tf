@@ -16,8 +16,6 @@ data "aws_eks_cluster" "default" {
   name = var.cluster-name
 }
 
-data "aws_region" "current" {}
-
 data "aws_vpc" "main" {
   filter {
     name   = "tag:Name"

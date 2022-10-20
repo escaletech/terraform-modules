@@ -1,9 +1,3 @@
-variable "password" {
-  type        = string
-  description = "The root password for the RDS instance"
-  default     = null
-}
-
 variable "publicly_accessible" {
   type        = string
   description = "If the RDS instance should be exposed to public subnets. Defaults to false"
@@ -94,12 +88,6 @@ variable "storage_encrypted" {
   default     = false
 }
 
-variable "skip_tag_name" {
-  description = "Skips using the tag Name to search for the security group to associated with the RDS instance"
-  type        = bool
-  default     = false
-}
-
 variable "identifier" {
   description = "The RDS identifier. Defaults to 'none', and in this case the Project_name tag is used instead"
   type        = string
@@ -123,12 +111,6 @@ variable "replicate_source_db" {
   type        = string
   default     = null
 }
-
-variable "environment" {
-  description = "Type of environment where the rds will be running."
-  type        = string
-}
-
 
 variable "app_name" {
   description = "The application name"

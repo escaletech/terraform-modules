@@ -19,7 +19,7 @@ resource "aws_db_instance" "default" {
   password = aws_secretsmanager_secret_version.dbpass.secret_string
   port     = "5432"
 
-  availability_zone         = "us-east-1c"
+  availability_zone         = var.availability_zone
   maintenance_window        = "Mon:00:00-Mon:03:00"
   backup_window             = "03:00-06:00"
   final_snapshot_identifier = var.final_snapshot_identifier

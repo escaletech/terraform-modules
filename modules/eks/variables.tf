@@ -1,11 +1,3 @@
-variable "region" {
-  type = string
-}
-
-variable "availability_zone_names" {
-  type = list(string)
-}
-
 variable "vpc_id" {
   type = string
 }
@@ -19,10 +11,6 @@ variable "private_subnet_ids" {
 }
 
 variable "cluster-name" {
-  type = string
-}
-
-variable "environment" {
   type = string
 }
 
@@ -45,11 +33,6 @@ variable "asg-min-size" {
   default = 1
 }
 
-variable "namespaces_yml" {
-  type    = string
-  default = null
-}
-
 variable "tags" {
   type    = map(string)
   default = {}
@@ -68,9 +51,4 @@ variable "kube_proxy_version" {
 variable "core_dns_version" {
   type    = string
   default = "v1.8.4-eksbuild.1"
-}
-
-variable "enable_taint" {
-  type    = bool
-  default = false
 }
