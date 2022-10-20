@@ -16,6 +16,5 @@ module "escale-rds" {
   subnet_group           = var.rds_subnet_group
   publicly_accessible    = "false"
   vpc_security_group_ids = data.aws_security_groups.rds-sg.ids
-  environment            = var.environment
   app_name               = var.app_name
 }
