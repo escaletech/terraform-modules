@@ -8,7 +8,7 @@ output "eks_cluster_endpoint" {
 }
 
 output "eks_certificate" {
-  value = aws_eks_cluster.cluster.certificate_authority.0.data
+  value = aws_eks_cluster.cluster.certificate_authority[0].data
 }
 
 locals {
@@ -17,7 +17,7 @@ apiVersion: v1
 clusters:
 - cluster:
     server: ${aws_eks_cluster.cluster.endpoint}
-    certificate-authority-data: ${aws_eks_cluster.cluster.certificate_authority.0.data}
+    certificate-authority-data: ${aws_eks_cluster.cluster.certificate_authority[0].data}
   name: kubernetes
 contexts:
 - context:

@@ -20,9 +20,9 @@ variable "ttl" {
 }
 
 locals {
-  domain          = replace(var.domain, "*.", "")
-  name            = var.name
-  type            = var.type
-  record          = var.record
-  ttl             = var.ttl
+  domain = replace(var.domain, "*.", "")
+  name   = var.name
+  type   = var.type
+  record = var.record
+  ttl    = var.ttl
 }
