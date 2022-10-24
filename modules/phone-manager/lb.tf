@@ -1,6 +1,6 @@
 resource "aws_lb" "internal" {
   load_balancer_type = "application"
-  security_groups    = data.aws_security_group.sg-lb.*.id
+  security_groups    = data.aws_security_group.sg-lb[*].id
   subnets            = var.subnets
   internal           = var.internal
   tags               = var.tags

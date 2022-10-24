@@ -75,7 +75,7 @@ resource "aws_lb_target_group" "internal" {
 }
 
 resource "aws_lb_target_group_attachment" "internal" {
-  count            = length(data.aws_network_interface.internal.*.private_ip)
+  count            = length(data.aws_network_interface.internal[*].private_ip)
   target_group_arn = aws_lb_target_group.internal.arn
   target_id        = data.aws_network_interface.internal[count.index].private_ip
 }

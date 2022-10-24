@@ -9,14 +9,13 @@ resource "aws_acm_certificate" "certificate" {
 }
 
 module "acm-multiple-domains" {
-  for_each        = { for domain in aws_acm_certificate.certificate.domain_validation_options : domain.domain_name => domain }
-  source          = "./terraform-aws-acm-multiple-domains"
-  certificate_arn = aws_acm_certificate.certificate.arn
-  domain          = each.key
-  name            = each.value.resource_record_name
-  type            = each.value.resource_record_type
-  record          = each.value.resource_record_value
-  ttl             = 3600
+  for_each = { for domain in aws_acm_certificate.certificate.domain_validation_options : domain.domain_name => domain }
+  source   = "./terraform-aws-acm-multiple-domains"
+  domain   = each.key
+  name     = each.value.resource_record_name
+  type     = each.value.resource_record_type
+  record   = each.value.resource_record_value
+  ttl      = 3600
 }
 
 resource "aws_acm_certificate_validation" "validate" {
