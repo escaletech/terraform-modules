@@ -7,4 +7,5 @@ module "s3-static" {
   vpc_name      = var.vpc_name
   subnets       = var.subnets
   tags          = var.tags
+  sg-name       = var.sg-name
 }

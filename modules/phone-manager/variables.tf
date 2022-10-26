@@ -137,3 +137,8 @@ variable "volume_size" {
   type        = number
   default     = 8
 }
+
+variable "sg-name" {
+  type    = string
+  default = null
+}
