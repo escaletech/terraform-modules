@@ -1,6 +1,6 @@
 resource "aws_security_group" "internal-sg" {
   vpc_id      = data.aws_vpc.vpc.id
-  name        = join("-", [var.tags.Name, "sg"])
+  name        = join("-", [var.sg-name, "sg"])
   description = "security group that allows ingress and  egress traffic"
   ingress {
     from_port   = 80
