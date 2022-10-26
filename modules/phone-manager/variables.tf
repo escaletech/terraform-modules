@@ -65,7 +65,7 @@ variable "rds_subnet_group" {
 variable "tags" {
   description = "A mapping of tags to assign to all resources"
   type        = map(string)
-  default     = null
+  default     = {}
 }
 
 variable "environment" {
