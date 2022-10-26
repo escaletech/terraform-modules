@@ -43,7 +43,7 @@ variable "rds_identifier" {
 variable "rds_instance_class" {
   description = "Instance class type for RDS."
   type        = string
-  default     = "db.t2.medium"
+  default     = "db.t4g.medium"
 }
 
 variable "rds_engine_version" {
@@ -65,12 +65,7 @@ variable "rds_subnet_group" {
 variable "tags" {
   description = "A mapping of tags to assign to all resources"
   type        = map(string)
-  default = {
-    Name        = "phonemanager"
-    Owner       = "Phone Manager"
-    Environment = "staging"
-    Repository  = "https://github.com/escaletech/escale-blueprint"
-  }
+  default     = null
 }
 
 variable "environment" {
@@ -92,7 +87,7 @@ variable "ami" {
 variable "instance_type" {
   description = "Instance type for the EC2."
   type        = string
-  default     = "t3.medium"
+  default     = "t3a.medium"
 }
 
 variable "user_data" {
