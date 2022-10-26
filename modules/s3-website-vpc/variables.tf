@@ -34,6 +34,11 @@ variable "tags" {
   default = {}
 }
 
+variable "sg-name" {
+  type    = string
+  default = null
+}
+
 resource "null_resource" "check-tags" {
   lifecycle {
     precondition {
