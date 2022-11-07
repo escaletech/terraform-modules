@@ -67,6 +67,11 @@ resource "helm_release" "datadog_agent" {
   }
 
   set {
+    name  = "datadog.logs.containerCollectAll"
+    value = false
+  }
+
+  set {
     name  = "datadog.containerIncludeLogs"
     value = "kube_namespace:lead-data-platform"
   }
