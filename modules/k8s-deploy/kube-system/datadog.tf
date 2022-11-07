@@ -18,7 +18,7 @@ resource "helm_release" "datadog_agent" {
 
   set {
     name  = "datadog.logs.containerCollectAll"
-    value = true
+    value = false
   }
 
   set {
@@ -64,11 +64,6 @@ resource "helm_release" "datadog_agent" {
   set {
     name  = "datadog.hostVolumeMountPropagation"
     value = "HostToContainer"
-  }
-
-  set {
-    name  = "datadog.logs.containerCollectAll"
-    value = false
   }
 
   set {
