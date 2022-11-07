@@ -67,8 +67,8 @@ resource "helm_release" "datadog_agent" {
   }
 
   set {
-    name  = "datadog.containerExcludeLogs"
-    value = "kube_namespace:kube-system kube_namespace:ingress-nginx kube_namespace:cert-manager kube_namespace:lens-metrics kube_namespace:oauth2-proxy"
+    name  = "datadog.containerIncludeLogs"
+    value = "kube_namespace:lead-data-platform"
   }
 
   values = [
