@@ -68,7 +68,7 @@ resource "helm_release" "datadog_agent" {
 
   set {
     name  = "datadog.containerExcludeLogs"
-    value = "image:.*"
+    value = "kube_namespace:.*"
   }
 
   set {
