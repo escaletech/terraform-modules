@@ -37,7 +37,7 @@ resource "aws_lambda_function" "edge_security_headers_lambda" {
   function_name    = var.lambda_function_name
   filename         = data.archive_file.lambda_zip.output_path
   handler          = "${var.lambda_function_name}.handler"
-  runtime          = "nodejs12.x"
+  runtime          = "nodejs16.x"
   publish          = "true"                                           // In order to make Terraform create a new version of your function
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256 // Should only update when Lambda code changes
   role             = aws_iam_role.lambda_edge_role.arn

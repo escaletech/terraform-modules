@@ -8,6 +8,11 @@ resource "kubernetes_cluster_role" "sso-eks-admins" {
     resources  = ["*"]
     verbs      = ["*"]
   }
+  rule {
+    api_groups = ["metrics.k8s.io"]
+    resources  = ["pods", "nodes"]
+    verbs      = ["get", "watch", "list"]
+  }
 }
 
 resource "kubernetes_cluster_role" "sso-eks-readonly" {
