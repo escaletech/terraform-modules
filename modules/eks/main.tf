@@ -201,6 +201,7 @@ resource "aws_eks_node_group" "node_group_private" {
 }
 
 resource "aws_autoscaling_group_tag" "nodes_group_name" {
+  depends_on = [aws_eks_node_group.node_group_private]
   for_each = { for tag in flatten([for asg in flatten(
     [for resources in flatten(
       [for ng in aws_eks_node_group.node_group_private : ng.resources]
