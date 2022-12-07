@@ -37,7 +37,7 @@ resource "kubernetes_cluster_role" "sso-eks-developers" {
     resources  = ["pods", "nodes"]
     verbs      = ["get", "watch", "list"]
   }
-  
+
   rule {
     api_groups = ["*"]
     resources  = ["services", "deployments", "pods", "configmaps", "ingresses", "secrets", "cronjobs", "jobs"]
