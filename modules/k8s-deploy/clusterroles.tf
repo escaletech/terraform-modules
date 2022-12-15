@@ -67,4 +67,10 @@ resource "kubernetes_cluster_role" "sso-eks-developers" {
     resources  = ["pods/exec"]
     verbs      = ["create"]
   }
+
+  rule {
+    api_groups = ["*"]
+    resources  = ["services/proxy", "services/portfoward"]
+    verbs      = ["get", "list", "create"]
+  }
 }
