@@ -73,7 +73,7 @@ resource "helm_release" "datadog_agent" {
 
   set {
     name  = "datadog.containerIncludeLogs"
-    value = "kube_namespace:lead-data-platform,finance-bv"
+    value = "kube_namespace:lead-data-platform kube_namespace:finance-bv"
   }
 
   values = [
