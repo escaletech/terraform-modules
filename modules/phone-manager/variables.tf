@@ -67,6 +67,12 @@ variable "rds_storage_encrypted" {
   default     = false
 }
 
+variable "rds_snapshot_identifier" {
+  description = "THe snapshot identification"
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   description = "A mapping of tags to assign to all resources"
   type        = map(string)

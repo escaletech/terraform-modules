@@ -18,4 +18,5 @@ module "escale-rds" {
   vpc_security_group_ids = data.aws_security_groups.rds-sg.ids
   app_name               = var.app_name
   storage_encrypted      = var.rds_storage_encrypted
+  snapshot_identifier    = var.rds_snapshot_identifier
 }
