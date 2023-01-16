@@ -17,4 +17,5 @@ module "escale-rds" {
   publicly_accessible    = "false"
   vpc_security_group_ids = data.aws_security_groups.rds-sg.ids
   app_name               = var.app_name
+  storage_encrypted      = var.rds_storage_encrypted
 }

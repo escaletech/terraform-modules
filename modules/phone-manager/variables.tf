@@ -61,6 +61,11 @@ variable "rds_subnet_group" {
   type        = string
 }
 
+variable "rds_storage_encrypted" {
+  description = "If the RDS data storage should be encrypted"
+  type        = bool
+  default     = false
+}
 
 variable "tags" {
   description = "A mapping of tags to assign to all resources"
