@@ -76,7 +76,7 @@ variable "rds_snapshot_identifier" {
 variable "rds_deletion_protection" {
   description = "If the DB instance should have deletion protection enabled"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "tags" {
