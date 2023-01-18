@@ -13,10 +13,6 @@ variable "domain" {
   type        = string
 }
 
-variable "tags" {
-  type = map(string)
-}
-
 locals {
   name   = var.name
   domain = var.domain
