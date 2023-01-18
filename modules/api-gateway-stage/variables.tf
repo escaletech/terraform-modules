@@ -18,6 +18,6 @@ variable "tags" {
 }
 
 locals {
-  name = var.name
+  name   = var.name
   domain = var.domain
 }
