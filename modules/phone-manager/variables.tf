@@ -68,9 +68,15 @@ variable "rds_storage_encrypted" {
 }
 
 variable "rds_snapshot_identifier" {
-  description = "THe snapshot identification"
+  description = "The snapshot identification"
   type        = string
   default     = null
+}
+
+variable "rds_deletion_protection" {
+  description = "If the DB instance should have deletion protection enabled"
+  type        = bool
+  default     = true
 }
 
 variable "tags" {

@@ -19,4 +19,5 @@ module "escale-rds" {
   app_name               = var.app_name
   storage_encrypted      = var.rds_storage_encrypted
   snapshot_identifier    = var.rds_snapshot_identifier
+  deletion_protection    = var.rds_deletion_protection
 }
