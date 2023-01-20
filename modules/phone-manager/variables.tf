@@ -79,6 +79,12 @@ variable "rds_deletion_protection" {
   default     = true
 }
 
+variable "rds_allocated_storage" {
+  description = "O armazenamento alocado em gibibytes"
+  type        = number
+  default     = 5
+}
+
 variable "tags" {
   description = "A mapping of tags to assign to all resources"
   type        = map(string)
