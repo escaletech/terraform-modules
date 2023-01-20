@@ -82,7 +82,7 @@ variable "rds_deletion_protection" {
 variable "rds_allocated_storage" {
   description = "O armazenamento alocado em gibibytes"
   type        = number
-  default     = 5
+  default     = 10
 }
 
 variable "tags" {
