@@ -10,6 +10,7 @@ resource "aws_api_gateway_stage" "stage" {
   deployment_id = aws_api_gateway_deployment.deployment.id
   rest_api_id   = data.aws_api_gateway_rest_api.gateway_api.id
   stage_name    = local.name
+  variables     = local.variables
 }
 
 resource "aws_api_gateway_base_path_mapping" "mapping" {
