@@ -13,7 +13,13 @@ variable "domain" {
   type        = string
 }
 
+variable "variables" {
+  type    = map(string)
+  default = {}
+}
+
 locals {
-  name   = var.name
-  domain = var.domain
+  name      = var.name
+  domain    = var.domain
+  variables = var.variables
 }
