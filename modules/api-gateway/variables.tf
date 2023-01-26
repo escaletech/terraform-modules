@@ -13,6 +13,12 @@ variable "zone" {
   type        = string
 }
 
+variable "private_zone" {
+  description = "zone is private"
+  type        = bool
+  default     = false
+}
+
 variable "name" {
   description = "API Gateway's name"
   type        = string
