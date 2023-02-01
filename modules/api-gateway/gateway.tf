@@ -1,5 +1,5 @@
 resource "aws_api_gateway_domain_name" "custom_domain" {
-  certificate_arn = aws_acm_certificate.certificate.arn
+  certificate_arn = local.certificate_arn
   domain_name     = local.domain
 }
 

@@ -24,8 +24,13 @@ variable "name" {
   type        = string
 }
 
+variable "certificate_arn" {
+  type = string
+}
+
 locals {
-  domain = var.domain
-  tags   = var.tags
-  name   = var.name
+  domain          = var.domain
+  tags            = var.tags
+  name            = var.name
+  certificate_arn = var.certificate_arn
 }
