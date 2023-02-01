@@ -3,11 +3,6 @@ variable "domain" {
   type        = string
 }
 
-variable "tags" {
-  type    = map(string)
-  default = {}
-}
-
 variable "zone" {
   description = "zone where the domain will be created"
   type        = string
@@ -30,7 +25,6 @@ variable "certificate_arn" {
 
 locals {
   domain          = var.domain
-  tags            = var.tags
   name            = var.name
   certificate_arn = var.certificate_arn
 }
