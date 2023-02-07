@@ -181,6 +181,7 @@ resource "aws_eks_node_group" "node_group_private" {
   node_role_arn   = aws_iam_role.nodes.arn
   subnet_ids      = [var.private_subnet_ids[count.index]]
   instance_types  = [var.node-instance-type]
+#  disk_size       = 60
 
   scaling_config {
     desired_size = var.asg-desired-capacity
