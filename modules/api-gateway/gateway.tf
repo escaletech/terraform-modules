@@ -1,5 +1,5 @@
 resource "aws_api_gateway_domain_name" "custom_domain" {
-  certificate_arn = aws_acm_certificate.certificate.arn
+  certificate_arn = local.certificate_arn
   domain_name     = local.domain
 }
 
@@ -21,7 +21,7 @@ resource "aws_api_gateway_rest_api_policy" "policy_invoke" {
         "AWS": "*"
       },
       "Action": "execute-api:Invoke",
-      "Resource": "${aws_api_gateway_rest_api.gateway_api.execution_arn}"
+      "Resource": "${aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*"
     }
   ]
 }
