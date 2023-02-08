@@ -8,6 +8,10 @@ variable "zone" {
   type        = string
 }
 
+variable "certificate_arn" {
+  type = string
+}
+
 variable "private_zone" {
   description = "zone is private"
   type        = bool
