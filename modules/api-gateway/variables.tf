@@ -23,10 +23,6 @@ variable "name" {
   type        = string
 }
 
-variable "certificate_arn" {
-  type = string
-}
-
 locals {
   domain          = var.domain
   name            = var.name
