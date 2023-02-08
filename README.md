@@ -7,6 +7,7 @@ Useful [terraform](https://www.terraform.io/) modules.
 - [MySQL](./modules/mysql)
 - [RDS PostgreSQL](./modules/rds_postgres)
 - [SQS Queue](./modules/sqs_queue)
+- [ACM](./modules/acm)
 - [API Gateway](./modules/api-gateway)
 - [API Gateway Stage](./modules/api-gateway-stage)
 
