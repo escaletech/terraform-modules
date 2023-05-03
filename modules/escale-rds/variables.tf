@@ -128,3 +128,9 @@ variable "deletion_protection" {
   type        = bool
   default     = true
 }
+
+variable "storage_type" {
+  description = "Type of the disk"
+  type        = string
+  default     = "gp2"
+}
