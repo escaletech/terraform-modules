@@ -27,6 +27,6 @@ resource "aws_api_gateway_base_path_mapping" "mapping" {
 }
 
 resource "aws_cloudwatch_log_group" "log_api_gateway" {
-  name              = "API-Gateway-Execution-Logs_${data.aws_api_gateway_rest_api.gateway_api.id}/${local.name}"
+  name              = "API-Gateway-Execution-Logs_${data.aws_api_gateway_rest_api.gateway_api.name}/${local.name}"
   retention_in_days = 400
 }
