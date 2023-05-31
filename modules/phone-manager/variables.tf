@@ -165,3 +165,11 @@ variable "sg-name" {
   type    = string
   default = null
 }
+
+variable "aws_lb_dns" {
+  type    = string
+}
+
+variable "aws_lb_zone_id" {
+  type    = string
+}
