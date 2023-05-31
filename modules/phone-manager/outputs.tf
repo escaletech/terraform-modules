@@ -17,3 +17,8 @@ output "target_group_arn" {
   description = "target group arn"
   value       = aws_lb_target_group.internal.arn
 }
+
+output "instance_ip" {
+  description = "instance ip"
+  value       = aws_instance.instance.private_ip
+}
