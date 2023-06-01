@@ -29,6 +29,14 @@ data "aws_route53_zone" "zone" {
 
 data "aws_default_tags" "escale-default-tags" {}
 
+variable "aws_lb_dns" {
+  type = string
+}
+
+variable "aws_lb_zone_id" {
+  type = string
+}
+
 variable "aws_lb_listener_arn" {
   description = "listener arn"
   type        = string
