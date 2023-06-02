@@ -10,4 +10,5 @@ module "s3-static" {
   sg-name              = var.sg-name
   aws_lb_listener_arn  = var.aws_lb_listener_arn
   aws_lb_rule_priority = var.aws_lb_rule_priority
+  aws_lb_zone_id       = var.aws_lb_zone_id
 }
