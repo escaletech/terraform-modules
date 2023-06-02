@@ -14,6 +14,9 @@ resource "aws_lb_listener_rule" "index" {
     host_header {
       values = ["phonemanager.staging.escale.com.br"]
     }
+  }
+
+  condition {
     path_pattern {
       values = [
         "/",
