@@ -6,4 +6,5 @@ repos:
       args:
         - "--module"
         - "--config=.tflint.hcl"
+        - "--recursive"
     - id: terraform-fmt
