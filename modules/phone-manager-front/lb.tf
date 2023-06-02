@@ -14,6 +14,27 @@ resource "aws_lb_listener_rule" "index" {
     host_header {
       values = ["phonemanager.staging.escale.com.br"]
     }
+    path_pattern {
+      values = [
+        "/",
+      ]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "index" {
+  listener_arn = var.aws_lb_listener_arn
+  priority     = var.aws_lb_rule_priority + 1
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.internal.arn
+  }
+
+  condition {
+    host_header {
+      values = ["phonemanager.staging.escale.com.br"]
+    }
   }
 }
 
