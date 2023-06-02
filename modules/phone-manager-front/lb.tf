@@ -12,7 +12,7 @@ resource "aws_lb_listener_rule" "index" {
 
   condition {
     host_header {
-      values = ["phonemanager.staging.escale.com.br"]
+      values = [var.domain]
     }
   }
 
@@ -36,7 +36,7 @@ resource "aws_lb_listener_rule" "front" {
 
   condition {
     host_header {
-      values = ["phonemanager.staging.escale.com.br"]
+      values = [var.domain]
     }
   }
 }
