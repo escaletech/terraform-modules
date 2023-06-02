@@ -165,3 +165,21 @@ variable "sg-name" {
   type    = string
   default = null
 }
+
+variable "aws_lb_dns" {
+  type = string
+}
+
+variable "aws_lb_zone_id" {
+  type = string
+}
+
+variable "aws_lb_listener_arn" {
+  description = "listener arn"
+  type        = string
+}
+
+variable "aws_lb_rule_priority" {
+  description = "priority number"
+  type        = number
+}
