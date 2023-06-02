@@ -22,7 +22,7 @@ resource "aws_lb_listener_rule" "index" {
   }
 }
 
-resource "aws_lb_listener_rule" "index" {
+resource "aws_lb_listener_rule" "front" {
   listener_arn = var.aws_lb_listener_arn
   priority     = var.aws_lb_rule_priority + 1
 
