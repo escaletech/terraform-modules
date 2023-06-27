@@ -200,24 +200,24 @@ resource "aws_eks_node_group" "node_group_private" {
   }
 }
 
-resource "aws_autoscaling_group_tag" "nodes_group_name" {
-  depends_on = [aws_eks_node_group.node_group_private]
-  for_each = { for tag in flatten([for asg in flatten(
-    [for resources in flatten(
-      [for ng in aws_eks_node_group.node_group_private : ng.resources]
-    ) : resources.autoscaling_groups]
-    ) : [for k, v in var.tags : { asg = asg.name, key = k, val = v }]
-  ]) : "${tag.asg}-${tag.key}" => { asg = tag.asg, key = tag.key, val = tag.val } }
-
-  autoscaling_group_name = each.value.asg
-
-  tag {
-    key                 = each.value.key
-    value               = each.value.val
-    propagate_at_launch = true
-  }
-}
-
+#resource "aws_autoscaling_group_tag" "nodes_group_name" {
+#  depends_on = [aws_eks_node_group.node_group_private]
+#  for_each = { for tag in flatten([for asg in flatten(
+#    [for resources in flatten(
+#      [for ng in aws_eks_node_group.node_group_private : ng.resources]
+#    ) : resources.autoscaling_groups]
+#    ) : [for k, v in var.tags : { asg = asg.name, key = k, val = v }]
+#  ]) : "${tag.asg}-${tag.key}" => { asg = tag.asg, key = tag.key, val = tag.val } }
+#
+#  autoscaling_group_name = each.value.asg
+#
+#  tag {
+#    key                 = each.value.key
+#    value               = each.value.val
+#    propagate_at_launch = true
+#  }
+#}
+#
 ##############
 # EKS Addons #
 ##############
