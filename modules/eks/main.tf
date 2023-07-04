@@ -247,7 +247,7 @@ resource "aws_eks_addon" "core_dns" {
 resource "aws_eks_addon" "vpc-cni" {
   cluster_name      = aws_eks_cluster.cluster.name
   addon_name        = "vpc-cni"
-  addon_version     = "v1.12.0-eksbuild.1"
+  addon_version     = "v1.12.6-eksbuild.2"
   resolve_conflicts = "OVERWRITE"
   tags = merge(var.tags, {
     "eks_addon" = "vpc-cni"
