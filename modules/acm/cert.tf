@@ -1,5 +1,6 @@
 data "aws_route53_zone" "zone" {
-  name = var.dns_zone
+  name         = var.dns_zone
+  private_zone = var.private_zone
 }
 
 resource "aws_acm_certificate" "cert" {
