@@ -16,6 +16,11 @@ variable "hosts" {
   default = null
 }
 
+variable "host-private" {
+  type    = string
+  default = null
+}
+
 variable "port" {
   type    = number
   default = 3000
@@ -92,6 +97,11 @@ variable "logger" {
 }
 
 variable "ingress-class-name" {
+  type    = string
+  default = "nginx"
+}
+
+variable "ingress-class-name-private" {
   type    = string
   default = "nginx"
 }
