@@ -18,7 +18,7 @@ resource "aws_ecs_cluster" "ecs-cluster-fargate" {
       logging = "DEFAULT"
     }
   }
-  service_connect_defaults = {
+  service_connect_defaults {
     namespace = aws_service_discovery_http_namespace.default-ecs-cluster-fargate.arn
   }
 
