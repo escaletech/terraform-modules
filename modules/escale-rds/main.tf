@@ -1,7 +1,7 @@
 resource "aws_db_instance" "db" {
   allocated_storage               = var.replicate_source_db == null ? var.allocated_storage : null
   identifier                      = var.identifier
-  storage_type                    = "gp2"
+  storage_type                    = var.storage_type
   engine                          = var.replicate_source_db == null ? var.engine : null
   engine_version                  = var.replicate_source_db == null ? var.engine_version : null
   instance_class                  = var.instance_class

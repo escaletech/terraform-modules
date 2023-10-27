@@ -8,12 +8,12 @@ output "endpoint" {
   value       = module.escale-rds.endpoint
 }
 
-output "https_listener_arn" {
-  description = "endpoint listener arn"
-  value       = aws_lb_listener.internal_https.arn
+output "certificate_arn" {
+  description = "value of certificate arn"
+  value       = aws_acm_certificate.certificate.arn
 }
 
-output "target_group_arn" {
-  description = "target group arn"
-  value       = aws_lb_target_group.internal.arn
+output "instance_ip" {
+  description = "instance ip"
+  value       = aws_instance.instance.private_ip
 }

@@ -6,6 +6,8 @@ resource "kubernetes_ingress_v1" "private" {
     labels = {
       app = var.app-name
     }
+
+    annotations = var.ingress-annotations != null ? var.ingress-annotations : null
   }
 
   spec {

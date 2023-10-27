@@ -1,4 +1,4 @@
-resource "aws_ecs_cluster" "ecs-cluster" {
+resource "aws_ecs_cluster" "ecs-cluster-fargate" {
   name = var.cluster_name
 
   capacity_providers = ["FARGATE"]

@@ -9,8 +9,8 @@ resource "aws_route53_record" "record" {
   type    = "A"
 
   alias {
-    name                   = aws_lb.internal.dns_name
-    zone_id                = aws_lb.internal.zone_id
+    name                   = var.aws_lb_dns
+    zone_id                = var.aws_lb_zone_id
     evaluate_target_health = true
   }
 }
