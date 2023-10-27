@@ -16,6 +16,6 @@ variable "tags" {
 
 variable "enable_container_insights" {
   description = "Habilitar ou desabilitar o Container Insights"
-  type        = bool
-  default     = false
+  type        = string
+  default     = "disabled"
 }
