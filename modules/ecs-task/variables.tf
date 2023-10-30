@@ -39,3 +39,9 @@ variable "protocol" {
   type        = string
   default     = "tcp"
 }
+
+variable "app_protocol" {
+  description = "protocolo utilizado."
+  type        = string
+  default     = "http"
+}

@@ -17,10 +17,11 @@ resource "aws_ecs_task_definition" "task_definition" {
       essential = true
       portMappings = [
         {
-          name          = "${var.container_port}-${var.family}-${var.protocol}"
+          name          = "${var.family}-${var.container_port}-${var.protocol}"
           containerPort = var.container_port
           hostPort      = var.container_port
           protocol      = var.protocol
+          appProtocol   = var.app_protocol
         }
       ],
       logConfiguration : {
