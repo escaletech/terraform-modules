@@ -15,29 +15,6 @@ resource "aws_iam_role" "ecs_task_role" {
   })
 }
 
-resource "aws_iam_policy" "ecs_task_cloudwatch_logs_policy" {
-  name        = "ecs_task_cloudwatch_logs_policy"
-  description = "Política para permitir logs do CloudWatch"
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect   = "Allow",
-        Action   = "logs:CreateLogGroup",
-        Resource = "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ],
-        Resource = "*"
-      }
-    ]
-  })
-}
-
 resource "aws_iam_policy_attachment" "attach_ecsTaskExecutionRole" {
   name       = "attach-ecsTaskExecutionRole"
   roles      = ["aws_iam_role.ecs_task_role_${var.family}.name"]
@@ -58,8 +35,7 @@ resource "aws_iam_policy_attachment" "attach_SecretsManagerReadWrite" {
 }
 
 resource "aws_iam_policy_attachment" "attach_ecs_task_cloudwatch_logs_policy" {
-  depends_on = [aws_iam_policy.ecs_task_cloudwatch_logs_policy]
   name       = "ecs_task_cloudwatch_logs_policy"
   roles      = ["aws_iam_role.ecs_task_role_${var.family}.name"]
-  policy_arn = "arn:aws:iam::aws:policy/ecs_task_cloudwatch_logs_policy"
+  policy_arn = data.aws_iam_policy.ecs_task_cloudwatch_logs_policy.arn
 }
