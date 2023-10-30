@@ -29,7 +29,7 @@ resource "aws_iam_policy_attachment" "attach_ecrReadOnly" {
 
 
 resource "aws_iam_policy_attachment" "attach_SecretsManagerReadWrite" {
-  name       = "SecretsManagerReadWrite"
+  name       = "attach-SecretsManagerReadWrite"
   roles      = [aws_iam_role.ecs_task_role.name]
   policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 }
