@@ -4,7 +4,7 @@ variable "family" {
 }
 
 variable "image" {
-  description = "A imagem do contêiner da tarefa ECS."
+  description = "A imagem do container da tarefa ECS."
   type        = string
 }
 

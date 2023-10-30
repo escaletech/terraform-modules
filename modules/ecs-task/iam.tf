@@ -1,4 +1,4 @@
-resource "aws_iam_role" "ecs_task_role_${var.family}" {
+resource "aws_iam_role" "ecs_task_role" {
   name = "ecs-task-role-${var.family}"
 
   assume_role_policy = jsonencode({
@@ -18,7 +18,7 @@ resource "aws_iam_role" "ecs_task_role_${var.family}" {
 resource "aws_iam_policy" "ecs_task_cloudwatch_logs_policy" {
   name        = "ecs_task_cloudwatch_logs_policy"
   description = "Política para permitir logs do CloudWatch"
-  policy      = jsonencode({
+  policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
@@ -27,8 +27,8 @@ resource "aws_iam_policy" "ecs_task_cloudwatch_logs_policy" {
         Resource = "*"
       },
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ],

@@ -4,8 +4,8 @@ resource "aws_ecs_task_definition" "task_definition" {
   network_mode             = "awsvpc"
   cpu                      = var.cpu
   memory                   = var.memory
-  execution_role_arn       = data.aws_iam_role.ecs_task_role.arn
-  task_role_arn            = data.aws_iam_role.ecs_task_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_role.arn
   skip_destroy             = true
 
   container_definitions = jsonencode([
