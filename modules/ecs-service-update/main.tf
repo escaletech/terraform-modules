@@ -1,10 +1,11 @@
 resource "aws_ecs_service" "ecs_service_update" {
-  name            = var.service_name
-  cluster         = var.cluster_name
-  task_definition = var.task_definition_arn
-  launch_type     = "FARGATE"
-  desired_count   = var.desire_count
-#  iam_role        = var.iam_role
+  name              = var.service_name
+  cluster           = var.cluster_name
+  task_definition   = var.task_definition_arn
+  launch_type       = "FARGATE"
+  desired_count     = var.desire_count
+  assign_public_ip  = var.assign_public_ip
+  #  iam_role        = var.iam_role
   network_configuration {
     subnets         = var.subnets
     security_groups = var.security_groups
