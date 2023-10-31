@@ -4,7 +4,7 @@ resource "aws_ecs_service" "ecs_service_update" {
   task_definition = var.task_definition_arn
   launch_type     = "FARGATE"
   desired_count   = var.desire_count
-  iam_role        = var.iam_role
+#  iam_role        = var.iam_role
   network_configuration {
     subnets         = var.subnets
     security_groups = var.security_groups

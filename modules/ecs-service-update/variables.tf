@@ -37,11 +37,11 @@ variable "target_group_arn" {
   type        = string
 }
 
-variable "iam_role" {
-  description = "(Optional) ARN of the IAM role that allows Amazon ECS to make calls to your load balancer on your behalf. This parameter is required if you are using a load balancer with your service, but only if your task definition does not use the awsvpc network mode. If using awsvpc network mode, do not specify this role. If your account has already created the Amazon ECS service-linked role, that role is used by default for your service unless you specify a role here."
-  type        = string
-  default     = "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
-}
+#variable "iam_role" {
+#  description = "(Optional) ARN of the IAM role that allows Amazon ECS to make calls to your load balancer on your behalf. This parameter is required if you are using a load balancer with your service, but only if your task definition does not use the awsvpc network mode. If using awsvpc network mode, do not specify this role. If your account has already created the Amazon ECS service-linked role, that role is used by default for your service unless you specify a role here."
+#  type        = string
+#  default     = "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
+#}
 
 variable "desire_count" {
   description = "Number of instances of the task definition"
