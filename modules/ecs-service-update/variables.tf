@@ -27,3 +27,12 @@ variable "tags" {
   description = "Tags para o serviço ECS."
   type        = map(string)
 }
+
+variable "container_port" {
+  description = "Porta utilizada pelo container."
+  type        = number
+}
+variable "target_group_arn" {
+  description = "Target group utilizado pelo load balancer."
+  type        = string
+}
