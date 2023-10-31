@@ -3,7 +3,8 @@ resource "aws_ecs_service" "ecs_service_update" {
   cluster         = var.cluster_name
   task_definition = var.task_definition_arn
   launch_type     = "FARGATE"
-
+  desired_count   = var.desire_count
+  iam_role        = var.iam_role
   network_configuration {
     subnets         = var.subnets
     security_groups = var.security_groups
@@ -19,9 +20,9 @@ resource "aws_ecs_service" "ecs_service_update" {
   }
 
   load_balancer {
-    container_name    = var.service_name
-    container_port    = var.container_port
-    target_group_arn  = var.target_group_arn
+    container_name   = var.service_name
+    container_port   = var.container_port
+    target_group_arn = var.target_group_arn
   }
 
   enable_ecs_managed_tags = true
