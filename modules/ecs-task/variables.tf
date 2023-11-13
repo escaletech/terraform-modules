@@ -45,3 +45,12 @@ variable "app_protocol" {
   type        = string
   default     = "http"
 }
+
+variable "secrets" {
+  description = "Lista de segredos a serem configurados."
+  type        = list(object({
+    name  = string
+    value = string
+  }))
+  default     = null
+}
