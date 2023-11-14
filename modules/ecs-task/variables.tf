@@ -47,6 +47,8 @@ variable "app_protocol" {
 }
 
 variable "secrets" {
-  type    = map(string)
-  default = null
+  type = list(object({
+    name  = string
+    valueFrom = string
+  }))
 }
