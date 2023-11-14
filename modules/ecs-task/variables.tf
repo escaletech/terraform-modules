@@ -47,10 +47,6 @@ variable "app_protocol" {
 }
 
 variable "secrets" {
-  description = "Lista de segredos a serem configurados."
-  type = list(object({
-    name  = string
-    value = string
-  }))
+  type    = list(string)
   default = null
 }
