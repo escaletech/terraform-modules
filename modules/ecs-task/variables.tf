@@ -48,7 +48,7 @@ variable "app_protocol" {
 
 variable "secrets" {
   type = list(object({
-    name  = string
+    name      = string
     valueFrom = string
   }))
 }
