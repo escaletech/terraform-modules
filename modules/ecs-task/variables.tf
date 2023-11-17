@@ -51,5 +51,5 @@ variable "secrets" {
     name      = string
     valueFrom = string
   }))
-  default = null
+  default = []
 }
