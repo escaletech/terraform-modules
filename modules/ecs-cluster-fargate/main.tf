@@ -47,5 +47,5 @@ resource "aws_service_discovery_http_namespace" "default-ecs-cluster-fargate" {
 resource "aws_iam_policy_attachment" "ecs_execution_policy_attachment" {
   name       = "ecs-execution-policy-attachment"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-  roles      = data.aws_iam_role.ecstaskexecutinonrole.name
+  roles      = "${data.aws_iam_role.ecstaskexecutinonrole.name}"
 }
