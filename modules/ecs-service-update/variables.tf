@@ -76,3 +76,5 @@ variable "cpu_target" {
   type        = number
   default     = 60
 }
+
+#variable "" {}
