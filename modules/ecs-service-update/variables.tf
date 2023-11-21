@@ -51,6 +51,7 @@ variable "assign_public_ip" {
 variable "max_capacity" {
   description = "The maximum capacity of the scalable target."
   type        = number
+  default     = 4
 }
 
 variable "min_capacity" {
