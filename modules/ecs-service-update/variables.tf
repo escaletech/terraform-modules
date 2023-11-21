@@ -47,3 +47,32 @@ variable "assign_public_ip" {
   type    = bool
   default = true
 }
+
+variable "max_capacity" {
+  description = "The maximum capacity of the scalable target."
+  type        = number
+}
+
+variable "min_capacity" {
+  description = "The minimum capacity of the scalable target."
+  type        = number
+  default     = 1
+}
+
+variable "auto_scaling" {
+  description = "Flag to enable or disable auto scaling."
+  type        = bool
+  default     = false
+}
+
+variable "memory_target" {
+  description = "The amount of memory"
+  type        = number
+  default     = 80
+}
+
+variable "cpu_target" {
+  description = "The amount of cpu"
+  type        = number
+  default     = 60
+}
