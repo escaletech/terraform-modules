@@ -34,3 +34,10 @@ resource "aws_iam_role_policy_attachment" "attach_ecs_task_cloudwatch_logs_polic
   policy_arn = data.aws_iam_policy.ecs_task_cloudwatch_logs_policy.arn
   role       = aws_iam_role.ecs_task_role.name
 }
+
+resource "aws_iam_role_policy_attachment" "attach_additional_policy" {
+  for_each = toset(var.arn_attach_additional_policy)
+
+  policy_arn = each.value
+  role       = aws_iam_role.ecs_task_role.name
+}

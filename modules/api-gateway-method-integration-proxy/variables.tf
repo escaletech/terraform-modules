@@ -39,7 +39,7 @@ variable "vpc_link_id" {
 variable "request_parameters_method" {
   description = "Method's Request Parameters"
   type        = map(any)
-  default     = {
+  default = {
     "method.request.path.proxy" = true
   }
 }
@@ -47,7 +47,7 @@ variable "request_parameters_method" {
 variable "cache_key_parameters" {
   description = "Cache Key Parameters"
   type        = list(string)
-  default     = [
+  default = [
     "method.request.path.proxy"
   ]
 }
@@ -55,7 +55,7 @@ variable "cache_key_parameters" {
 variable "request_parameters_integration" {
   description = "Request Parameters"
   type        = map(any)
-  default     = {
+  default = {
     "integration.request.path.proxy" = "method.request.path.proxy"
   }
 }
