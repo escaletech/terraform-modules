@@ -5,9 +5,7 @@ resource "aws_api_gateway_method" "proxy" {
   authorization = var.authorization != "NONE" ? "CUSTOM" : "NONE"
   authorizer_id = var.authorization != "NONE" ? var.authorizer_id : null
 
-  request_parameters = {
-    "method.request.path.proxy" = true
-  }
+  request_parameters = var.request_parameters
 }
 
 resource "aws_api_gateway_integration" "proxy" {
