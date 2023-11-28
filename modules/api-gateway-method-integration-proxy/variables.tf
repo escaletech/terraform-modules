@@ -38,7 +38,7 @@ variable "vpc_link_id" {
 
 variable "request_parameters" {
   description = "Request Parameters"
-  type        = map(string)
+  type        = map(any)
   default     = {
     "method.request.path.proxy" = true
   }
