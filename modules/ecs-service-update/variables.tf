@@ -31,10 +31,12 @@ variable "tags" {
 variable "container_port" {
   description = "Porta utilizada pelo container."
   type        = number
+  default     = null
 }
 variable "target_group_arn" {
   description = "Target group utilizado pelo load balancer."
   type        = string
+  default     = null
 }
 
 variable "desire_count" {
