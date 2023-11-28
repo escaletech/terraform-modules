@@ -20,10 +20,14 @@ resource "aws_ecs_service" "ecs_service_update" {
     rollback = true
   }
 
-  load_balancer {
-    container_name   = var.service_name
-    container_port   = var.container_port
-    target_group_arn = var.target_group_arn
+  dynamic "load_balancer" {
+    for_each = var.target_group_arn != null ? [1] : []
+
+    content {
+      container_name   = var.service_name
+      container_port   = var.container_port
+      target_group_arn = var.target_group_arn
+    }
   }
 
   enable_ecs_managed_tags = true
