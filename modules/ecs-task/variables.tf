@@ -53,3 +53,9 @@ variable "secrets" {
   }))
   default = []
 }
+
+variable "arn_attach_additional_policy" {
+  description = "List value to attach additional policy"
+  type        = list(string)
+  default     = []
+}
