@@ -10,6 +10,7 @@ Useful [terraform](https://www.terraform.io/) modules.
 - [ACM](./modules/acm)
 - [API Gateway](./modules/api-gateway)
 - [API Gateway Stage](./modules/api-gateway-stage)
+- [Phonemanager CloudFront](./modules/phone-manager-front)
 
 ## Development
 
