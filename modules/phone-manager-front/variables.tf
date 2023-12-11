@@ -13,6 +13,11 @@ variable "internal_ip" {
   default = true
 }
 
+variable "cache_policy_name" {
+  type    = string
+  default = "default-eks"
+}
+
 data "aws_region" "current" {}
 
 data "aws_vpc" "vpc" {
@@ -28,24 +33,6 @@ data "aws_route53_zone" "zone" {
 }
 
 data "aws_default_tags" "escale-default-tags" {}
-
-variable "aws_lb_dns" {
-  type = string
-}
-
-variable "aws_lb_zone_id" {
-  type = string
-}
-
-variable "aws_lb_listener_arn" {
-  description = "listener arn"
-  type        = string
-}
-
-variable "aws_lb_rule_priority" {
-  description = "priority number"
-  type        = number
-}
 
 variable "tags" {
   type    = map(any)

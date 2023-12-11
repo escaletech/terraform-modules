@@ -8,6 +8,15 @@ resource "aws_s3_bucket_acl" "internal-logs" {
   acl    = "log-delivery-write"
 }
 
+resource "aws_s3_bucket_public_access_block" "public_access_internal_logs" {
+  bucket = aws_s3_bucket.internal-logs.bucket
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = true
+  restrict_public_buckets = false
+}
+
 resource "aws_s3_bucket" "internal" {
   bucket = var.domain
   tags   = var.tags
@@ -16,6 +25,15 @@ resource "aws_s3_bucket" "internal" {
 resource "aws_s3_bucket_acl" "internal" {
   bucket = aws_s3_bucket.internal.bucket
   acl    = "private"
+}
+
+resource "aws_s3_bucket_public_access_block" "public_access_internal" {
+  bucket = aws_s3_bucket.internal.bucket
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = true
+  restrict_public_buckets = false
 }
 
 resource "aws_s3_bucket_website_configuration" "internal" {
