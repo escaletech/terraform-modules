@@ -10,7 +10,7 @@ resource "aws_api_gateway_rest_api" "gateway_api" {
   count = var.private ? 1 : 0
   endpoint_configuration {
     types            = ["PRIVATE"]
-    vpc_endpoint_ids = vpc_ids
+    vpc_endpoint_ids = var.vpc_ids
   }
 }
 
