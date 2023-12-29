@@ -23,6 +23,17 @@ variable "name" {
   type        = string
 }
 
+variable "private" {
+  description = "API Gateway's private"
+  type        = bool
+  default     = false
+}
+
+variable "vpc_ids" {
+  description = "VPC IDs"
+  type        = list(string)
+}
+
 locals {
   domain          = var.domain
   name            = var.name
