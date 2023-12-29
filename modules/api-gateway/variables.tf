@@ -32,6 +32,7 @@ variable "private" {
 variable "vpc_ids" {
   description = "VPC IDs"
   type        = list(string)
+  default     = []
 }
 
 locals {
