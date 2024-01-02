@@ -28,7 +28,7 @@ resource "aws_api_gateway_rest_api_policy" "policy_invoke" {
         "Principal": "*",
         "Action": "execute-api:Invoke",
         "Resource": [
-            "Resource": "${aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*"
+          "${aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*"
         ],
         "Condition" : {
             "ForAllValues:StringNotEquals": {
