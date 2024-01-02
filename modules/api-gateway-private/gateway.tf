@@ -27,9 +27,7 @@ resource "aws_api_gateway_rest_api_policy" "policy_invoke" {
         "Effect": "Deny",
         "Principal": "*",
         "Action": "execute-api:Invoke",
-        "Resource": [
-            "Resource": "${aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*"
-        ],
+        "Resource": "${aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*",
         "Condition" : {
             "ForAllValues:StringNotEquals": {
                 "aws:SourceVpce": ${jsonencode(var.vpc_endpoint_ids)}
