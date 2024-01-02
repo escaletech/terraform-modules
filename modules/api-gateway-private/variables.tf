@@ -1,15 +1,6 @@
-variable "domain" {
-  description = "custom domain to api gateway"
-  type        = string
-}
-
 variable "zone" {
   description = "zone where the domain will be created"
   type        = string
-}
-
-variable "certificate_arn" {
-  type = string
 }
 
 variable "private_zone" {
@@ -29,7 +20,5 @@ variable "vpc_endpoint_ids" {
 }
 
 locals {
-  domain          = var.domain
   name            = var.name
-  certificate_arn = var.certificate_arn
 }
