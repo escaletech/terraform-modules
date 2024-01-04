@@ -21,6 +21,8 @@ resource "aws_api_gateway_stage" "stage" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "mapping" {
+  count = var.private ? 0 : 1
+  
   api_id      = data.aws_api_gateway_rest_api.gateway_api.id
   domain_name = local.domain
   stage_name  = aws_api_gateway_stage.stage.stage_name
