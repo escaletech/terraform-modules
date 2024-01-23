@@ -39,7 +39,7 @@ resource "aws_cloudfront_distribution" "main" {
     cached_methods         = ["GET", "HEAD", "OPTIONS"]
     target_origin_id       = var.domain
     viewer_protocol_policy = "redirect-to-https"
-    cache_policy_id        = aws_cloudfront_cache_policy.main.id
+    cache_policy_id        = data.aws_cloudfront_cache_policy.main.id
   }
 
   viewer_certificate {
