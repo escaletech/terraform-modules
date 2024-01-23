@@ -15,7 +15,7 @@ variable "internal_ip" {
 
 variable "cache_policy_name" {
   type    = string
-  default = "default-eks"
+  default = "default-disable"
 }
 
 data "aws_region" "current" {}
