@@ -96,4 +96,21 @@ data "aws_iam_policy_document" "internal" {
       values   = [aws_vpc_endpoint.internal.id]
     }
   }
+
+  statement {
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    effect    = "Allow"
+    actions   = [
+      "s3:ListBucket",
+      "s3:PutBucketAcl"
+      ]
+    resources = [
+      "${aws_s3_bucket.internal.arn}",
+      "${aws_s3_bucket.internal.arn}/*"
+    ]
+  }
 }
