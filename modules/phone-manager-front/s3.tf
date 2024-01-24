@@ -60,6 +60,11 @@ resource "aws_s3_bucket_policy" "internal" {
   policy = data.aws_iam_policy_document.internal.json
 }
 
+resource "aws_s3_bucket_policy" "internal-logs" {
+  bucket = aws_s3_bucket.internal-logs.bucket
+  policy = data.aws_iam_policy_document.internal.json
+}
+
 data "aws_iam_policy_document" "internal" {
   statement {
     principals {
@@ -95,22 +100,5 @@ data "aws_iam_policy_document" "internal" {
       variable = "aws:SourceVpce"
       values   = [aws_vpc_endpoint.internal.id]
     }
-  }
-
-  statement {
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    effect    = "Allow"
-    actions   = [
-      "s3:ListBucket",
-      "s3:PutBucketAcl"
-      ]
-    resources = [
-      "${aws_s3_bucket.internal.arn}",
-      "${aws_s3_bucket.internal.arn}/*"
-    ]
   }
 }
