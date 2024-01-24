@@ -17,10 +17,10 @@ resource "aws_cloudfront_distribution" "main" {
     }
   }
 
-  logging_config {
-    include_cookies = true
-    bucket          = aws_s3_bucket.internal-logs.bucket_domain_name
-  }
+  # logging_config {
+  #   include_cookies = true
+  #   bucket          = aws_s3_bucket.internal-logs.bucket_domain_name
+  # }
 
   origin {
     domain_name = aws_s3_bucket.internal.bucket_domain_name
