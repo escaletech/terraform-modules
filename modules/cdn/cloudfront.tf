@@ -7,9 +7,6 @@ data "aws_cloudfront_cache_policy" "main" {
 }
 
 resource "aws_cloudfront_distribution" "main" {
-  depends_on = [
-    aws_s3_bucket.internal-logs
-  ]
   enabled         = true
   aliases         = [var.custom_cname != null ? var.custom_cname : var.host]
   tags            = var.tags
