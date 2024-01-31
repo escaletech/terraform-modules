@@ -50,11 +50,6 @@ resource "aws_s3_bucket_policy" "internal" {
   policy = data.aws_iam_policy_document.internal.json
 }
 
-resource "aws_s3_bucket_policy" "internal-logs" {
-  bucket = aws_s3_bucket.internal-logs.bucket
-  policy = data.aws_iam_policy_document.internal-logs.json
-}
-
 data "aws_iam_policy_document" "internal" {
   statement {
     principals {
@@ -65,24 +60,6 @@ data "aws_iam_policy_document" "internal" {
     sid       = "PublicRead"
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.internal.arn}/*"]
-    effect    = "Allow"
-  }
-}
-
-data "aws_iam_policy_document" "internal-logs" {
-  statement {
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    actions   = [
-      "s3:PutObject",
-      "s3:GetBucketAcl",
-      "s3:ListBucket",
-      "s3:GetBucketLocation"
-    ]
-    resources = ["${aws_s3_bucket.internal-logs.arn}/*"]
     effect    = "Allow"
   }
 }
