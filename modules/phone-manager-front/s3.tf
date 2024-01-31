@@ -20,10 +20,10 @@ resource "aws_s3_bucket" "internal" {
 resource "aws_s3_bucket_public_access_block" "public_access_internal" {
   bucket = aws_s3_bucket.internal.bucket
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_website_configuration" "internal" {
@@ -52,7 +52,7 @@ resource "aws_s3_bucket_policy" "internal" {
 
 resource "aws_s3_bucket_policy" "internal-logs" {
   bucket = aws_s3_bucket.internal-logs.bucket
-  policy = data.aws_iam_policy_document.internal.json
+  policy = data.aws_iam_policy_document.internal-logs.json
 }
 
 data "aws_iam_policy_document" "internal" {
@@ -65,6 +65,24 @@ data "aws_iam_policy_document" "internal" {
     sid       = "PublicRead"
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.internal.arn}/*"]
+    effect    = "Allow"
+  }
+}
+
+data "aws_iam_policy_document" "internal-logs" {
+  statement {
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    actions   = [
+      "s3:PutObject",
+      "s3:GetBucketAcl",
+      "s3:ListBucket",
+      "s3:GetBucketLocation"
+    ]
+    resources = ["${aws_s3_bucket.internal-logs.arn}/*"]
     effect    = "Allow"
   }
 }
