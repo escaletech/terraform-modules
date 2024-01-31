@@ -17,20 +17,20 @@ resource "aws_cloudfront_distribution" "main" {
     }
   }
 
-  # logging_config {
-  #   include_cookies = true
-  #   bucket          = aws_s3_bucket.internal-logs.bucket_domain_name
-  # }
+  logging_config {
+    include_cookies = true
+    bucket          = aws_s3_bucket.internal-logs.bucket_domain_name
+  }
 
   origin {
-    domain_name = aws_s3_bucket.internal.bucket_domain_name
+    domain_name = aws_s3_bucket.internal.website_endpoint
     origin_id   = var.domain
 
     custom_origin_config {
       http_port              = 80
       https_port             = 443
       origin_ssl_protocols   = ["TLSv1.2"]
-      origin_protocol_policy = "match-viewer"
+      origin_protocol_policy = "http-only"
     }
   }
 
