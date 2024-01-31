@@ -20,10 +20,10 @@ resource "aws_s3_bucket" "internal" {
 resource "aws_s3_bucket_public_access_block" "public_access_internal" {
   bucket = aws_s3_bucket.internal.bucket
 
-  block_public_acls       = true
-  block_public_policy     = true
+  block_public_acls       = false
+  block_public_policy     = false
   ignore_public_acls      = true
-  restrict_public_buckets = true
+  restrict_public_buckets = false
 }
 
 resource "aws_s3_bucket_website_configuration" "internal" {
@@ -61,5 +61,18 @@ data "aws_iam_policy_document" "internal" {
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.internal.arn}/*"]
     effect    = "Allow"
+  }
+}
+
+resource "aws_s3_bucket_acl" "acl-internal-log" {
+  bucket = aws_s3_bucket.internal-logs.bucket
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_ownership_controls" "owner-internal-log" {
+  bucket = aws_s3_bucket.internal-logs.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
   }
 }
