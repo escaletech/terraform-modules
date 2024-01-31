@@ -23,7 +23,7 @@ resource "aws_cloudfront_distribution" "main" {
   # }
 
   origin {
-    domain_name = aws_s3_bucket.internal.bucket_domain_name
+    domain_name = aws_s3_bucket.internal.website_endpoint
     origin_id   = var.domain
 
     custom_origin_config {
