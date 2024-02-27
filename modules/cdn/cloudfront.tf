@@ -89,6 +89,7 @@ resource "aws_cloudfront_distribution" "main" {
     origin_request_policy_id   = var.origin_request_policy_id
     response_headers_policy_id = data.aws_cloudfront_response_headers_policy.x_frame_options.id
 
+
     dynamic "function_association" {
       for_each = var.functions
       content {
