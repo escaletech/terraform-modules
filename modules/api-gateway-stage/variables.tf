@@ -18,8 +18,8 @@ variable "variables" {
   default = {}
 }
 
-variable "private"{
-  type = bool
+variable "private" {
+  type    = bool
   default = false
 }
 
