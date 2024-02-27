@@ -20,5 +20,5 @@ variable "vpc_endpoint_ids" {
 }
 
 locals {
-  name            = var.name
+  name = var.name
 }

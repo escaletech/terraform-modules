@@ -6,6 +6,18 @@ data "aws_cloudfront_cache_policy" "main" {
   name = var.cache_policy_name
 }
 
+resource "aws_cloudfront_response_headers_policy" "x_frame_options" {
+  name = "X-Frame-Options"
+
+  custom_headers = [
+    {
+      header_name = "X-Frame-Options"
+      header_value = "SAMEORIGIN"
+    },
+  ]
+}
+
+
 resource "aws_cloudfront_distribution" "main" {
   enabled         = true
   aliases         = [var.custom_cname != null ? var.custom_cname : var.host]
@@ -81,6 +93,7 @@ resource "aws_cloudfront_distribution" "main" {
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = data.aws_cloudfront_cache_policy.main.id
     origin_request_policy_id = var.origin_request_policy_id
+
     dynamic "function_association" {
       for_each = var.functions
       content {
@@ -132,6 +145,8 @@ resource "aws_cloudfront_distribution" "main" {
 
     }
   }
+
+  response_headers_policy_id = aws_cloudfront_response_headers_policy.x_frame_options.id
 
   lifecycle {
     ignore_changes = [
