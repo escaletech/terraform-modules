@@ -93,6 +93,7 @@ resource "aws_cloudfront_distribution" "main" {
     viewer_protocol_policy   = "redirect-to-https"
     cache_policy_id          = data.aws_cloudfront_cache_policy.main.id
     origin_request_policy_id = var.origin_request_policy_id
+    response_headers_policy_id  = aws_cloudfront_response_headers_policy.x_frame_options.id
 
     dynamic "function_association" {
       for_each = var.functions
@@ -145,8 +146,6 @@ resource "aws_cloudfront_distribution" "main" {
 
     }
   }
-
-  response_headers_policy_id = aws_cloudfront_response_headers_policy.x_frame_options.id
 
   lifecycle {
     ignore_changes = [
