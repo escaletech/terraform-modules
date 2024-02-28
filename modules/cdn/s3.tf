@@ -3,7 +3,16 @@ resource "aws_s3_bucket" "cloudfront-logs" {
   tags   = var.tags
 }
 
-resource "aws_s3_bucket_acl" "cloudfront-logs" {
+resource "aws_s3_bucket_ownership_controls" "cloudfront-logs-ownership" {
+  bucket = aws_s3_bucket.cloudfront-logs.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "cloudfront-logs-acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.cloudfront-logs-ownership]
+
   bucket = aws_s3_bucket.cloudfront-logs.bucket
   acl    = "private"
 }
