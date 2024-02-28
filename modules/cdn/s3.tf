@@ -10,7 +10,7 @@ resource "aws_s3_bucket_ownership_controls" "cloudfront-logs-ownership" {
   }
 }
 
-resource "aws_s3_bucket_acl" "cloudfront-logs-acl" {
+resource "aws_s3_bucket_acl" "cloudfront-logs" {
   depends_on = [aws_s3_bucket_ownership_controls.cloudfront-logs-ownership]
 
   bucket = aws_s3_bucket.cloudfront-logs.bucket
