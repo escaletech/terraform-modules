@@ -14,7 +14,7 @@ data "aws_cloudfront_response_headers_policy" "x_frame_options" {
 
 resource "aws_cloudfront_distribution" "main" {
   enabled         = true
-  aliases         = [var.custom_cname != null ? var.custom_cname : var.host]
+  aliases         = length(var.custom_cname) > 0 ? var.custom_cname : [var.host]
   tags            = var.tags
   is_ipv6_enabled = true
 
