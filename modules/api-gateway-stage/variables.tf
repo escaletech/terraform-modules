@@ -18,6 +18,11 @@ variable "variables" {
   default = {}
 }
 
+variable "hash" {
+  description = "Hash to redeploy the stage"
+  type    = string
+}
+
 locals {
   name      = var.name
   domain    = var.domain
