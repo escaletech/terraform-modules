@@ -6,9 +6,15 @@ data "aws_cloudfront_cache_policy" "main" {
   name = var.cache_policy_name
 }
 
+data "aws_cloudfront_response_headers_policy" "x_frame_options" {
+  name = "x_frame_options"
+}
+
+
+
 resource "aws_cloudfront_distribution" "main" {
   enabled         = true
-  aliases         = [var.custom_cname != null ? var.custom_cname : var.host]
+  aliases         = length(var.custom_cname) > 0 ? var.custom_cname : [var.host]
   tags            = var.tags
   is_ipv6_enabled = true
 
@@ -75,12 +81,15 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   default_cache_behavior {
-    allowed_methods          = ["GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "DELETE"]
-    cached_methods           = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id         = local.origin_id
-    viewer_protocol_policy   = "redirect-to-https"
-    cache_policy_id          = data.aws_cloudfront_cache_policy.main.id
-    origin_request_policy_id = var.origin_request_policy_id
+    allowed_methods            = ["GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "DELETE"]
+    cached_methods             = ["GET", "HEAD", "OPTIONS"]
+    target_origin_id           = local.origin_id
+    viewer_protocol_policy     = "redirect-to-https"
+    cache_policy_id            = data.aws_cloudfront_cache_policy.main.id
+    origin_request_policy_id   = var.origin_request_policy_id
+    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.x_frame_options.id
+
+
     dynamic "function_association" {
       for_each = var.functions
       content {

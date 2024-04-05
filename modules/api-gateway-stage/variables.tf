@@ -23,6 +23,11 @@ variable "hash" {
   type    = string
 }
 
+variable "private" {
+  type    = bool
+  default = false
+}
+
 locals {
   name      = var.name
   domain    = var.domain

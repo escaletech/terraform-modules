@@ -39,8 +39,8 @@ variable "bucket_logs_name" {
   default = null
 }
 variable "custom_cname" {
-  type        = string
-  default     = null
+  type        = list(string)
+  default     = []
   description = "When the website endpoint domain is outside our control and we need a CNAME from our host to this outside domain. All other resources are still created based on host, only cloudfront will point itself to this custom domain."
 }
 

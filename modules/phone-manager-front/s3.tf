@@ -3,28 +3,18 @@ resource "aws_s3_bucket" "internal-logs" {
   tags   = var.tags
 }
 
-resource "aws_s3_bucket_acl" "internal-logs" {
-  bucket = aws_s3_bucket.internal-logs.bucket
-  acl    = "log-delivery-write"
-}
-
 resource "aws_s3_bucket_public_access_block" "public_access_internal_logs" {
   bucket = aws_s3_bucket.internal-logs.bucket
 
-  block_public_acls       = false
-  block_public_policy     = false
+  block_public_acls       = true
+  block_public_policy     = true
   ignore_public_acls      = true
-  restrict_public_buckets = false
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket" "internal" {
   bucket = var.domain
   tags   = var.tags
-}
-
-resource "aws_s3_bucket_acl" "internal" {
-  bucket = aws_s3_bucket.internal.bucket
-  acl    = "private"
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access_internal" {
@@ -67,33 +57,22 @@ data "aws_iam_policy_document" "internal" {
       identifiers = ["*"]
     }
 
-    sid       = "PublicReadVpce"
+    sid       = "PublicRead"
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.internal.arn}/*"]
     effect    = "Allow"
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceVpce"
-      values   = [aws_vpc_endpoint.internal.id]
-    }
   }
+}
 
-  statement {
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
+resource "aws_s3_bucket_acl" "acl-internal-log" {
+  bucket = aws_s3_bucket.internal-logs.bucket
+  acl    = "private"
+}
 
-    sid       = "DenyPublicReadNonVpce"
-    actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.internal.arn}/*"]
-    effect    = "Deny"
+resource "aws_s3_bucket_ownership_controls" "owner-internal-log" {
+  bucket = aws_s3_bucket.internal-logs.id
 
-    condition {
-      test     = "StringNotEquals"
-      variable = "aws:SourceVpce"
-      values   = [aws_vpc_endpoint.internal.id]
-    }
+  rule {
+    object_ownership = "BucketOwnerPreferred"
   }
 }
