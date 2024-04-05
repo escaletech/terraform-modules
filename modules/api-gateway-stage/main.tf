@@ -1,5 +1,6 @@
 resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id       = data.aws_api_gateway_rest_api.gateway_api.id
+  description       = "Deployment"
 
   triggers = {
     redeployment = var.hash
