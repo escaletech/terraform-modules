@@ -4,7 +4,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   stage_description = "Deployed at ${timestamp()}"
 
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
 }
 
