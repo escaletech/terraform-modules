@@ -8,6 +8,12 @@ variable "gateway_api" {
   type        = string
 }
 
+variable "gateway_api_id" {
+  description = "API Gateway's id"
+  type        = string
+  default     = null
+}
+
 variable "domain" {
   description = "domain"
   type        = string
