@@ -6,12 +6,21 @@ variable "zone" {
 variable "private_zone" {
   description = "zone is private"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "name" {
   description = "API Gateway's name"
   type        = string
+}
+
+variable "domain" {
+  description = "custom domain to api gateway"
+  type        = string
+}
+
+variable "certificate_arn" {
+  type = string
 }
 
 variable "vpc_endpoint_ids" {
@@ -20,5 +29,7 @@ variable "vpc_endpoint_ids" {
 }
 
 locals {
-  name = var.name
+  name            = var.name
+  domain          = var.domain
+  certificate_arn = var.certificate_arn  
 }
