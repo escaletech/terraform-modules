@@ -5,7 +5,7 @@ resource "aws_route53_record" "main" {
   allow_overwrite = true
 
   alias {
-    name    = aws_cloudfront_distribution.main.domain_name
+    name    = (var.alias_main != null) ? var.alias_main : aws_cloudfront_distribution.main.domain_name
     zone_id = aws_cloudfront_distribution.main.hosted_zone_id
 
     evaluate_target_health = false

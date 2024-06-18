@@ -7,6 +7,16 @@ variable "origin_protocol_policy" {
   default = "http-only"
 }
 
+variable "ttl" {
+  type    = number
+  default = 60
+}
+
+variable "alias_main" {
+  type    = string
+  default = null
+}
+
 variable "origin_ssl_protocols" {
   type    = list(string)
   default = ["TLSv1.2"]
