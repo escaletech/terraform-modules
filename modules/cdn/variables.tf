@@ -13,6 +13,11 @@ variable "origin_id" {
   default     = null
 }
 
+variable "allow_overwrite" {
+  type    = bool
+  default = false
+}
+
 variable "cache_policy_name" {
   type    = string
   default = "default-eks"
