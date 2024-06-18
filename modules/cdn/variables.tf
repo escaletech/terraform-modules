@@ -7,6 +7,22 @@ variable "origin_protocol_policy" {
   default = "http-only"
 }
 
+variable "origin_ssl_protocols" {
+  type    = list(string)
+  default = ["TLSv1.2"]
+}
+
+variable "origin_id" {
+  description = "The ID for the origin with CloudFront"
+  type        = string
+  default     = null
+}
+
+variable "allow_overwrite" {
+  type    = bool
+  default = false
+}
+
 variable "cache_policy_name" {
   type    = string
   default = "default-eks"
