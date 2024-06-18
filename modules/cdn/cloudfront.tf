@@ -59,7 +59,7 @@ resource "aws_cloudfront_distribution" "main" {
     custom_origin_config {
       http_port              = 80
       https_port             = 443
-      origin_ssl_protocols   = ["TLSv1.2"]
+      origin_ssl_protocols   = var.origin_ssl_protocols
       origin_protocol_policy = var.origin_protocol_policy
     }
   }
@@ -83,7 +83,7 @@ resource "aws_cloudfront_distribution" "main" {
   default_cache_behavior {
     allowed_methods            = ["GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "DELETE"]
     cached_methods             = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id           = local.origin_id
+    target_origin_id           = (var.origin_id != null) ? var.origin_id : local.origin_id
     viewer_protocol_policy     = "redirect-to-https"
     cache_policy_id            = data.aws_cloudfront_cache_policy.main.id
     origin_request_policy_id   = var.origin_request_policy_id
