@@ -54,7 +54,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   origin {
     domain_name = var.origin_host
-    origin_id   = local.origin_id
+    origin_id   = (var.origin_id != null) ? var.origin_id : local.origin_id
 
     custom_origin_config {
       http_port              = 80

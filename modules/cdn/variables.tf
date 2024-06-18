@@ -1,6 +1,7 @@
 variable "dns_zone" { type = string }
 variable "host" { type = string }
 variable "origin_host" { type = string }
+variable "origin_id" { type = string }
 variable "tags" { type = map(any) }
 variable "origin_protocol_policy" {
   type    = string
