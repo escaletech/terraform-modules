@@ -1,11 +1,16 @@
 variable "dns_zone" { type = string }
 variable "host" { type = string }
 variable "origin_host" { type = string }
-variable "origin_id" { type = string }
 variable "tags" { type = map(any) }
 variable "origin_protocol_policy" {
   type    = string
   default = "http-only"
+}
+
+variable "origin_id" {
+  description = "The ID for the origin with CloudFront"
+  type        = string
+  default     = null
 }
 
 variable "cache_policy_name" {
