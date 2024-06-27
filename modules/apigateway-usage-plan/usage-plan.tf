@@ -1,11 +1,11 @@
 resource "aws_api_gateway_api_key" "api_key" {
-  name = var.name
+  name = var.partner
   description = var.description
   enabled = var.key_enabled
 }
 
 resource "aws_api_gateway_usage_plan" "usage_plan" {
-  name        = var.name
+  name        = var.partner
   description = var.description
 
 

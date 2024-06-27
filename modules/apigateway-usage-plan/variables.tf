@@ -22,20 +22,15 @@ variable "api_stage" {
   }))
 }
 
-variable "partners" {
+variable "partner" {
   description = "partners to usage plan"
-  type        = list(string)
+  type        = string
 }
 
 variable "key_enabled" {
   description = "enable api key"
   type        = bool
   default     = true
-}
-
-variable "name" {
-  description = "name of usage plan"
-  type        = string
 }
 
 variable "description" {
