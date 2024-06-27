@@ -23,6 +23,12 @@ variable "name" {
   type        = string
 }
 
+variable "api_key_source" {
+  description = "API Key Source"
+  type        = string
+  default     = "HEADER"
+}
+
 locals {
   domain          = var.domain
   name            = var.name
