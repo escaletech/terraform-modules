@@ -4,22 +4,28 @@ variable "quota_settings" {
     limit  = number
     period = string
   }))
+  default = [ {
+    limit  = 10000
+    period = "DAY"
+  } ]
 }
 
 variable "throttle_settings" {
-  description = "throttle settings for usage plan"
-  type        = list(object({
+  description = "Throttle settings for the usage plan"
+  type = list(object({
     rate_limit  = number
     burst_limit = number
   }))
+  default = []
 }
 
 variable "api_stage" {
-  description = "api stage to usage plan"
+  description = "API stage for usage plan"
   type        = list(object({
     api_id = string
     stage  = string
   }))
+  default = []
 }
 
 variable "partner" {

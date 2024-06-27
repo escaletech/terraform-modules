@@ -20,8 +20,8 @@ resource "aws_api_gateway_usage_plan" "usage_plan" {
   dynamic "quota_settings" {
     for_each = var.quota_settings
     content {
-        limit = 10000
-        period = "DAY"
+        limit = quota_settings.value.limit
+        period = quota_settings.value.period
     }
   }
   
