@@ -17,6 +17,7 @@ resource "aws_cloudfront_distribution" "main" {
   aliases         = length(var.custom_cname) > 0 ? var.custom_cname : [var.host]
   tags            = var.tags
   is_ipv6_enabled = true
+  web_acl_id      = var.web_acl_id
 
   restrictions {
     geo_restriction {

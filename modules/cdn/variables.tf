@@ -7,6 +7,11 @@ variable "origin_protocol_policy" {
   default = "http-only"
 }
 
+variable "web_acl_id" {
+  type    = string
+  default = null
+}
+
 variable "ttl" {
   type    = number
   default = 60
