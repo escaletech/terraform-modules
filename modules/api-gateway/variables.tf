@@ -29,6 +29,12 @@ variable "api_key_source" {
   default     = "HEADER"
 }
 
+variable "routes_private" {
+  description = "Routes that are private"
+  type        = list(string)
+  default     = []
+}
+
 locals {
   domain          = var.domain
   name            = var.name
