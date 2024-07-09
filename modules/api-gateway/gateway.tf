@@ -9,7 +9,7 @@ resource "aws_api_gateway_rest_api" "gateway_api" {
   api_key_source               = var.api_key_source
 }
 
-resource aws_iam_policy_document "policy" {
+data aws_iam_policy_document "policy" {
 
   dynamic "statement" {
     for_each = var.routes_private
