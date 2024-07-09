@@ -46,7 +46,7 @@ data aws_iam_policy_document "policy" {
 resource "aws_api_gateway_rest_api_policy" "policy_invoke" {
   rest_api_id = aws_api_gateway_rest_api.gateway_api.id
 
-  policy = aws_iam_policy_document.policy.json
+  policy = data.aws_iam_policy_document.policy.json
 }
 
 resource "aws_route53_record" "domain" {
