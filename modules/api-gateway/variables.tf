@@ -35,6 +35,12 @@ variable "routes_private" {
   default     = []
 }
 
+variable "ip_address" {
+  description = "IP Address to allow"
+  type        = list(string)
+  default     = []
+}
+
 locals {
   domain          = var.domain
   name            = var.name

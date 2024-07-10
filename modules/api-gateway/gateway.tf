@@ -23,6 +23,11 @@ data aws_iam_policy_document "policy" {
       resources = [
         "${aws_api_gateway_rest_api.gateway_api.execution_arn}/*/${statement.value}/*"
       ]
+      condition {
+        test     = "NotIpAddress"
+        variable = "aws:SourceIp"
+        values   = var.ip_address
+      }
     }
   }
 
