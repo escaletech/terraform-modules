@@ -15,6 +15,7 @@ resource "aws_api_gateway_integration" "lambda" {
   integration_http_method = var.method
   type                    = "AWS_PROXY"
   uri                     = var.uri_origin
+  passthrough_behavior    = "WHEN_NO_TEMPLATES"
 
   cache_key_parameters = var.cache_key_parameters
 
