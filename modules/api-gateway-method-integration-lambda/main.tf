@@ -20,8 +20,8 @@ resource "aws_api_gateway_integration" "lambda" {
 
   request_parameters = var.request_parameters_integration
 
-  connection_type = "VPC_LINK"
-  connection_id   = var.vpc_link_id
+  # connection_type = "VPC_LINK"
+  # connection_id   = var.vpc_link_id
 
   request_templates = {
     "application/json" = <<EOF
