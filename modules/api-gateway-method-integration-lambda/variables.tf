@@ -31,10 +31,10 @@ variable "uri_origin" {
   type        = string
 }
 
-variable "vpc_link_id" {
-  description = "VPC Link's ID"
-  type        = string
-}
+# variable "vpc_link_id" {
+#   description = "VPC Link's ID"
+#   type        = string
+# }
 
 variable "request_parameters_method" {
   description = "Method's Request Parameters"
