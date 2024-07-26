@@ -1,11 +1,11 @@
 resource "aws_api_gateway_method" "lambda" {
-  rest_api_id   = var.api_gateway_id
-  resource_id   = var.resource_id
-  http_method   = var.method
-  authorization = var.authorization != "NONE" ? "CUSTOM" : "NONE"
-  authorizer_id = var.authorization != "NONE" ? var.authorizer_id : null
-
-  request_parameters = var.request_parameters_method
+  rest_api_id        = var.api_gateway_id
+  resource_id        = var.resource_id
+  http_method        = var.method
+  authorization      = var.authorization != "NONE" ? "CUSTOM" : "NONE"
+  authorizer_id      = var.authorization != "NONE" ? var.authorizer_id : null
+  request_models     = var.request_models
+  request_parameters = var.request_parameters_integration
 }
 
 resource "aws_api_gateway_integration" "lambda" {
@@ -15,14 +15,7 @@ resource "aws_api_gateway_integration" "lambda" {
   integration_http_method = var.method
   type                    = "AWS"
   uri                     = var.uri_origin
-  passthrough_behavior    = "WHEN_NO_TEMPLATES"
-
-  cache_key_parameters = var.cache_key_parameters
-
-  request_parameters = var.request_parameters_integration
-
-  # connection_type = "VPC_LINK"
-  # connection_id   = var.vpc_link_id
+  passthrough_behavior    = "WHEN_NO_MATCH"
 
   request_templates = {
     "application/json" = <<EOF

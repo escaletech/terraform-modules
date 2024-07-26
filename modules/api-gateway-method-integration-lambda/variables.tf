@@ -31,31 +31,18 @@ variable "uri_origin" {
   type        = string
 }
 
-# variable "vpc_link_id" {
-#   description = "VPC Link's ID"
-#   type        = string
-# }
-
-variable "request_parameters_method" {
-  description = "Method's Request Parameters"
+variable "request_models" {
+  description = "Method's Request Models"
   type        = map(any)
   default = {
-    "method.request.path.proxy" = true
+   "application/json" = "OperationRequired"
   }
-}
-
-variable "cache_key_parameters" {
-  description = "Cache Key Parameters"
-  type        = list(string)
-  default = [
-    "method.request.path.proxy"
-  ]
 }
 
 variable "request_parameters_integration" {
   description = "Request Parameters"
   type        = map(any)
   default = {
-    "integration.request.path.proxy" = "method.request.path.proxy"
+    "method.request.header.Instance" = true
   }
 }
