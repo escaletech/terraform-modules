@@ -78,3 +78,18 @@ resource "aws_api_gateway_integration" "lambda" {
 EOF
   }
 }
+
+resource "aws_api_gateway_integration_response" "lambda" {
+  rest_api_id = var.api_gateway_id
+  resource_id = var.resource_id
+  http_method = var.method
+  status_code = "200"
+
+  response_templates = { 
+    "application/json" = <<EOF
+#set($elem = $util.parseJson($input.json('$')))
+$elem.get("body")
+#set($context.responseOverride.status = $elem.get("statusCode"))
+EOF
+  }
+}
