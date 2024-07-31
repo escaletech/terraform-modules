@@ -4,8 +4,8 @@ resource "aws_api_gateway_method" "lambda" {
   http_method        = var.method
   authorization      = var.authorization != "NONE" ? "CUSTOM" : "NONE"
   authorizer_id      = var.authorization != "NONE" ? var.authorizer_id : null
-  request_models     = var.request_models
-  request_parameters = var.request_parameters_integration
+  # request_models     = var.request_models
+  # request_parameters = var.request_parameters_integration
 }
 
 resource "aws_api_gateway_integration" "lambda" {
