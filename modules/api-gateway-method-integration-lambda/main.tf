@@ -4,8 +4,17 @@ resource "aws_api_gateway_method" "lambda" {
   http_method        = var.method
   authorization      = var.authorization != "NONE" ? "CUSTOM" : "NONE"
   authorizer_id      = var.authorization != "NONE" ? var.authorizer_id : null
-  # request_models     = var.request_models
-  # request_parameters = var.request_parameters_integration
+}
+
+resource "aws_lambda_permission" "lambda" {
+  statement_id  = "AllowAPIGatewayEscaleInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = var.source_arn
 }
 
 resource "aws_api_gateway_integration" "lambda" {

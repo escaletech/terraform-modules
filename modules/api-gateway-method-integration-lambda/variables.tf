@@ -46,3 +46,13 @@ variable "request_parameters_integration" {
     "method.request.header.Instance" = true
   }
 }
+
+variable "function_name" {
+  description = "Lambda's Function Name"
+  type        = string
+}
+
+variable "source_arn" {
+  description = "Source ARN"
+  type        = string
+}
