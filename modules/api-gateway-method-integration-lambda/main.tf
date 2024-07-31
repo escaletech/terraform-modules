@@ -9,6 +9,8 @@ resource "aws_api_gateway_method" "lambda" {
 }
 
 resource "aws_api_gateway_integration" "lambda" {
+  depends_on = [ aws_api_gateway_method.lambda ]
+
   rest_api_id             = var.api_gateway_id
   resource_id             = var.resource_id
   http_method             = var.method
@@ -80,6 +82,8 @@ EOF
 }
 
 resource "aws_api_gateway_integration_response" "lambda" {
+  depends_on = [ aws_api_gateway_integration.lambda ]
+  
   rest_api_id = var.api_gateway_id
   resource_id = var.resource_id
   http_method = var.method
