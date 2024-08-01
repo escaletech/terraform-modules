@@ -91,6 +91,7 @@ EOF
 }
 
 resource "aws_api_gateway_method_response" "response_200" {
+  depends_on = [ aws_api_gateway_integration.lambda ]
   rest_api_id = var.api_gateway_id
   resource_id = var.resource_id
   http_method = var.method
