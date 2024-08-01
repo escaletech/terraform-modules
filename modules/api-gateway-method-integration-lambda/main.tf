@@ -4,6 +4,7 @@ resource "aws_api_gateway_method" "lambda" {
   http_method        = var.method
   authorization      = var.authorization != "NONE" ? "CUSTOM" : "NONE"
   authorizer_id      = var.authorization != "NONE" ? var.authorizer_id : null
+
 }
 
 resource "aws_lambda_permission" "lambda" {
@@ -24,9 +25,14 @@ resource "aws_api_gateway_integration" "lambda" {
   resource_id             = var.resource_id
   http_method             = var.method
   integration_http_method = var.method
-  type                    = "AWS"
+  type                    = "AWS_PROXY"
   uri                     = var.uri_origin
   passthrough_behavior    = "WHEN_NO_MATCH"
+
+  request_parameters = {
+    "integration.request.header.Content-Type" = "'application/json'",
+    "integration.request.path.proxy"          = "method.request.path.proxy",
+  }
 
   request_templates = {
     "application/json" = <<EOF
@@ -96,7 +102,6 @@ resource "aws_api_gateway_method_response" "response_200" {
   http_method = var.method
   status_code = "200"
 
-  response_parameters = var.response_parameters
 }
 
 resource "aws_api_gateway_integration_response" "lambda" {
