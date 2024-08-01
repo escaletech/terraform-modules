@@ -5,6 +5,8 @@ resource "aws_api_gateway_method" "lambda" {
   authorization      = var.authorization != "NONE" ? "CUSTOM" : "NONE"
   authorizer_id      = var.authorization != "NONE" ? var.authorizer_id : null
 
+  request_parameters = { "method.request.path.proxy" = true }
+
 }
 
 resource "aws_lambda_permission" "lambda" {
