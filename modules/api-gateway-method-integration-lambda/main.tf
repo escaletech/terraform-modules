@@ -96,7 +96,7 @@ resource "aws_api_gateway_method_response" "response_200" {
   http_method = var.method
   status_code = "200"
 
-  response_models = var.response_models
+  response_parameters = var.response_parameters
 }
 
 resource "aws_api_gateway_integration_response" "lambda" {

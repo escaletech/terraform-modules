@@ -57,8 +57,8 @@ variable "source_arn" {
   type        = string
 }
 
-variable "response_models" {
-  description = "Response Models"
+variable "response_parameters" {
+  description = "Response Parameters"
   type        = map(any)
   default = {
     "application/json" = "LambdaResponseModel"
