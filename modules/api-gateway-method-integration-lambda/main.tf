@@ -90,6 +90,15 @@ EOF
   }
 }
 
+resource "aws_api_gateway_method_response" "response_200" {
+  rest_api_id = var.api_gateway_id
+  resource_id = var.resource_id
+  http_method = var.method
+  status_code = "200"
+
+  response_models = var.response_models
+}
+
 resource "aws_api_gateway_integration_response" "lambda" {
   depends_on = [ aws_api_gateway_integration.lambda ]
   
