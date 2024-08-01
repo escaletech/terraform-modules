@@ -28,11 +28,6 @@ resource "aws_api_gateway_integration" "lambda" {
   uri                     = var.uri_origin
   passthrough_behavior    = "WHEN_NO_MATCH"
 
-  request_parameters = {
-    "integration.request.header.Content-Type" = "'application/json'",
-    "integration.request.path.proxy"          = "method.request.path.proxy",
-  }
-
   request_templates = {
     "application/json" = <<EOF
 #set( $body = $input.json("$") )
