@@ -7,7 +7,7 @@ resource "aws_api_gateway_method" "lambda" {
 }
 
 resource "aws_lambda_permission" "lambda" {
-  statement_id  = "AllowAPIGatewayEscaleInvoke"
+  statement_id  = "AllowAPIGatewayEscaleInvoke_${var.api_gateway_id}_${var.resource_id}"
   action        = "lambda:InvokeFunction"
   function_name = var.function_name
   principal     = "apigateway.amazonaws.com"
