@@ -46,3 +46,22 @@ variable "request_parameters_integration" {
     "method.request.header.Instance" = true
   }
 }
+
+variable "function_name" {
+  description = "Lambda's Function Name"
+  type        = string
+}
+
+variable "source_arn" {
+  description = "Source ARN"
+  type        = string
+}
+
+variable "response_parameters" {
+  description = "Response Parameters"
+  type        = map(any)
+  default = {
+    "application/json" = "LambdaResponseModel"
+  }
+  
+}

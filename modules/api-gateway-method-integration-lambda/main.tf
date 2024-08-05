@@ -4,11 +4,22 @@ resource "aws_api_gateway_method" "lambda" {
   http_method        = var.method
   authorization      = var.authorization != "NONE" ? "CUSTOM" : "NONE"
   authorizer_id      = var.authorization != "NONE" ? var.authorizer_id : null
-  request_models     = var.request_models
-  request_parameters = var.request_parameters_integration
+}
+
+resource "aws_lambda_permission" "lambda" {
+  statement_id  = "AllowAPIGatewayEscaleInvoke_${var.api_gateway_id}_${var.resource_id}"
+  action        = "lambda:InvokeFunction"
+  function_name = var.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = var.source_arn
 }
 
 resource "aws_api_gateway_integration" "lambda" {
+  depends_on = [ aws_api_gateway_method.lambda ]
+
   rest_api_id             = var.api_gateway_id
   resource_id             = var.resource_id
   http_method             = var.method
@@ -75,6 +86,32 @@ resource "aws_api_gateway_integration" "lambda" {
 
   "requestPath": "$context.resourcePath"
 }
+EOF
+  }
+}
+
+resource "aws_api_gateway_method_response" "response_200" {
+  depends_on = [ aws_api_gateway_integration.lambda ]
+  rest_api_id = var.api_gateway_id
+  resource_id = var.resource_id
+  http_method = var.method
+  status_code = "200"
+
+}
+
+resource "aws_api_gateway_integration_response" "lambda" {
+  depends_on = [ aws_api_gateway_integration.lambda ]
+  
+  rest_api_id = var.api_gateway_id
+  resource_id = var.resource_id
+  http_method = var.method
+  status_code = "200"
+
+  response_templates = { 
+    "application/json" = <<EOF
+#set($elem = $util.parseJson($input.json('$')))
+$elem.get("body")
+#set($context.responseOverride.status = $elem.get("statusCode"))
 EOF
   }
 }
