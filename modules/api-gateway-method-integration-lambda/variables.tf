@@ -1,4 +1,4 @@
-variable "api_gateway_id" {
+variable "api_gateway" {
   description = "API Gateway's ID"
   type        = string
 }
@@ -55,6 +55,12 @@ variable "function_name" {
 variable "source_arn" {
   description = "Source ARN"
   type        = string
+}
+
+variable "lambda_arn" {
+  description = "Lambda's ARN"
+  type        = string
+  
 }
 
 variable "response_parameters" {
