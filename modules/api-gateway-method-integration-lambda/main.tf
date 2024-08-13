@@ -1,5 +1,5 @@
 resource "aws_api_gateway_method" "lambda" {
-  rest_api_id        = var.api_gateway
+  rest_api_id        = data.aws_api_gateway_rest_api.gateway_api.id
   resource_id        = var.resource_id
   http_method        = var.method
   authorization      = var.authorization != "NONE" ? "CUSTOM" : "NONE"
@@ -17,10 +17,11 @@ resource "aws_lambda_permission" "lambda" {
   source_arn = "${data.aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*"
 }
 
+
 resource "aws_api_gateway_integration" "lambda" {
   depends_on = [ aws_api_gateway_method.lambda ]
 
-  rest_api_id             = var.api_gateway
+  rest_api_id             = data.aws_api_gateway_rest_api.gateway_api.id
   resource_id             = var.resource_id
   http_method             = var.method
   integration_http_method = "POST"
@@ -92,7 +93,7 @@ EOF
 
 resource "aws_api_gateway_method_response" "response_200" {
   depends_on = [ aws_api_gateway_integration.lambda ]
-  rest_api_id = var.api_gateway
+  rest_api_id = data.aws_api_gateway_rest_api.gateway_api.id
   resource_id = var.resource_id
   http_method = var.method
   status_code = "200"
@@ -102,7 +103,7 @@ resource "aws_api_gateway_method_response" "response_200" {
 resource "aws_api_gateway_integration_response" "lambda" {
   depends_on = [ aws_api_gateway_integration.lambda ]
   
-  rest_api_id = var.api_gateway
+  rest_api_id = data.aws_api_gateway_rest_api.gateway_api.id
   resource_id = var.resource_id
   http_method = var.method
   status_code = "200"
