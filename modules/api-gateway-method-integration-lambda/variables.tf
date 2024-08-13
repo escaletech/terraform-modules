@@ -1,4 +1,4 @@
-variable "api_gateway_id" {
+variable "api_gateway" {
   description = "API Gateway's ID"
   type        = string
 }
@@ -26,11 +26,6 @@ variable "authorizer_id" {
   default     = null
 }
 
-variable "uri_origin" {
-  description = "URI Origin"
-  type        = string
-}
-
 variable "request_models" {
   description = "Method's Request Models"
   type        = map(any)
@@ -52,9 +47,10 @@ variable "function_name" {
   type        = string
 }
 
-variable "source_arn" {
-  description = "Source ARN"
+variable "lambda_arn" {
+  description = "Lambda's ARN"
   type        = string
+  
 }
 
 variable "response_parameters" {

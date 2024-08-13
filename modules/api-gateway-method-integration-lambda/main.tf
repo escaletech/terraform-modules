@@ -1,5 +1,5 @@
 resource "aws_api_gateway_method" "lambda" {
-  rest_api_id        = var.api_gateway_id
+  rest_api_id        = var.api_gateway
   resource_id        = var.resource_id
   http_method        = var.method
   authorization      = var.authorization != "NONE" ? "CUSTOM" : "NONE"
@@ -7,25 +7,25 @@ resource "aws_api_gateway_method" "lambda" {
 }
 
 resource "aws_lambda_permission" "lambda" {
-  statement_id  = "AllowAPIGatewayEscaleInvoke_${var.api_gateway_id}_${var.resource_id}"
+  statement_id  = "AllowAPIGatewayEscaleInvoke_${var.api_gateway}_${var.resource_id}"
   action        = "lambda:InvokeFunction"
   function_name = var.function_name
   principal     = "apigateway.amazonaws.com"
 
   # The /*/* portion grants access from any method on any resource
   # within the API Gateway "REST API".
-  source_arn = var.source_arn
+  source_arn = "${data.aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*"
 }
 
 resource "aws_api_gateway_integration" "lambda" {
   depends_on = [ aws_api_gateway_method.lambda ]
 
-  rest_api_id             = var.api_gateway_id
+  rest_api_id             = var.api_gateway
   resource_id             = var.resource_id
   http_method             = var.method
   integration_http_method = "POST"
   type                    = "AWS"
-  uri                     = var.uri_origin
+  uri                     = "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${var.lambda_arn}/invocations"
   passthrough_behavior    = "WHEN_NO_MATCH"
 
   request_templates = {
@@ -92,7 +92,7 @@ EOF
 
 resource "aws_api_gateway_method_response" "response_200" {
   depends_on = [ aws_api_gateway_integration.lambda ]
-  rest_api_id = var.api_gateway_id
+  rest_api_id = var.api_gateway
   resource_id = var.resource_id
   http_method = var.method
   status_code = "200"
@@ -102,7 +102,7 @@ resource "aws_api_gateway_method_response" "response_200" {
 resource "aws_api_gateway_integration_response" "lambda" {
   depends_on = [ aws_api_gateway_integration.lambda ]
   
-  rest_api_id = var.api_gateway_id
+  rest_api_id = var.api_gateway
   resource_id = var.resource_id
   http_method = var.method
   status_code = "200"
