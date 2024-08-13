@@ -26,11 +26,6 @@ variable "authorizer_id" {
   default     = null
 }
 
-# variable "uri_origin" {
-#   description = "URI Origin"
-#   type        = string
-# }
-
 variable "request_models" {
   description = "Method's Request Models"
   type        = map(any)
@@ -51,11 +46,6 @@ variable "function_name" {
   description = "Lambda's Function Name"
   type        = string
 }
-
-# variable "source_arn" {
-#   description = "Source ARN"
-#   type        = string
-# }
 
 variable "lambda_arn" {
   description = "Lambda's ARN"
