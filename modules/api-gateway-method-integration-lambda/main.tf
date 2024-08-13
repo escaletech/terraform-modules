@@ -17,8 +17,6 @@ resource "aws_lambda_permission" "lambda" {
   source_arn = "${data.aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*"
 }
 
-# "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${data.aws_lambda_function.zipCodeQuery.arn}/invocations"
-
 resource "aws_api_gateway_integration" "lambda" {
   depends_on = [ aws_api_gateway_method.lambda ]
 
