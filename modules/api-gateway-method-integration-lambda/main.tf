@@ -38,9 +38,8 @@ resource "aws_api_gateway_integration" "lambda" {
   #foreach($key in $map.keySet())
       #set( $k = $util.escapeJavaScript($key) )
       #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll("\\'", "'") )
-      "$k":
-        "$v"
-        #if( $foreach.hasNext ) , #end
+      "$k": "$v"
+      #if( $foreach.hasNext ), #end
   #end
   }
 #end
@@ -51,7 +50,7 @@ resource "aws_api_gateway_integration" "lambda" {
   "principalId": "$context.authorizer.principalId",
   "stage": "$context.stage",
   "headers": {
-    "Apigtw-Request-Id" : "$context.requestId",
+    "Apigtw-Request-Id": "$context.requestId",
     "Escale-User-Id": "$context.authorizer.principalId",
     "Partner": "$context.authorizer.brand",
     "Product": "$context.authorizer.product",
@@ -61,8 +60,7 @@ resource "aws_api_gateway_integration" "lambda" {
     #end
   },
 
-  "cognitoPoolClaims" : {
-    
+  "cognitoPoolClaims": {
     "sub": "$context.authorizer.claims.sub"
   },
 
@@ -72,6 +70,9 @@ resource "aws_api_gateway_integration" "lambda" {
 
   #set( $map = $context.authorizer )
   "enhancedAuthContext": $loop,
+
+  #set( $map = $input.params().querystring )
+  "queryStringParameters": $loop,
 
   #set( $map = $input.params().querystring )
   "query": $loop,
