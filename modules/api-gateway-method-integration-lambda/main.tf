@@ -7,7 +7,7 @@ resource "aws_api_gateway_method" "lambda" {
 }
 
 resource "aws_lambda_permission" "lambda" {
-  statement_id  = "AllowAPIGatewayEscaleInvoke_${var.api_gateway}_${var.resource_id}"
+  statement_id  = "AllowAPIGatewayEscaleInvoke_${data.aws_api_gateway_rest_api.gateway_api.id}_${var.resource_id}"
   action        = "lambda:InvokeFunction"
   function_name = var.function_name
   principal     = "apigateway.amazonaws.com"
@@ -26,7 +26,7 @@ resource "aws_api_gateway_integration" "lambda" {
   http_method             = var.method
   integration_http_method = "POST"
   type                    = "AWS"
-  uri                     = "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${var.lambda_arn}/invocations"
+  uri                     = "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${data.aws_lambda_function.lambda.arn}/invocations"
   passthrough_behavior    = "WHEN_NO_MATCH"
 
   request_templates = {

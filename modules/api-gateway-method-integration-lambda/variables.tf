@@ -47,12 +47,6 @@ variable "function_name" {
   type        = string
 }
 
-variable "lambda_arn" {
-  description = "Lambda's ARN"
-  type        = string
-  
-}
-
 variable "response_parameters" {
   description = "Response Parameters"
   type        = map(any)
