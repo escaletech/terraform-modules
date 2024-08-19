@@ -20,6 +20,12 @@ variable "enable_container_insights" {
   default     = "disabled"
 }
 
+variable "capacity_provider" {
+  description = "Set of names of one or more capacity providers to associate with the cluster. Valid values also include FARGATE and FARGATE_SPOT"
+  type = list(string)
+  default = ["FARGATE","FARGATE_SPOT"]
+}
+
 variable "default_capacity_provider_strategy" {
   description = "Default capacity provider strategy for the ECS cluster"
   type = list(object({
