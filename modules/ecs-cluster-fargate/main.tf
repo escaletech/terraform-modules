@@ -22,11 +22,11 @@ resource "aws_ecs_cluster" "ecs-cluster-fargate" {
 resource "aws_ecs_cluster_capacity_providers" "ecs-cluster-fargate" {
   cluster_name = aws_ecs_cluster.ecs-cluster-fargate.name
 
-  capacity_providers = ["FARGATE"]
+  capacity_providers = var.capacity_provider
 
   default_capacity_provider_strategy {
     weight            = 1
-    capacity_provider = var.capacity_provider
+    capacity_provider = [var.capacity_provider]
   }
 }
 

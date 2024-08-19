@@ -21,7 +21,7 @@ variable "enable_container_insights" {
 }
 
 variable "capacity_provider" {
-  description = "Set of names of one or more capacity providers to associate with the cluster. Valid values also include FARGATE and FARGATE_SPOT"
-  type        = string
-  default     = "FARGATE"
+  description = "Set of names of one or more capacity providers to associate with the cluster as a list. Valid values also include FARGATE and FARGATE_SPOT"
+  type        = list(string)
+  default     = ["FARGATE"]
 }
