@@ -20,7 +20,7 @@ variable "enable_container_insights" {
   default     = "disabled"
 }
 
-variable "capacity_providers" {
+variable "capacity_provider" {
   description = "Set of names of one or more capacity providers to associate with the cluster. Valid values also include FARGATE and FARGATE_SPOT"
   type        = string
   default     = "FARGATE"

@@ -26,7 +26,7 @@ resource "aws_ecs_cluster_capacity_providers" "ecs-cluster-fargate" {
 
   default_capacity_provider_strategy {
     weight            = 1
-    capacity_provider = var.capacity_providers
+    capacity_provider = var.capacity_provider
   }
 }
 
