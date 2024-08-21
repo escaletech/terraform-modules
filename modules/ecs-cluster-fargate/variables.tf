@@ -34,11 +34,11 @@ variable "default_capacity_provider_strategy" {
   }))
   default = [
     {
-      weight            = 2
+      weight            = 1
       capacity_provider = "FARGATE_SPOT"
     },
     {
-      weight            = 1
+      weight            = 2
       capacity_provider = "FARGATE"
     }
   ]
