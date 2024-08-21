@@ -80,20 +80,7 @@ variable "cpu_target" {
   default     = 60
 }
 
-variable "capacity_provider_strategy" {
-  description = "Default capacity provider strategy for the ECS cluster"
-  type = list(object({
-    weight            = number
-    capacity_provider = string
-  }))
-  default = [
-    {
-      weight            = 2
-      capacity_provider = "FARGATE_SPOT"
-    },
-    {
-      weight            = 1
-      capacity_provider = "FARGATE"
-    }
-  ]
+variable "spot" {
+  type = bool
+  default = false
 }
