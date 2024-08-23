@@ -26,6 +26,16 @@ variable "security_groups" {
 variable "tags" {
   description = "Tags para o serviço ECS."
   type        = map(string)
+
+  validation {
+    condition = alltrue([
+      contains(keys(var.tags), "owner"),
+      contains(keys(var.tags), "partner"),
+      contains(keys(var.tags), "business"),
+      contains(keys(var.tags), "product")
+    ])
+    error_message = "Tags 'owner', 'partner', 'business' and 'product' is mandatory."
+  }
 }
 
 variable "container_port" {
