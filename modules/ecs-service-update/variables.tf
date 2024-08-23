@@ -29,10 +29,10 @@ variable "tags" {
 
   validation {
     condition = alltrue([
-      contains(keys(var.tags), "owner"),
-      contains(keys(var.tags), "partner"),
-      contains(keys(var.tags), "business"),
-      contains(keys(var.tags), "product")
+      contains([for k in keys(var.tags) : lower(k)], "owner"),
+      contains([for k in keys(var.tags) : lower(k)], "partner"),
+      contains([for k in keys(var.tags) : lower(k)], "business"),
+      contains([for k in keys(var.tags) : lower(k)], "product")
     ])
     error_message = "Tags 'owner', 'partner', 'business' and 'product' is mandatory."
   }
