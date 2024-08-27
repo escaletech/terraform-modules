@@ -90,4 +90,14 @@ variable "cpu_target" {
   default     = 60
 }
 
-#variable "" {}
+variable "weight_fargate" {
+  description = "The weight of the capacity provider strategy"
+  type        = number
+  default     = 2
+}
+
+variable "weight_fargate_spot" {
+  description = "The weight of the capacity provider strategy"
+  type        = number
+  default     = 0
+}

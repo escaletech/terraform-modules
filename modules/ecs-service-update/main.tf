@@ -2,13 +2,22 @@ resource "aws_ecs_service" "ecs_service_update" {
   name            = var.service_name
   cluster         = var.cluster_name
   task_definition = var.task_definition_arn
-  launch_type     = "FARGATE"
   desired_count   = var.desire_count
-  #  iam_role        = var.iam_role
+
   network_configuration {
     assign_public_ip = var.assign_public_ip
     subnets          = var.subnets
     security_groups  = var.security_groups
+  }
+
+  capacity_provider_strategy {
+    weight = var.weight_fargate
+    capacity_provider = "FARGATE"
+  }
+
+  capacity_provider_strategy {
+    weight = var.weight_fargate_spot
+    capacity_provider = "FARGATE_SPOT"
   }
 
   deployment_controller {
