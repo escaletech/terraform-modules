@@ -105,5 +105,5 @@ variable "weight_fargate" {
 variable "weight_fargate_spot" {
   description = "The weight of the capacity provider strategy"
   type        = number
-  default     = 0
+  default     = 1
 }
