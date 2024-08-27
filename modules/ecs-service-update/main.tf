@@ -11,12 +11,12 @@ resource "aws_ecs_service" "ecs_service_update" {
   }
 
   capacity_provider_strategy {
-    weight = var.weight_fargate
+    weight = var.spot_staging ? 1 : var.weight_fargate
     capacity_provider = "FARGATE"
   }
 
   capacity_provider_strategy {
-    weight = var.weight_fargate_spot
+    weight = var.spot_staging ? 2 : var.weight_fargate_spot
     capacity_provider = "FARGATE_SPOT"
   }
 

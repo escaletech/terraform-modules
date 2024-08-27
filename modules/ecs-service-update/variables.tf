@@ -90,6 +90,12 @@ variable "cpu_target" {
   default     = 60
 }
 
+variable "spot_staging" {
+  description = "Flag to enable or disable spot instances."
+  type        = bool
+  default     = false
+}
+
 variable "weight_fargate" {
   description = "The weight of the capacity provider strategy"
   type        = number
