@@ -3,6 +3,7 @@ resource "aws_ecs_service" "ecs_service_update" {
   cluster         = var.cluster_name
   task_definition = var.task_definition_arn
   desired_count   = var.desire_count
+  launch_type     = var.spot ? "NONE" : "FARGATE"
 
   network_configuration {
     assign_public_ip = var.assign_public_ip
@@ -10,14 +11,22 @@ resource "aws_ecs_service" "ecs_service_update" {
     security_groups  = var.security_groups
   }
 
-  capacity_provider_strategy {
-    weight = var.spot_staging ? 1 : var.weight_fargate
-    capacity_provider = "FARGATE"
+  dynamic "capacity_provider_strategy" {
+    for_each = var.spot ? [1] : []
+
+    content {
+      capacity_provider = "FARGATE"
+      weight            = var.spot_staging ? 1 : var.weight_fargate
+    }
   }
 
-  capacity_provider_strategy {
-    weight = var.spot_staging ? 2 : var.weight_fargate_spot
-    capacity_provider = "FARGATE_SPOT"
+  dynamic "capacity_provider_strategy" {
+    for_each = var.spot ? [1] : []
+
+    content {
+      capacity_provider = "FARGATE_SPOT"
+      weight            = var.spot_staging ? 2 : var.weight_fargate_spot
+    }
   }
 
   deployment_controller {
@@ -42,4 +51,8 @@ resource "aws_ecs_service" "ecs_service_update" {
   enable_ecs_managed_tags = true
 
   tags = var.tags
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }

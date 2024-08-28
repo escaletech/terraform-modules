@@ -96,6 +96,12 @@ variable "spot_staging" {
   default     = false
 }
 
+variable "spot" {
+  description = "Flag to enable or disable spot instances."
+  type        = bool
+  default     = false
+}
+
 variable "weight_fargate" {
   description = "The weight of the capacity provider strategy"
   type        = number
