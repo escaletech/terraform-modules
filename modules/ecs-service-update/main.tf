@@ -3,12 +3,7 @@ resource "aws_ecs_service" "ecs_service_update" {
   cluster         = var.cluster_name
   task_definition = var.task_definition_arn
   desired_count   = var.desire_count
-  dynamic "launch_type" {
-    for_each = var.spot ? [1] : [0]
-    content {
-      launch_type = "FARGATE"
-    }
-  }
+  launch_type     = var.spot ? null : "FARGATE"
 
   network_configuration {
     assign_public_ip = var.assign_public_ip
