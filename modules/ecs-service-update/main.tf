@@ -51,8 +51,4 @@ resource "aws_ecs_service" "ecs_service_update" {
   enable_ecs_managed_tags = true
 
   tags = var.tags
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
