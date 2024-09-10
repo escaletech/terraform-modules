@@ -28,6 +28,11 @@ resource "aws_ecs_cluster_capacity_providers" "ecs-cluster-fargate" {
     weight            = 1
     capacity_provider = "FARGATE"
   }
+
+  default_capacity_provider_strategy {
+    weight            = 0
+    capacity_provider = "FARGATE_SPOT"
+  }
 }
 
 resource "aws_service_discovery_http_namespace" "default-ecs-cluster-fargate" {
