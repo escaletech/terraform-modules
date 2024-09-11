@@ -100,6 +100,9 @@ resource "aws_api_gateway_method_response" "response_200" {
   http_method = var.method
   status_code = "200"
 
+  response_parameters = {
+    "method.response.header.*" = true
+  }
 }
 
 resource "aws_api_gateway_integration_response" "lambda" {
@@ -116,5 +119,9 @@ resource "aws_api_gateway_integration_response" "lambda" {
 $elem.get("body")
 #set($context.responseOverride.status = $elem.get("statusCode"))
 EOF
+  }
+
+  response_parameters = {
+    "method.response.header.*" = "integration.response.header.*"
   }
 }
