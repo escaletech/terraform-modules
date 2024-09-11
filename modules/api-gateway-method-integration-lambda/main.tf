@@ -101,7 +101,7 @@ resource "aws_api_gateway_method_response" "response_200" {
   status_code = "200"
 
   response_parameters = {
-    "method.response.header.*" = true
+    "method.response.header.Request-Id" = true
   }
 }
 
@@ -122,6 +122,6 @@ EOF
   }
 
   response_parameters = {
-    "method.response.header.*" = "integration.response.header.*"
+    "method.response.header.Request-Id" = "integration.response.header.Request-Id"
   }
 }
