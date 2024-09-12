@@ -38,6 +38,7 @@ data "aws_ami" "ecs_optimized" {
 }
 
 resource "aws_autoscaling_group" "ecs_cluster" {
+  name                 = var.cluster_name
   desired_capacity     = var.desired_capacity
   max_size             = var.max_size
   min_size             = var.min_size
