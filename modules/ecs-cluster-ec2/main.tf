@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "ecs-cluster-ec2" {
 
   setting {
     name  = "containerInsights"
-    value = "enabled"
+    value = var.enable_container_insights
   }
 
   tags = var.tags
@@ -24,7 +24,7 @@ resource "aws_launch_configuration" "ecs_instance" {
               echo ECS_CLUSTER=${aws_ecs_cluster.ecs-cluster-ec2.name} >> /etc/ecs/ecs.config
               EOF
 
-  security_groups = [aws_security_group.ecs_instance.id]
+  security_groups = var.security_groups
 }
 
 data "aws_ami" "ecs_optimized" {
@@ -49,28 +49,6 @@ resource "aws_autoscaling_group" "ecs_cluster" {
     value               = "${var.cluster_name}-instance"
     propagate_at_launch = true
   }
-}
-
-resource "aws_security_group" "ecs_instance" {
-  name        = "${var.cluster_name}-sg"
-  description = "Security group for ECS instances"
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = var.tags
 }
 
 resource "aws_autoscaling_policy" "scale_up" {
