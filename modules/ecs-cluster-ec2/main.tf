@@ -68,9 +68,13 @@ resource "aws_autoscaling_policy" "scale_down" {
   autoscaling_group_name = aws_autoscaling_group.ecs_cluster.name
 }
 
-resource "aws_ecs_capacity_provider" "ecs_cluster" {
-  name = var.cluster_name
+locals {
+  modified_cluster_name = regexall("(aws|ecs|fargate)", var.cluster_name) != [] ? "asg" : var.cluster_name
+}
 
+resource "aws_ecs_capacity_provider" "ecs_cluster" {
+  name = local.modified_cluster_name
+  
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ecs_cluster.arn
     managed_termination_protection = "ENABLED"
