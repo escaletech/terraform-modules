@@ -80,3 +80,8 @@ resource "aws_ecs_capacity_provider" "ecs_cluster" {
     managed_termination_protection = "DISABLED"
   }
 }
+
+resource "aws_ecs_cluster_capacity_providers" "ecs_cluster" {
+  cluster_name       = aws_ecs_cluster.ecs-cluster-ec2.name
+  capacity_providers = [aws_ecs_capacity_provider.ecs_cluster.name]
+}
