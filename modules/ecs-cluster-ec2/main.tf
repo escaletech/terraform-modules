@@ -36,17 +36,18 @@ data "aws_ssm_parameter" "ecs_node_ami" {
 }
 
 resource "aws_launch_template" "ecs_ec2" {
-  name_prefix            = "demo-ecs-ec2-"
+  name_prefix            = "${var.cluster_name}-launch-template"
   image_id               = data.aws_ssm_parameter.ecs_node_ami.value
-  instance_type          = "t3.micro"
-  vpc_security_group_ids = [aws_security_group.ecs_node_sg.id]
+  instance_type          = var.instance_type
+  vpc_security_group_ids = var.security_groups
+  key_name               = var.key_name
 
   iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   monitoring { enabled = true }
 
   user_data = base64encode(<<-EOF
       #!/bin/bash
-      echo ECS_CLUSTER=${aws_ecs_cluster.main.name} >> /etc/ecs/ecs.config;
+      echo ECS_CLUSTER=${aws_ecs_cluster.ecs-cluster-ec2.name} >> /etc/ecs/ecs.config;
     EOF
   )
 }
