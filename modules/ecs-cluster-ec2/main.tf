@@ -1,14 +1,3 @@
-resource "aws_ecs_cluster" "ecs-cluster-ec2" {
-  name = var.cluster_name
-
-  setting {
-    name  = "containerInsights"
-    value = var.enable_container_insights
-  }
-
-  tags = var.tags
-}
-
 resource "aws_launch_configuration" "ecs_instance" {
   name          = "${var.cluster_name}-launch-configuration"
   image_id      = data.aws_ami.ecs_optimized.id
@@ -25,6 +14,12 @@ resource "aws_launch_configuration" "ecs_instance" {
               EOF
 
   security_groups = var.security_groups
+
+  ebs_block_device {
+    device_name = "/dev/xvda"
+    volume_size = 50
+    delete_on_termination = true
+  }
 }
 
 data "aws_ami" "ecs_optimized" {
@@ -68,20 +63,47 @@ resource "aws_autoscaling_policy" "scale_down" {
   autoscaling_group_name = aws_autoscaling_group.ecs_cluster.name
 }
 
-locals {
-  modified_cluster_name = regexall("(aws|ecs|fargate)", var.cluster_name) != [] ? "asg" : var.cluster_name
+resource "aws_ecs_cluster" "ecs-cluster-ec2" {
+  name = var.cluster_name
+
+  setting {
+    name  = "containerInsights"
+    value = var.enable_container_insights
+  }
+  
+  configuration {
+    execute_command_configuration {
+      logging = "DEFAULT"
+    }
+  }
+
+  tags = var.tags
 }
 
 resource "aws_ecs_capacity_provider" "ecs_cluster" {
-  name = local.modified_cluster_name
+  name = var.cluster_name
   
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ecs_cluster.arn
     managed_termination_protection = "DISABLED"
+
+    managed_scaling {
+      maximum_scaling_step_size = 1000
+      minimum_scaling_step_size = 1
+      status = "ENABLED"
+      target_capacity = 3
+    }
   }
 }
 
 resource "aws_ecs_cluster_capacity_providers" "ecs_cluster" {
-  cluster_name       = aws_ecs_cluster.ecs-cluster-ec2.name
-  capacity_providers = [aws_ecs_capacity_provider.ecs_cluster.name]
+ cluster_name = aws_ecs_cluster.ecs-cluster-ec2.name
+
+ capacity_providers = [aws_ecs_capacity_provider.ecs_cluster.name]
+
+ default_capacity_provider_strategy {
+   base              = 1
+   weight            = 100
+   capacity_provider = aws_ecs_capacity_provider.ecs_cluster.name
+ }
 }
