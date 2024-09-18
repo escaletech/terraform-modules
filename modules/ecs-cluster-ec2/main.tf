@@ -75,8 +75,19 @@ resource "aws_ecs_cluster" "ecs-cluster-ec2" {
       logging = "DEFAULT"
     }
   }
+  
+  service_connect_defaults {
+    namespace = aws_service_discovery_http_namespace.ecs-cluster-ec2.arn
+  }
 
   tags = var.tags
+
+  depends_on = [ aws_service_discovery_http_namespace.ecs-cluster-ec2 ]
+}
+
+resource "aws_service_discovery_http_namespace" "ecs-cluster-ec2" {
+  name        = var.cluster_name
+  description = "Default namespace"
 }
 
 resource "aws_ecs_capacity_provider" "ecs_cluster" {
