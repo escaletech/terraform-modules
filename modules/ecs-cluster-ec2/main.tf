@@ -15,8 +15,7 @@ resource "aws_launch_configuration" "ecs_instance" {
 
   security_groups = var.security_groups
 
-  ebs_block_device {
-    device_name = "/dev/xvda"
+  root_block_device {
     volume_size = 50
     delete_on_termination = true
   }
