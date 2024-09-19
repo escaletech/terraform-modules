@@ -1,43 +1,10 @@
-# resource "aws_launch_configuration" "ecs_instance" {
-#   name          = "${var.cluster_name}-launch-configuration"
-#   image_id      = data.aws_ami.ecs_optimized.id
-#   instance_type = var.instance_type
-#   key_name      = var.key_name
-
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-
-#   user_data = <<-EOF
-#               #!/bin/bash
-#               echo ECS_CLUSTER=${aws_ecs_cluster.ecs-cluster-ec2.name} >> /etc/ecs/ecs.config
-#               EOF
-
-#   security_groups = var.security_groups
-
-#   root_block_device {
-#     volume_size = 50
-#     delete_on_termination = true
-#   }
-# }
-
-# data "aws_ami" "ecs_optimized" {
-#   most_recent = true
-#   owners      = ["amazon"]
-
-#   filter {
-#     name   = "name"
-#     values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
-#   }
-# }
-
-data "aws_ssm_parameter" "ecs_node_ami" {
+data "aws_ssm_parameter" "ecs-node-ami" {
   name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
 }
 
-resource "aws_launch_template" "ecs_ec2" {
+resource "aws_launch_template" "ecs-cluster" {
   name_prefix            = "${var.cluster_name}-launch-template"
-  image_id               = data.aws_ssm_parameter.ecs_node_ami.value
+  image_id               = data.aws_ssm_parameter.ecs-node-ami.value
   instance_type          = var.instance_type
   vpc_security_group_ids = var.security_groups
   key_name               = var.key_name
@@ -63,7 +30,7 @@ resource "aws_autoscaling_group" "ecs_cluster" {
   protect_from_scale_in     = false
 
   launch_template {
-    id      = aws_launch_template.ecs_ec2.id
+    id      = aws_launch_template.ecs-cluster.id
     version = "$Latest"
   }
 
@@ -73,22 +40,6 @@ resource "aws_autoscaling_group" "ecs_cluster" {
     propagate_at_launch = true
   }
 }
-
-# resource "aws_autoscaling_policy" "scale_up" {
-#   name                   = "${var.cluster_name}-scale-up"
-#   scaling_adjustment     = 1
-#   adjustment_type        = "ChangeInCapacity"
-#   cooldown               = 300
-#   autoscaling_group_name = aws_autoscaling_group.ecs_cluster.name
-# }
-
-# resource "aws_autoscaling_policy" "scale_down" {
-#   name                   = "${var.cluster_name}-scale-down"
-#   scaling_adjustment     = -1
-#   adjustment_type        = "ChangeInCapacity"
-#   cooldown               = 300
-#   autoscaling_group_name = aws_autoscaling_group.ecs_cluster.name
-# }
 
 resource "aws_ecs_cluster" "ecs-cluster-ec2" {
   name = var.cluster_name
@@ -126,8 +77,8 @@ resource "aws_ecs_capacity_provider" "ecs_cluster" {
     managed_termination_protection = "DISABLED"
 
     managed_scaling {
-      maximum_scaling_step_size = 2
-      minimum_scaling_step_size = 1
+      maximum_scaling_step_size = var.max_size
+      minimum_scaling_step_size = var.min_size
       status                    = "ENABLED"
       target_capacity           = 100
     }
