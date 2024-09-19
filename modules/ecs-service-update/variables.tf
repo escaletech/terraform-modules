@@ -96,12 +96,6 @@ variable "asg" {
   default = false
 }
 
-variable "name_cluster_asg" {
-  description = "The name of the cluster"
-  type        = string
-  default     = "NONE"
-}
-
 variable "spot_staging" {
   description = "Flag to enable or disable spot instances."
   type        = bool

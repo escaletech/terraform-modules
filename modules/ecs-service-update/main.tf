@@ -33,7 +33,7 @@ resource "aws_ecs_service" "ecs_service_update" {
     for_each = var.asg ? [1] : []
 
     content {
-      capacity_provider = var.name_cluster_asg
+      capacity_provider = var.cluster_name
       weight            = 1
     }
   }
