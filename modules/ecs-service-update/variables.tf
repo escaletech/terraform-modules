@@ -90,7 +90,7 @@ variable "cpu_target" {
   default     = 60
 }
 
-variable "asg" {
+variable "ec2" {
   description = "Flag to enable or disable auto scaling group/ec2."
   type = bool
   default = false

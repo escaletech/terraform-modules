@@ -3,7 +3,7 @@ resource "aws_ecs_service" "ecs_service_update" {
   cluster         = var.cluster_name
   task_definition = var.task_definition_arn
   desired_count   = var.desire_count
-  launch_type     = var.spot || var.asg ? null : "FARGATE"
+  launch_type     = var.spot || var.ec2 ? null : "FARGATE"
 
   network_configuration {
     assign_public_ip = var.assign_public_ip
@@ -30,7 +30,7 @@ resource "aws_ecs_service" "ecs_service_update" {
   }
 
   dynamic "capacity_provider_strategy" {
-    for_each = var.asg ? [1] : []
+    for_each = var.ec2 ? [1] : []
 
     content {
       capacity_provider = var.cluster_name
