@@ -59,3 +59,9 @@ variable "arn_attach_additional_policy" {
   type        = list(string)
   default     = []
 }
+
+variable "requires_compatibilities" {
+  description = "The launch type on which to run your task."
+  type        = list(string)
+  default     = ["FARGATE"]
+}
