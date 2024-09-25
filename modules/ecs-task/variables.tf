@@ -60,8 +60,12 @@ variable "arn_attach_additional_policy" {
   default     = []
 }
 
-variable "requires_compatibilities" {
-  description = "The launch type on which to run your task."
-  type        = list(string)
-  default     = ["FARGATE"]
+variable "ec2" {
+  type        = bool
+  default     = false
+}
+
+variable "retention_in_days_logs" {
+  type        = number
+  default     = 30
 }

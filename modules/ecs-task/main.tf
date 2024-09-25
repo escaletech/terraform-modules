@@ -1,6 +1,11 @@
+resource "aws_cloudwatch_log_group" "log_group_cluster" {
+  name              = "/ecs/${var.family}"
+  retention_in_days = var.retention_in_days_logs
+}
+
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = var.family
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = var.ec2 ? null : ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = var.cpu
   memory                   = var.memory
