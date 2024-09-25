@@ -66,6 +66,16 @@ resource "aws_ecs_service" "ecs_service_update" {
     }
   }
 
+ force_new_deployment = var.ec2 ? true : null
+ 
+ dynamic "placement_constraints" {
+  for_each = var.ec2 ? [1] : []
+
+  content {
+    type = "distinctInstance"
+  }
+ }
+
   enable_ecs_managed_tags = true
 
   tags = var.tags
