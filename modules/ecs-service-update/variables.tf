@@ -90,12 +90,6 @@ variable "cpu_target" {
   default     = 60
 }
 
-variable "ec2" {
-  description = "Flag to enable or disable auto scaling group/ec2."
-  type = bool
-  default = false
-}
-
 variable "spot_staging" {
   description = "Flag to enable or disable spot instances."
   type        = bool
@@ -118,4 +112,10 @@ variable "weight_fargate_spot" {
   description = "The weight of the capacity provider strategy"
   type        = number
   default     = 1
+}
+
+variable "ec2" {
+  description = "Flag to enable or disable auto scaling group/ec2."
+  type = bool
+  default = false
 }

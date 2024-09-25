@@ -57,6 +57,15 @@ resource "aws_ecs_service" "ecs_service_update" {
     }
   }
 
+  dynamic "ordered_placement_strategy" {
+    for_each = var.ec2 ? [1] : []
+
+    content {
+      type  = "spread"
+      field = "attribute:ecs.availability-zone"
+    }
+  }
+
   enable_ecs_managed_tags = true
 
   tags = var.tags
