@@ -67,5 +67,5 @@ variable "ec2" {
 
 variable "retention_in_days_logs" {
   type        = number
-  default     = 30
+  default     = 7
 }
