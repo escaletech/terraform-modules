@@ -7,11 +7,6 @@ resource "aws_cloudwatch_log_group" "logs" {
   }
 }
 
-resource "aws_cloudwatch_log_stream" "foo" {
-  name           = "SampleLogStream1234"
-  log_group_name = aws_cloudwatch_log_group.yada.name
-}
-
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
