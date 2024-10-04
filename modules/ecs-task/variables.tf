@@ -59,3 +59,9 @@ variable "arn_attach_additional_policy" {
   type        = list(string)
   default     = []
 }
+
+variable "retention_in_days" {
+  description = "Número de dias para manter os logs no CloudWatch."
+  type        = number
+  default     = 14
+}
