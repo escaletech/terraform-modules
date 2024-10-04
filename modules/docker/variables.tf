@@ -136,3 +136,9 @@ variable "labels" {
   type = map(string)
   default = {}
 }
+
+variable "rm" {
+  description = "Automatically remove the container when it exits"
+  type        = bool
+  default     = false
+}
