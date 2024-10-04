@@ -7,6 +7,11 @@ resource "aws_cloudwatch_log_group" "logs" {
   }
 }
 
+resource "aws_cloudwatch_log_stream" "foo" {
+  name           = "SampleLogStream1234"
+  log_group_name = aws_cloudwatch_log_group.yada.name
+}
+
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
@@ -39,7 +44,6 @@ resource "aws_ecs_task_definition" "task_definition" {
           "awslogs-group"         = data.aws_cloudwatch_log_group.logs.name
           "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "task"
-          "awslogs-create-group"  = "false"
         }
       },
       environment = var.environment-variables
