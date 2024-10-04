@@ -1,7 +1,10 @@
 resource "aws_cloudwatch_log_group" "logs" {
-  depends_on = [ aws_ecs_task_definition.task_definition ]
   name = data.aws_cloudwatch_log_group.logs.name
   retention_in_days = var.retention_in_days
+
+  lifecycle {
+    ignore_changes = ["name"]
+  }
 }
 
 resource "aws_ecs_task_definition" "task_definition" {
