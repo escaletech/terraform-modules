@@ -1,5 +1,6 @@
 resource "aws_cloudwatch_log_group" "logs" {
-  name = var.family
+  depends_on = [ aws_ecs_task_definition.task_definition ]
+  name = data.aws_cloudwatch_log_group.logs.name
   retention_in_days = var.retention_in_days
 }
 
