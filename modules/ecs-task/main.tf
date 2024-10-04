@@ -3,7 +3,7 @@ resource "aws_cloudwatch_log_group" "logs" {
   retention_in_days = var.retention_in_days
 
   lifecycle {
-    ignore_changes = ["name"]
+    ignore_changes = [name]
   }
 }
 
@@ -36,10 +36,10 @@ resource "aws_ecs_task_definition" "task_definition" {
       logConfiguration : {
         "logDriver" : "awslogs",
         "options" : {
-          "awslogs-group"         = var.family
+          "awslogs-group"         = data.aws_cloudwatch_log_group.logs.name
           "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "task"
-          "awslogs-create-group"  = "true"
+          "awslogs-create-group"  = "false"
         }
       },
       environment = var.environment-variables
