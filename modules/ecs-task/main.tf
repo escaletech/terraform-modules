@@ -1,3 +1,8 @@
+resource "aws_cloudwatch_log_group" "logs" {
+  name = var.family
+  retention_in_days = var.retention_in_days
+}
+
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
@@ -27,7 +32,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       logConfiguration : {
         "logDriver" : "awslogs",
         "options" : {
-          "awslogs-group"         = var.family
+          "awslogs-group"         = aws_cloudwatch_log_group.logs.name
           "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "task"
           "awslogs-create-group"  = "true"
