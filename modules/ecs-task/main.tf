@@ -1,3 +1,7 @@
+locals {
+  log_group_exists = lookup(data.aws_cloudwatch_log_group.logs, "name", null) != null ? true : false
+}
+
 resource "aws_cloudwatch_log_group" "logs" {
   count = local.log_group_exists ? 0 : 1
 

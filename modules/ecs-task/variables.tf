@@ -65,11 +65,3 @@ variable "retention_in_days" {
   type        = number
   default     = 14
 }
-
-locals {
-  log_group_exists = lookup(data.aws_cloudwatch_log_group.logs, "name", null) != null ? true : false
-}
-
-output "log_group_exists" {
-  value = local.log_group_exists
-}
