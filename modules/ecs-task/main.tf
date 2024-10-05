@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_group" "logs" {
-  count = local.log_group_exists ? 1 : 0
+  count = local.log_group_exists ? 0 : 1
 
   name = var.family
   retention_in_days = var.retention_in_days
