@@ -1,10 +1,9 @@
 resource "aws_cloudwatch_log_group" "logs" {
-  name = data.aws_cloudwatch_log_group.logs.name
+  for_each = local.log_group_exists ? [1] : [0]
+
+  name = var.family
   retention_in_days = var.retention_in_days
 
-  lifecycle {
-    ignore_changes = [name]
-  }
 }
 
 resource "aws_ecs_task_definition" "task_definition" {
@@ -36,7 +35,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       logConfiguration : {
         "logDriver" : "awslogs",
         "options" : {
-          "awslogs-group"         = data.aws_cloudwatch_log_group.logs.name
+          "awslogs-group"         = var.family
           "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "task"
         }
