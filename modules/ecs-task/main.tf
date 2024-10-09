@@ -6,7 +6,7 @@ resource "aws_cloudwatch_log_group" "log_group_cluster" {
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = var.family
   requires_compatibilities = var.ec2 ? null : ["FARGATE"]
-  network_mode             = "awsvpc"
+  network_mode             = var.network_mode
   cpu                      = var.cpu
   memory                   = var.memory
   execution_role_arn       = aws_iam_role.ecs_task_role.arn

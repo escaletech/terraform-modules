@@ -69,3 +69,8 @@ variable "retention_in_days_logs" {
   type        = number
   default     = 7
 }
+
+variable "network_mode" {
+  type        = string
+  default     = "awsvpc"
+}
