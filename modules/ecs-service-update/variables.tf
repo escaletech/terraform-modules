@@ -113,3 +113,9 @@ variable "weight_fargate_spot" {
   type        = number
   default     = 1
 }
+
+variable "ec2" {
+  description = "Flag to enable or disable auto scaling group/ec2."
+  type = bool
+  default = false
+}
