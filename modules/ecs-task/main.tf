@@ -1,5 +1,5 @@
 locals {
-  log_group_exists = lookup(data.aws_cloudwatch_log_group.logs, "name", null) != null ? true : false
+  log_group_exists = try(data.aws_cloudwatch_log_group.logs.name, null) != null ? true : false
 }
 
 resource "aws_cloudwatch_log_group" "logs" {
