@@ -6,7 +6,7 @@ resource "aws_cloudwatch_log_group" "logs" {
   count = local.log_group_exists ? 0 : 1
 
   name = var.family
-  retention_in_days = var.var.retention_in_days
+  retention_in_days = var.retention_in_days
 }
 
 resource "aws_ecs_task_definition" "task_definition" {
