@@ -60,8 +60,8 @@ variable "arn_attach_additional_policy" {
   default     = []
 }
 
-variable "retention_in_days" {
-  description = "Quantidade de dias para retenção de logs."
-  type        = number
-  default     = 14
-}
+# variable "retention_in_days" {
+#   description = "Quantidade de dias para retenção de logs."
+#   type        = number
+#   default     = 14
+# }

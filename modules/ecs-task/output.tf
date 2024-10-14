@@ -3,6 +3,6 @@ output "task_definition_arn" {
   value       = aws_ecs_task_definition.task_definition.arn
 }
 
-output "log_group_exists" {
-  value = local.log_group_exists
-}
+# output "log_group_exists" {
+#   value = local.log_group_exists
+# }
