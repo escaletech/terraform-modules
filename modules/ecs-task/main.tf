@@ -1,3 +1,14 @@
+locals {
+  log_group_exists = lookup(data.aws_cloudwatch_log_group.logs, "name", null) != null ? true : false
+}
+
+resource "aws_cloudwatch_log_group" "logs" {
+  count = local.log_group_exists ? 0 : 1
+
+  name = var.family
+  retention_in_days = var.var.retention_in_days
+}
+
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = var.family
   requires_compatibilities = ["FARGATE"]
@@ -30,7 +41,6 @@ resource "aws_ecs_task_definition" "task_definition" {
           "awslogs-group"         = var.family
           "awslogs-region"        = data.aws_region.current.name
           "awslogs-stream-prefix" = "task"
-          "awslogs-create-group"  = "true"
         }
       },
       environment = var.environment-variables
