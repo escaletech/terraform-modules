@@ -5,10 +5,14 @@ resource "aws_ecs_service" "ecs_service_update" {
   desired_count   = var.desire_count
   launch_type     = var.spot || var.ec2 ? null : "FARGATE"
 
-  network_configuration {
-    assign_public_ip = var.assign_public_ip
-    subnets          = var.subnets
-    security_groups  = var.security_groups
+  dynamic "network_configuration" {
+    for_each = var.ec2 ? [] : [1]
+
+    content {
+      assign_public_ip = var.assign_public_ip
+      subnets          = var.subnets
+      security_groups  = var.security_groups
+    }
   }
 
   dynamic "capacity_provider_strategy" {
