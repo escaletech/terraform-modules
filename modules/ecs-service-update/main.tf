@@ -3,7 +3,7 @@ resource "aws_ecs_service" "ecs_service_update" {
   cluster         = var.cluster_name
   task_definition = var.task_definition_arn
   desired_count   = var.desire_count
-  launch_type     = var.spot ? null : "FARGATE"
+  launch_type     = var.spot || var.ec2 ? null : "FARGATE"
 
   network_configuration {
     assign_public_ip = var.assign_public_ip
@@ -29,6 +29,15 @@ resource "aws_ecs_service" "ecs_service_update" {
     }
   }
 
+  dynamic "capacity_provider_strategy" {
+    for_each = var.ec2 ? [1] : []
+
+    content {
+      capacity_provider = var.cluster_name
+      weight            = 1
+    }
+  }
+
   deployment_controller {
     type = "ECS"
   }
@@ -47,6 +56,25 @@ resource "aws_ecs_service" "ecs_service_update" {
       target_group_arn = var.target_group_arn
     }
   }
+
+  dynamic "ordered_placement_strategy" {
+    for_each = var.ec2 ? [1] : []
+
+    content {
+      type  = "spread"
+      field = "attribute:ecs.availability-zone"
+    }
+  }
+
+ force_new_deployment = var.ec2 ? true : null
+ 
+ dynamic "placement_constraints" {
+  for_each = var.ec2 ? [1] : []
+
+  content {
+    type = "distinctInstance"
+  }
+ }
 
   enable_ecs_managed_tags = true
 
