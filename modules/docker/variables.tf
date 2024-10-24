@@ -142,3 +142,15 @@ variable "rm" {
   type        = bool
   default     = false
 }
+
+variable "log_driver" {
+  description = "Logging driver for the container"
+  type        = string
+  default     = null
+}
+
+variable "log_opts" {
+  description = "Logging options for the container"
+  type        = map(string)
+  default     = {}
+}

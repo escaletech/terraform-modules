@@ -43,6 +43,8 @@ resource "docker_container" "default" {
   command      = var.command
   entrypoint   = var.entrypoint
   env          = var.environment != null ? [for k, v in var.environment : "${k}=${v}"] : null
+  logs         = var.logs != null ? var.logs : null
+  log_opts     = var.log_opts != null ? var.log_opts : null
 
   dynamic "ports" {
     for_each = var.ports == null ? [] : var.ports
