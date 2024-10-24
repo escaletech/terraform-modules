@@ -43,7 +43,7 @@ resource "docker_container" "default" {
   command      = var.command
   entrypoint   = var.entrypoint
   env          = var.environment != null ? [for k, v in var.environment : "${k}=${v}"] : null
-  logs         = var.logs != null ? var.logs : null
+  log_driver   = var.log_driver != null ? var.log_driver : null
   log_opts     = var.log_opts != null ? var.log_opts : null
 
   dynamic "ports" {
