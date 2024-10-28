@@ -154,3 +154,9 @@ variable "log_opts" {
   type        = map(string)
   default     = {}
 }
+
+variable "keep_locally" {
+  description = "Keep the container locally"
+  type        = bool
+  default     = false 
+}

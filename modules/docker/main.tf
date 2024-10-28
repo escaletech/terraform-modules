@@ -11,6 +11,7 @@ data "docker_registry_image" "default" {
 resource "docker_image" "default" {
   name          = data.docker_registry_image.default.name
   pull_triggers = [data.docker_registry_image.default.sha256_digest]
+  keep_locally  = var.keep_locally
 }
 
 resource "docker_volume" "default" {
