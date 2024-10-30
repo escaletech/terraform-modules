@@ -11,6 +11,7 @@ data "docker_registry_image" "default" {
 resource "docker_image" "default" {
   name          = data.docker_registry_image.default.name
   pull_triggers = [data.docker_registry_image.default.sha256_digest]
+  keep_locally  = var.keep_locally
 }
 
 resource "docker_volume" "default" {
@@ -33,6 +34,7 @@ resource "docker_container" "default" {
   name         = var.container_name != null ? var.container_name : local.container_name
   image        = docker_image.default.latest
   hostname     = var.hostname
+  rm           = var.rm
   restart      = var.restart_policy
   privileged   = var.privileged
   network_mode = var.network_mode
@@ -41,6 +43,8 @@ resource "docker_container" "default" {
   command      = var.command
   entrypoint   = var.entrypoint
   env          = var.environment != null ? [for k, v in var.environment : "${k}=${v}"] : null
+  log_driver   = var.log_driver != null ? var.log_driver : null
+  log_opts     = var.log_opts != null ? var.log_opts : null
 
   dynamic "ports" {
     for_each = var.ports == null ? [] : var.ports

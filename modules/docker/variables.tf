@@ -136,3 +136,27 @@ variable "labels" {
   type = map(string)
   default = {}
 }
+
+variable "rm" {
+  description = "Automatically remove the container when it exits"
+  type        = bool
+  default     = false
+}
+
+variable "log_driver" {
+  description = "Logging driver for the container"
+  type        = string
+  default     = null
+}
+
+variable "log_opts" {
+  description = "Logging options for the container"
+  type        = map(string)
+  default     = {}
+}
+
+variable "keep_locally" {
+  description = "Keep the container locally"
+  type        = bool
+  default     = false 
+}
