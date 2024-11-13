@@ -100,6 +100,15 @@ resource "aws_api_gateway_method_response" "response_200" {
   http_method = var.method
   status_code = "200"
 
+  response_parameters = {
+    "method.response.header.Content-Type" = true
+    "method.response.header.Content-Security-Policy" = true
+    "method.response.header.X-Frame-Options" = true
+    "method.response.header.Strict-Transport-Security" = true
+    "method.response.header.X-Content-Type-Options" = true
+    "method.response.header.Cache-Control" = true
+  }
+
 }
 
 resource "aws_api_gateway_integration_response" "lambda" {
@@ -113,6 +122,12 @@ resource "aws_api_gateway_integration_response" "lambda" {
   response_templates = { 
     "application/json" = <<EOF
 #set($elem = $util.parseJson($input.json('$')))
+#set($headers = $elem.get("headers"))
+    #if($headers && $headers.size() > 0)
+      #foreach($header in $headers.keySet())
+        $util.qr($context.responseOverride.header.put($header, $headers.get($header)))
+      #end
+    #end
 $elem.get("body")
 #set($context.responseOverride.status = $elem.get("statusCode"))
 EOF
