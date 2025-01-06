@@ -66,13 +66,4 @@ variable "s3_policy_document" {
       effect    = string
     }))
   })
-  default = {
-    statement = [
-      {
-        actions   = ["s3:GetObject"]
-        resources = ["arn:aws:s3:::${var.bucket_name}/*"]
-        effect    = "Allow"
-      }
-    ]
-  }
 }
