@@ -7,9 +7,9 @@ resource "aws_s3_bucket" "s3_bucket" {
 resource "aws_s3_bucket_public_access_block" "s3_bucket" {
   bucket = aws_s3_bucket.s3_bucket.bucket
 
-  block_public_acls = var.block_public_acls
-  block_public_policy = var.block_public_policy
-  ignore_public_acls = var.ignore_public_acls
+  block_public_acls       = var.block_public_acls
+  block_public_policy     = var.block_public_policy
+  ignore_public_acls      = var.ignore_public_acls
   restrict_public_buckets = var.restrict_public_buckets
 }
 
@@ -30,7 +30,7 @@ resource "aws_s3_bucket_website_configuration" "static_website" {
 }
 
 resource "aws_s3_bucket_acl" "static_website" {
-  count  = var.website_static ? 1 : 0
+  count = var.website_static ? 1 : 0
 
   bucket = aws_s3_bucket.s3_bucket.bucket
   acl    = var.website_acl
