@@ -70,7 +70,7 @@ variable "s3_policy_document" {
     statement = [
       {
         actions   = ["s3:GetObject"]
-        resources = ["arn:aws:s3:::${aws_s3_bucket.s3_bucket.bucket}/*"]
+        resources = ["arn:aws:s3:::${var.bucket_name}/*"]
         effect    = "Allow"
       }
     ]
