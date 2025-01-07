@@ -64,6 +64,10 @@ variable "s3_policy_document" {
       actions   = list(string)
       resources = list(string)
       effect    = string
+      principals = object({
+        type        = string
+        identifiers = list(string)
+      })
     }))
   })
 }
