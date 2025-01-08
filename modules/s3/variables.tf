@@ -60,6 +60,7 @@ variable "website_acl" {
 variable "s3_policy_document" {
   type = object({
     statement = list(object({
+      sid       = string
       actions   = list(string)
       resources = list(string)
       effect    = string
@@ -93,7 +94,7 @@ variable "grantee_display_name" {
 variable "grant_permission" {
   description = "The permission to grant to the grantee"
   type        = string
-  default     = "READ" 
+  default     = "READ"
 }
 
 variable "owner_id" {

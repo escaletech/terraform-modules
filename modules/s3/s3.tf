@@ -39,14 +39,14 @@ resource "aws_s3_bucket_acl" "static_website" {
     grant {
       grantee {
         display_name = var.grantee_display_name
-        id   = var.grantee_id
-        type = var.grantee_type
+        id           = var.grantee_id
+        type         = var.grantee_type
       }
       permission = var.grant_permission
     }
     owner {
       display_name = var.grantee_display_name
-      id = var.grantee_id
+      id           = var.grantee_id
     }
   }
 }
