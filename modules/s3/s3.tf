@@ -46,7 +46,7 @@ resource "aws_s3_bucket_acl" "static_website" {
     }
     owner {
       display_name = var.grantee_display_name
-      id = var.owner_id
+      id = var.grantee_id
     }
   }
 }
