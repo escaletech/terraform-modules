@@ -38,13 +38,15 @@ resource "aws_s3_bucket_acl" "static_website" {
   access_control_policy {
     grant {
       grantee {
-        id   = data.aws_canonical_user_id.current.id
-        type = "CanonicalUser"
+        display_name = var.grantee_display_name
+        id   = var.grantee_id
+        type = var.grantee_type
       }
-      permission = "READ"
+      permission = var.grant_permission
     }
     owner {
-      id = data.aws_canonical_user_id.current.id
+      display_name = var.grantee_display_name
+      id = var.owner_id
     }
   }
 }
