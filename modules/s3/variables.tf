@@ -54,11 +54,10 @@ variable "website_protocol" {
 variable "website_acl" {
   description = "The ACL to apply to the S3 bucket"
   type        = string
-  default     = "public-read"
+  default     = null
 }
 
 variable "s3_policy_document" {
-  description = "A política de acesso para o bucket S3. Se não fornecida, será criada uma política padrão."
   type = object({
     statement = list(object({
       actions   = list(string)
@@ -70,4 +69,35 @@ variable "s3_policy_document" {
       })
     }))
   })
+  default = null
+}
+
+variable "grantee_id" {
+  description = "The ID of the AWS account to grant access to"
+  type        = string
+  default     = null
+}
+
+variable "grantee_type" {
+  description = "The type of grantee to grant access to"
+  type        = string
+  default     = "CanonicalUser"
+}
+
+variable "grantee_display_name" {
+  description = "The display name of the grantee to grant access to"
+  type        = string
+  default     = null
+}
+
+variable "grant_permission" {
+  description = "The permission to grant to the grantee"
+  type        = string
+  default     = "READ" 
+}
+
+variable "owner_id" {
+  description = "The ID of the AWS account that owns the bucket"
+  type        = string
+  default     = null
 }

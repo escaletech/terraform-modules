@@ -34,4 +34,17 @@ resource "aws_s3_bucket_acl" "static_website" {
 
   bucket = aws_s3_bucket.s3_bucket.bucket
   acl    = var.website_acl
+
+  access_control_policy {
+    grant {
+      grantee {
+        id   = data.aws_canonical_user_id.current.id
+        type = "CanonicalUser"
+      }
+      permission = "READ"
+    }
+    owner {
+      id = data.aws_canonical_user_id.current.id
+    }
+  }
 }
