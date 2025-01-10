@@ -95,3 +95,15 @@ variable "redrive_policy" {
   type        = string
   default     = ""
 }
+
+variable "kms_master_key_id" {
+  description = "The ID of an AWS-managed customer master key (CMK) for Amazon SQS or a custom CMK."
+  type        = string
+  default     = null
+}
+
+variable "kms_data_key_reuse_period_seconds" {
+  description = "The length of time, in seconds, for which Amazon SQS can reuse a data key to encrypt or decrypt messages before calling AWS KMS again."
+  type        = number
+  default     = null
+}
