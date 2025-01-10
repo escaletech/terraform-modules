@@ -42,13 +42,13 @@ variable "website_static" {
 variable "website_hostname" {
   description = "The hostname to redirect all requests to"
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "website_protocol" {
   description = "The protocol to redirect all requests to"
   type        = string
-  default     = null
+  default     = "https"
 }
 
 variable "website_acl" {
