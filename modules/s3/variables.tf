@@ -48,7 +48,7 @@ variable "website_hostname" {
 variable "website_protocol" {
   description = "The protocol to redirect all requests to"
   type        = string
-  default     = "https"
+  default     = null
 }
 
 variable "website_acl" {
