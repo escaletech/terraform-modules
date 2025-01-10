@@ -42,7 +42,7 @@ variable "website_static" {
 variable "website_hostname" {
   description = "The hostname to redirect all requests to"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "website_protocol" {
