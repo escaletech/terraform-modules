@@ -27,6 +27,15 @@ resource "aws_s3_bucket_website_configuration" "static_website" {
     host_name = var.website_hostname
     protocol  = var.website_protocol
   }
+
+  index_document {
+    suffix = var.website_index_document
+  }
+
+  error_document {
+    key = var.website_error_document
+  }
+
 }
 
 resource "aws_s3_bucket_acl" "static_website" {
