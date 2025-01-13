@@ -118,7 +118,7 @@ variable "owner_id" {
 variable "redirect" {
   description = "Whether to redirect all requests to the website hostname"
   type        = bool
-  default     = false 
+  default     = true 
 }
 
 variable "index_document" {
