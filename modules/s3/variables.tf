@@ -114,3 +114,21 @@ variable "owner_id" {
   type        = string
   default     = null
 }
+
+variable "redirect" {
+  description = "Whether to redirect all requests to the website hostname"
+  type        = bool
+  default     = false 
+}
+
+variable "index_document" {
+  description = "Whether to set an index document for the S3 bucket"
+  type        = bool
+  default     = false
+}
+
+variable "error_document" {
+  description = "Whether to set an error document for the S3 bucket"
+  type        = bool
+  default     = false
+}
