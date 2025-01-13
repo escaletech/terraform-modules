@@ -57,6 +57,18 @@ variable "website_acl" {
   default     = null
 }
 
+variable "website_index_document" {
+  description = "The index document for the S3 bucket"
+  type        = string
+  default     = null
+}
+
+variable "website_error_document" {
+  description = "value of the error document for the S3 bucket"
+  type        = string
+  default     = null
+}
+
 variable "s3_policy_document" {
   type = object({
     statement = list(object({
@@ -101,4 +113,22 @@ variable "owner_id" {
   description = "The ID of the AWS account that owns the bucket"
   type        = string
   default     = null
+}
+
+variable "redirect" {
+  description = "Whether to redirect all requests to the website hostname"
+  type        = bool
+  default     = true 
+}
+
+variable "index_document" {
+  description = "Whether to set an index document for the S3 bucket"
+  type        = bool
+  default     = false
+}
+
+variable "error_document" {
+  description = "Whether to set an error document for the S3 bucket"
+  type        = bool
+  default     = false
 }
