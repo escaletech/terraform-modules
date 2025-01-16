@@ -39,6 +39,12 @@ variable "website_static" {
   default     = false
 }
 
+variable "website_static_acl" {
+  description = "Disable ACL in bucket"
+  type        = bool
+  default     = true
+}
+
 variable "website_hostname" {
   description = "The hostname to redirect all requests to"
   type        = string
@@ -53,6 +59,18 @@ variable "website_protocol" {
 
 variable "website_acl" {
   description = "The ACL to apply to the S3 bucket"
+  type        = string
+  default     = null
+}
+
+variable "website_index_document" {
+  description = "The index document for the S3 bucket"
+  type        = string
+  default     = null
+}
+
+variable "website_error_document" {
+  description = "value of the error document for the S3 bucket"
   type        = string
   default     = null
 }
@@ -101,4 +119,22 @@ variable "owner_id" {
   description = "The ID of the AWS account that owns the bucket"
   type        = string
   default     = null
+}
+
+variable "redirect" {
+  description = "Whether to redirect all requests to the website hostname"
+  type        = bool
+  default     = true 
+}
+
+variable "index_document" {
+  description = "Whether to set an index document for the S3 bucket"
+  type        = bool
+  default     = false
+}
+
+variable "error_document" {
+  description = "Whether to set an error document for the S3 bucket"
+  type        = bool
+  default     = false
 }

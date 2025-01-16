@@ -23,14 +23,36 @@ resource "aws_s3_bucket_website_configuration" "static_website" {
 
   bucket = aws_s3_bucket.s3_bucket.bucket
 
-  redirect_all_requests_to {
-    host_name = var.website_hostname
-    protocol  = var.website_protocol
+  dynamic "redirect_all_requests_to" {
+    for_each = var.redirect ? [1] : []
+
+    content {
+      host_name = var.website_hostname
+      protocol  = var.website_protocol
+    }
   }
+
+  dynamic "index_document" {
+    for_each = var.index_document ? [1] : []
+
+    content {
+      suffix = var.website_index_document
+    }
+  }
+
+  dynamic "error_document" {
+    for_each = var.error_document ? [1] : []
+
+    content {
+      key = var.website_error_document
+    }
+  }
+
+
 }
 
 resource "aws_s3_bucket_acl" "static_website" {
-  count = var.website_static ? 1 : 0
+  count = var.website_static_acl ? 1 : 0
 
   bucket = aws_s3_bucket.s3_bucket.bucket
   acl    = var.website_acl
