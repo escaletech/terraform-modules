@@ -39,6 +39,12 @@ variable "website_static" {
   default     = false
 }
 
+variable "website_static_acl" {
+  description = "Disable ACL in bucket"
+  type        = bool
+  default     = true
+}
+
 variable "website_hostname" {
   description = "The hostname to redirect all requests to"
   type        = string

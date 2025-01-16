@@ -52,7 +52,7 @@ resource "aws_s3_bucket_website_configuration" "static_website" {
 }
 
 resource "aws_s3_bucket_acl" "static_website" {
-  count = var.website_static ? 1 : 0
+  count = var.website_static_acl ? 1 : 0
 
   bucket = aws_s3_bucket.s3_bucket.bucket
   acl    = var.website_acl
