@@ -13,10 +13,10 @@ resource "aws_s3_bucket" "internal" {
   tags   = var.tags
 }
 
-# resource "aws_s3_bucket_acl" "internal" {
-#   bucket = aws_s3_bucket.internal.bucket
-#   acl    = "private"
-# }
+resource "aws_s3_bucket_acl" "internal" {
+  bucket = aws_s3_bucket.internal.bucket
+  acl    = "private"
+}
 
 resource "aws_s3_bucket_website_configuration" "internal" {
   bucket = aws_s3_bucket.internal.bucket
