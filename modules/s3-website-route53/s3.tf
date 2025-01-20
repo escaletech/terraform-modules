@@ -3,13 +3,6 @@ resource "aws_s3_bucket" "internal" {
   tags   = var.tags
 }
 
-resource "aws_s3_bucket_ownership_controls" "internal" {
-  bucket = aws_s3_bucket.internal.id
-  rule {
-    object_ownership = "ObjectWriter"
-  }
-}
-
 # resource "aws_s3_bucket_acl" "internal" {
 #   bucket = aws_s3_bucket.internal.bucket
 #   acl    = "private"
