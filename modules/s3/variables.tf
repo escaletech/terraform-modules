@@ -138,3 +138,9 @@ variable "error_document" {
   type        = bool
   default     = false
 }
+
+variable "region" {
+  description = "The region to create the S3 bucket in"
+  type        = string
+  default     = null
+}
