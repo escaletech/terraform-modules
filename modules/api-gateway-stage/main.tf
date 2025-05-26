@@ -1,6 +1,6 @@
-resource "aws_api_gateway_deployment" "deployment" {
-  rest_api_id       = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
-  description       = "Deployment"
+# resource "aws_api_gateway_deployment" "deployment" {
+#   rest_api_id       = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
+#   description       = "Deployment"
 
   # dynamic "triggers" {
   #   for_each = var.hash != null ? [1] : []
@@ -13,6 +13,12 @@ resource "aws_api_gateway_deployment" "deployment" {
   # lifecycle {
   #   create_before_destroy = true
   # }
+# }
+
+resource "null_resource" "deploy_gateway" {
+  provisioner "local-exec" {
+    command = "aws apigateway create-deployment --rest-api-id ${data.aws_api_gateway_rest_api.gateway.id} --stage-name ${local.name}"
+  }
 }
 
 resource "aws_api_gateway_stage" "stage" {
