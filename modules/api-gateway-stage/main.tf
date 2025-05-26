@@ -29,8 +29,8 @@ resource "null_resource" "deploy_gateway" {
   provisioner "local-exec" {
     command = <<EOT
       aws apigateway create-deployment \
-        --rest-api-id ${data.aws_api_gateway_rest_api.gateway.id} \
-        --stage-name staging \
+        --rest-api-id ${data.aws_api_gateway_rest_api.gateway_api.id} \
+        --stage-name ${local.name} \
         --output json > deployment_output.json
     EOT
   }
@@ -38,8 +38,6 @@ resource "null_resource" "deploy_gateway" {
   triggers = {
     always_run = timestamp()
   }
-
-  depends_on  = [aws_api_gateway_integration.webhook, aws_api_gateway_integration_response.webhook]
 
 }
 
