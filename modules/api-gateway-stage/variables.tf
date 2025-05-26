@@ -39,3 +39,7 @@ locals {
   domain    = var.domain
   variables = var.variables
 }
+
+variable "deployment_id" {
+  type = string
+}

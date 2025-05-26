@@ -46,7 +46,7 @@ resource "aws_api_gateway_stage" "stage" {
   rest_api_id   = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
   stage_name    = local.name
   variables     = local.variables
-  depends_on    = [aws_cloudwatch_log_group.log_api_gateway, null_resource.deploy_gateway]
+  depends_on    = [aws_cloudwatch_log_group.log_api_gateway]
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.log_api_gateway.arn
     format          = "[ip:$context.identity.sourceIp] [iss:$context.domainName] $context.httpMethod $context.resourcePath - $context.status duration: $context.responseLatency ms [trackingId: $context.requestId] [user: $context.authorizer.email]"
