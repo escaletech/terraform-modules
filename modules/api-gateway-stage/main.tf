@@ -1,3 +1,7 @@
+locals {
+  deployment_data = jsondecode(data.local_file.deployment_output.content)
+}
+
 # resource "aws_api_gateway_deployment" "deployment" {
 #   rest_api_id       = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
 #   description       = "Deployment"
@@ -15,18 +19,36 @@
   # }
 # }
 
+# resource "null_resource" "deploy_gateway" {
+#   provisioner "local-exec" {
+#     command = "aws apigateway create-deployment --rest-api-id ${data.aws_api_gateway_rest_api.gateway_api.id} --stage-name ${local.name}"
+#   }
+# }
+
 resource "null_resource" "deploy_gateway" {
   provisioner "local-exec" {
-    command = "aws apigateway create-deployment --rest-api-id ${data.aws_api_gateway_rest_api.gateway.id} --stage-name ${local.name}"
+    command = <<EOT
+      aws apigateway create-deployment \
+        --rest-api-id ${data.aws_api_gateway_rest_api.gateway.id} \
+        --stage-name staging \
+        --output json > deployment_output.json
+    EOT
   }
+
+  triggers = {
+    always_run = timestamp()
+  }
+
+  depends_on  = [aws_api_gateway_integration.webhook, aws_api_gateway_integration_response.webhook]
+
 }
 
 resource "aws_api_gateway_stage" "stage" {
-  deployment_id = aws_api_gateway_deployment.deployment.id
+  deployment_id = local.deployment_data.id
   rest_api_id   = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
   stage_name    = local.name
   variables     = local.variables
-  depends_on    = [aws_cloudwatch_log_group.log_api_gateway]
+  depends_on    = [aws_cloudwatch_log_group.log_api_gateway, null_resource.deploy_gateway]
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.log_api_gateway.arn
     format          = "[ip:$context.identity.sourceIp] [iss:$context.domainName] $context.httpMethod $context.resourcePath - $context.status duration: $context.responseLatency ms [trackingId: $context.requestId] [user: $context.authorizer.email]"
