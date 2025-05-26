@@ -1,7 +1,3 @@
-locals {
-  deployment_data = jsondecode(data.local_file.deployment_output.content)
-}
-
 # resource "aws_api_gateway_deployment" "deployment" {
 #   rest_api_id       = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
 #   description       = "Deployment"
@@ -19,30 +15,8 @@ locals {
   # }
 # }
 
-# resource "null_resource" "deploy_gateway" {
-#   provisioner "local-exec" {
-#     command = "aws apigateway create-deployment --rest-api-id ${data.aws_api_gateway_rest_api.gateway_api.id} --stage-name ${local.name}"
-#   }
-# }
-
-resource "null_resource" "deploy_gateway" {
-  provisioner "local-exec" {
-    command = <<EOT
-      aws apigateway create-deployment \
-        --rest-api-id ${data.aws_api_gateway_rest_api.gateway_api.id} \
-        --stage-name ${local.name} \
-        --output json > deployment_output.json
-    EOT
-  }
-
-  triggers = {
-    always_run = timestamp()
-  }
-
-}
-
 resource "aws_api_gateway_stage" "stage" {
-  deployment_id = local.deployment_data.id
+  deployment_id = var.deployment_id
   rest_api_id   = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
   stage_name    = local.name
   variables     = local.variables
