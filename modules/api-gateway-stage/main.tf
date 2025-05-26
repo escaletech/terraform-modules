@@ -2,8 +2,11 @@ resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id       = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
   description       = "Deployment"
 
-  triggers = {
-    redeployment = var.hash
+  dynamic "triggers" {
+    for_each = var.hash != null ? [1] : []
+    content {
+      redeployment = var.hash
+    }
   }
 
 
