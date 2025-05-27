@@ -2,17 +2,17 @@
 #   rest_api_id       = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
 #   description       = "Deployment"
 
-  # dynamic "triggers" {
-  #   for_each = var.hash != null ? [1] : []
-  #   content {
-  #     redeployment = var.hash
-  #   }
-  # }
+#   dynamic "triggers" {
+#     for_each = var.hash != null ? [1] : []
+#     content {
+#       redeployment = var.hash
+#     }
+#   }
 
 
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
+#   lifecycle {
+#     create_before_destroy = true
+#   }
 # }
 
 resource "aws_api_gateway_stage" "stage" {
