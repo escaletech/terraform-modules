@@ -24,10 +24,10 @@ variable "variables" {
   default = {}
 }
 
-variable "hash" {
-  description = "Hash to redeploy the stage"
-  type    = string
-}
+# variable "hash" {
+#   description = "Hash to redeploy the stage"
+#   type    = string
+# }
 
 variable "private" {
   type    = bool
@@ -38,4 +38,8 @@ locals {
   name      = var.name
   domain    = var.domain
   variables = var.variables
+}
+
+variable "deployment_id" {
+  type = string
 }

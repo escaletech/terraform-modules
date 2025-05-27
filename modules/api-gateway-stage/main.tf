@@ -1,19 +1,22 @@
-resource "aws_api_gateway_deployment" "deployment" {
-  rest_api_id       = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
-  description       = "Deployment"
+# resource "aws_api_gateway_deployment" "deployment" {
+#   rest_api_id       = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
+#   description       = "Deployment"
 
-  triggers = {
-    redeployment = var.hash
-  }
+#   dynamic "triggers" {
+#     for_each = var.hash != null ? [1] : []
+#     content {
+#       redeployment = var.hash
+#     }
+#   }
 
 
-  lifecycle {
-    create_before_destroy = true
-  }
-}
+#   lifecycle {
+#     create_before_destroy = true
+#   }
+# }
 
 resource "aws_api_gateway_stage" "stage" {
-  deployment_id = aws_api_gateway_deployment.deployment.id
+  deployment_id = var.deployment_id
   rest_api_id   = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
   stage_name    = local.name
   variables     = local.variables
