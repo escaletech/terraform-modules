@@ -160,3 +160,9 @@ variable "keep_locally" {
   type        = bool
   default     = false 
 }
+
+variable "lifecycle" {
+  description = "Create before Destruction"
+  type        = bool
+  default     = true
+}

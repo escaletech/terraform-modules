@@ -128,6 +128,6 @@ resource "docker_container" "default" {
   }
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = var.lifecycle
   }
 }
