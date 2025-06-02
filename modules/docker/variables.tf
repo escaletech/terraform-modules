@@ -161,7 +161,7 @@ variable "keep_locally" {
   default     = false 
 }
 
-variable "lifecycle" {
+variable "create_before_destroy" {
   description = "Create before Destruction"
   type        = bool
   default     = true
