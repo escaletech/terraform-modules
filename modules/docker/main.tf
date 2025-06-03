@@ -135,14 +135,7 @@ resource "docker_container" "default" {
     }
   }
 
-  dynamic "lifecycle" {
-    for_each = var.create_before_destroy ? [1] : []
-    content {
-      create_before_destroy = true
-    }
+  lifecycle {
+    create_before_destroy = true
   }
-
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
 }

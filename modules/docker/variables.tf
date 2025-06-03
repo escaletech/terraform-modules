@@ -166,9 +166,3 @@ variable "pull_triggers" {
   type        = list(string)
   default     = [""]
 }
-
-variable "create_before_destroy" {
-  description = "Enabled / Disabled"
-  type        = bool
-  default     = true
-}
