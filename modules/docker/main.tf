@@ -12,6 +12,7 @@ data "docker_registry_image" "default" {
 resource "docker_image" "default" {
   name         = data.docker_registry_image.default.name
   keep_locally = var.keep_locally
+  force_remove = true
 
   pull_triggers = var.pull_triggers[0] != "" ? var.pull_triggers : [data.docker_registry_image.default.sha256_digest]
 }
@@ -135,7 +136,7 @@ resource "docker_container" "default" {
     }
   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
 }
