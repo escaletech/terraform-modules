@@ -8,11 +8,19 @@ data "docker_registry_image" "default" {
   name = var.image
 }
 
+
 resource "docker_image" "default" {
-  name          = data.docker_registry_image.default.name
-  pull_triggers = [data.docker_registry_image.default.sha256_digest]
-  keep_locally  = var.keep_locally
+  name         = data.docker_registry_image.default.name
+  keep_locally = var.keep_locally
+
+  pull_triggers = var.pull_triggers[0] != "" ? var.pull_triggers : [data.docker_registry_image.default.sha256_digest]
 }
+
+# resource "docker_image" "default" {
+#   name          = data.docker_registry_image.default.name
+#   pull_triggers = [data.docker_registry_image.default.sha256_digest]
+#   keep_locally  = var.keep_locally
+# }
 
 resource "docker_volume" "default" {
   for_each = var.named_volumes
@@ -127,7 +135,14 @@ resource "docker_container" "default" {
     }
   }
 
-  lifecycle {
-    create_before_destroy = true
+  dynamic "lifecycle" {
+    for_each = var.create_before_destroy ? [1] : []
+    content {
+      create_before_destroy = true
+    }
   }
+
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
 }
