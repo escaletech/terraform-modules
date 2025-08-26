@@ -39,11 +39,6 @@ variable "sg-name" {
   default = null
 }
 
-variable "load_balancer_arn" {
-  type    = string
-  default = null
-}
-
 resource "null_resource" "check-tags" {
   lifecycle {
     precondition {
