@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "internal-logs" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "internal_logs" {
-  bucket = aws_s3_bucket.internal_logs.id
+  bucket = aws_s3_bucket.internal-logs.id
   rule { object_ownership = "ObjectWriter" }
 }
 
