@@ -1,4 +1,5 @@
 resource "aws_lb" "internal" {
+  count              = var.load_balancer_arn == null ? 1 : 0
   load_balancer_type = "application"
   security_groups    = [aws_security_group.internal-sg.id]
   subnets            = var.subnets
@@ -7,6 +8,7 @@ resource "aws_lb" "internal" {
 }
 
 resource "aws_lb_listener" "internal_http_to_https" {
+  count             = var.load_balancer_arn == null ? 1 : 0
   load_balancer_arn = aws_lb.internal.arn
   port              = "80"
   protocol          = "HTTP"
@@ -23,6 +25,7 @@ resource "aws_lb_listener" "internal_http_to_https" {
 }
 
 resource "aws_lb_listener" "internal_https" {
+  count             = var.load_balancer_arn == null ? 1 : 0
   load_balancer_arn = aws_lb.internal.arn
   port              = "443"
   protocol          = "HTTPS"
@@ -37,6 +40,7 @@ resource "aws_lb_listener" "internal_https" {
 }
 
 resource "aws_lb_listener_rule" "index" {
+  count        = var.load_balancer_arn == null ? 1 : 0
   listener_arn = aws_lb_listener.internal_https.arn
   priority     = 100
 
@@ -56,6 +60,7 @@ resource "aws_lb_listener_rule" "index" {
 }
 
 resource "aws_lb_target_group" "internal" {
+  count                = var.load_balancer_arn == null ? 1 : 0
   name_prefix          = "${substr(var.app_name, 0, 5)}-"
   port                 = 443
   protocol             = "HTTPS"
@@ -75,6 +80,7 @@ resource "aws_lb_target_group" "internal" {
 }
 
 resource "aws_lb_target_group_attachment" "internal" {
+  count            = var.load_balancer_arn == null ? 1 : 0
   count            = length(data.aws_network_interface.internal[*].private_ip)
   target_group_arn = aws_lb_target_group.internal.arn
   target_id        = data.aws_network_interface.internal[count.index].private_ip
