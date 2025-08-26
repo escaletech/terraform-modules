@@ -3,19 +3,9 @@ resource "aws_s3_bucket" "internal-logs" {
   tags   = var.tags
 }
 
-resource "aws_s3_bucket_acl" "internal-logs" {
-  bucket = aws_s3_bucket.internal-logs.bucket
-  acl    = "log-delivery-write"
-}
-
 resource "aws_s3_bucket" "internal" {
   bucket = var.domain
   tags   = var.tags
-}
-
-resource "aws_s3_bucket_acl" "internal" {
-  bucket = aws_s3_bucket.internal.bucket
-  acl    = "private"
 }
 
 resource "aws_s3_bucket_website_configuration" "internal" {
