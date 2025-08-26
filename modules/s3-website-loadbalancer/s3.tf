@@ -3,9 +3,27 @@ resource "aws_s3_bucket" "internal-logs" {
   tags   = var.tags
 }
 
+resource "aws_s3_bucket_ownership_controls" "internal_logs" {
+  bucket = aws_s3_bucket.internal_logs.id
+  rule { object_ownership = "ObjectWriter" }
+}
+
+resource "aws_s3_bucket_acl" "internal-logs" {
+  bucket = aws_s3_bucket.internal-logs.bucket
+  acl    = "log-delivery-write"
+}
+
 resource "aws_s3_bucket" "internal" {
   bucket = var.domain
   tags   = var.tags
+}
+
+resource "aws_s3_bucket_public_access_block" "internal" {
+  bucket                  = aws_s3_bucket.internal.id
+  block_public_acls       = true
+  ignore_public_acls      = true
+  block_public_policy     = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_website_configuration" "internal" {
