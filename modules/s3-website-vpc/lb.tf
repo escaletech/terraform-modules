@@ -80,8 +80,7 @@ resource "aws_lb_target_group" "internal" {
 }
 
 resource "aws_lb_target_group_attachment" "internal" {
-  count            = var.load_balancer_arn == null ? 1 : 0
-  count            = length(data.aws_network_interface.internal[*].private_ip)
+  count            = var.load_balancer_arn == null && length(data.aws_network_interface.internal[*].private_ip)? 1 : 0
   target_group_arn = aws_lb_target_group.internal.arn
   target_id        = data.aws_network_interface.internal[count.index].private_ip
 }
