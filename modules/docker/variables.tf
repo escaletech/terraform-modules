@@ -160,3 +160,9 @@ variable "keep_locally" {
   type        = bool
   default     = false 
 }
+
+variable "pull_triggers" {
+  description = "Pull triggers para forçar re-pull da imagem"
+  type        = list(string)
+  default     = [""]
+}
