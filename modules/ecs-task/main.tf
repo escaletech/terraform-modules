@@ -46,6 +46,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       },
       environment = var.environment-variables
       secrets     = length(var.secrets) > 0 ? var.secrets : [],
+      command     = var.command != null ? var.command : null
     }
   ])
 
