@@ -107,11 +107,13 @@ variable "client_name" {
 variable "name_prefix" {
   description = "Name prefix"
   type        = string
+  default     = ""
 }
 
 variable "key_name" {
   description = "Key name"
   type        = string
+  default     = ""
 }
 
 variable "initial_secret_value" {
@@ -169,6 +171,7 @@ variable "ports_ingress_allowed" {
 variable "s3_name" {
   description = "S3 Bucket name"
   type        = string
+  default     = ""
 }
 
 variable "containers_name" {
