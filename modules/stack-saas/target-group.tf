@@ -63,3 +63,25 @@ resource "aws_lb_listener_rule" "listener" {
     Name = each.key
   }
 }
+
+resource "aws_lb_target_group_attachment" "internal" {
+  for_each = toset(local.applications)
+
+  target_group_arn = aws_lb_target_group.platform-conversational[each.key].arn
+  target_id        = aws_instance.platform_conversational.private_ip
+  port             = local.ingress[each.key].port
+}
+
+resource "aws_route53_record" "platform-conversational" {
+  for_each = local.dns
+
+  zone_id = var.route53_id
+  name    = each.value.host
+  type    = "A"
+
+  alias {
+    name                   = var.lb_name
+    zone_id                = var.lb_id
+    evaluate_target_health = true
+  }
+}

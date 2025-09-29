@@ -1,5 +1,7 @@
 locals {
-  
+  s3_name = var.s3_name != "" ? var.s3_name : "${var.client_name}-saas"
+
+
   applications = [
     "${var.client_name}-evolutionWebhook",
     "${var.client_name}-chatwootMedia",
@@ -11,42 +13,42 @@ locals {
 
   ingress = {
     "${var.client_name}-chat" = {
-      host         = "${var.client_name}-chat.${var.default_host}"
+      host         = "${var.dns_chatwoot}"
       path_pattern = "*"
       health_check = "/"
       port         = 443
       protocol     = "HTTPS"
     }
     "${var.client_name}-chatwootMedia" = {
-      host         = "${var.client_name}-chat.${var.default_host}"
+      host         = "${var.dns_chatwoot}"
       path_pattern = "/rails/active_storage/*"
       health_check = "/"
       port         = 443
       protocol     = "HTTPS"
     }
     "${var.client_name}-evolution" = {
-      host         = "${var.client_name}-evolution.${var.default_host}"
+      host         = "${var.dns_evolution}"
       path_pattern = "*"
       health_check = "/"
       port         = 80
       protocol     = "HTTP"
     }
     "${var.client_name}-evolutionWebhook" = {
-      host         = "${var.client_name}-evolution.${var.default_host}"
+      host         = "${var.dns_evolution}"
       path_pattern = "*"
       health_check = "/webhook/*"
       port         = 80
       protocol     = "HTTP"
     }
     "${var.client_name}-editor" = {
-      host         = "${var.client_name}-editor.${var.default_host}"
+      host         = "${var.dns_builder}"
       path_pattern = "*"
       health_check = "/"
       port         = 80
       protocol     = "HTTP"
     }
     "${var.client_name}-viewer" = {
-      host         = "${var.client_name}-viewer.${var.default_host}"
+      host         = "${var.dns_bot}"
       path_pattern = "*"
       health_check = "/"
       port         = 80
@@ -136,6 +138,21 @@ variable "listener_arn" {
   type        = string
 }
 
+variable "lb_id" {
+  description = "ID of the Load Balancer"
+  type        = string
+}
+
+variable "lb_name" {
+  description = "Name of the Load Balancer"
+  type        = string
+}
+
+variable "route53_id" {
+  description = "Route53 Zone ID"
+  type        = string
+}
+
 variable "ipv4_cidr_blocks" {
   description = "List of IPv4 CIDR blocks allowed to access the instance"
   type        = list(string)
@@ -156,11 +173,6 @@ variable "containers_name" {
   description = "Container names"
   type        = list(string)
   default     = ["chatwoot", "sidekiq", "typebot-builder", "typebot-viewer", "evolution"]
-}
-
-variable "default_host" {
-  description = "Default host"
-  type        = string
 }
 
 variable "dns_chatwoot" {
