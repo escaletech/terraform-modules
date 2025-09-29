@@ -1,5 +1,7 @@
 locals {
   s3_name = var.s3_name != "" ? var.s3_name : "${var.client_name}-saas"
+  name_prefix = var.name_prefix != "" ? var.name_prefix : "platform-conversational-${var.client_name}"
+  key_name = var.key_name != "" ? var.key_name : "platform-conversational"
 
 
   applications = [
