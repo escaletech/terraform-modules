@@ -6,7 +6,7 @@ resource "aws_lb_target_group" "platform-conversational" {
   target_type = "ip"
   port        = local.ingress[each.key].port
   protocol    = local.ingress[each.key].protocol
-  vpc_id      = data.aws_vpc.escale-prod.id
+  vpc_id      = var.vpc_id
 
   health_check {
     interval            = 30
