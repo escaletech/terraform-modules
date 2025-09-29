@@ -127,7 +127,12 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "listerner_arn" {
+variable "subnet_ids" {
+  description = "List of Subnet IDs where resources will be created"
+  type        = list(string)
+}
+
+variable "listener_arn" {
   description = "ARN of the ALB listener"
   type        = string
 }
