@@ -103,7 +103,6 @@ variable "client_name" {
 variable "name_prefix" {
   description = "Name prefix"
   type        = string
-  default     = "platform-conversational-${var.client_name}"
 }
 
 variable "key_name" {
@@ -151,7 +150,6 @@ variable "ports_ingress_allowed" {
 variable "s3_name" {
   description = "S3 Bucket name"
   type        = string
-  default     = "${var.client_name}-saas"
 }
 
 variable "containers_name" {
@@ -168,23 +166,19 @@ variable "default_host" {
 variable "dns_chatwoot" {
   description = "Create DNS record for Chatwoot"
   type        = string
-  default     = "${var.client_name}-chat.${var.default_host}"
 }
 
 variable "dns_evolution" {
   description = "Create DNS record for Evolution"
   type        = string
-  default     = "${var.client_name}-evolution.${var.default_host}"
 }
 
 variable "dns_builder" {
   description = "Create DNS record for Typebot Builder"
   type        = string
-  default     = "${var.client_name}-editor.${var.default_host}"
 }
 
 variable "dns_bot" {
   description = "Create DNS record for Typebot Viewer"
   type        = string
-  default     = "${var.client_name}-viewer.${var.default_host}"
 }
