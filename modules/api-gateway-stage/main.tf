@@ -33,6 +33,7 @@ resource "aws_api_gateway_base_path_mapping" "mapping" {
   api_id      = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
   domain_name = local.domain
   stage_name  = aws_api_gateway_stage.stage.stage_name
+  base_path   = (var.base_path == null) ? "" : var.base_path
 }
 
 resource "aws_cloudwatch_log_group" "log_api_gateway" {

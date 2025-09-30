@@ -29,6 +29,11 @@ variable "variables" {
 #   type    = string
 # }
 
+variable "base_path" {
+  type    = string
+  default = null
+}
+
 variable "private" {
   type    = bool
   default = false
