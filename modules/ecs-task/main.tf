@@ -26,15 +26,26 @@ resource "aws_ecs_task_definition" "task_definition" {
       cpu       = var.cpu
       memory    = var.memory
       essential = true
-      portMappings = [
-        {
-          name          = "${var.family}-${var.container_port}-${var.protocol}"
-          containerPort = var.container_port
-          hostPort      = var.container_port
-          protocol      = var.protocol
-          appProtocol   = var.app_protocol
-        }
-      ],
+      portMappings = (
+        var.port_mappings != null && length(var.port_mappings) > 0 ?
+        [
+          for mapping in var.port_mappings : {
+            containerPort = mapping.container_port
+            hostPort      = lookup(mapping, "host_port", mapping.container_port)
+            protocol      = lookup(mapping, "protocol", "tcp")
+            appProtocol   = lookup(mapping, "app_protocol", null)
+          }
+        ] :
+        [
+          {
+            name          = "${var.family}-${var.container_port}-${var.protocol}"
+            containerPort = var.container_port
+            hostPort      = var.container_port
+            protocol      = var.protocol
+            appProtocol   = var.app_protocol
+          }
+        ]
+      ),
       logConfiguration : {
         "logDriver" : "awslogs",
         "options" : {
@@ -51,6 +62,6 @@ resource "aws_ecs_task_definition" "task_definition" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "X86_64"
+    cpu_architecture        = var.cpu_architecture
   }
 }

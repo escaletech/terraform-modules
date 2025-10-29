@@ -34,6 +34,17 @@ variable "container_port" {
   type        = number
 }
 
+variable "port_mappings" {
+  type = list(object({
+    container_port = number
+    host_port      = optional(number)
+    protocol       = optional(string)
+    app_protocol   = optional(string)
+  }))
+  default = null
+}
+
+
 variable "protocol" {
   description = "protocolo de rede utilizado."
   type        = string
@@ -58,6 +69,12 @@ variable "arn_attach_additional_policy" {
   description = "List value to attach additional policy"
   type        = list(string)
   default     = []
+}
+
+variable "cpu_architecture" {
+  description = "Arquitetura da CPU para a tarefa ECS."
+  type        = string
+  default     = "X86_64"
 }
 
 # variable "retention_in_days" {
