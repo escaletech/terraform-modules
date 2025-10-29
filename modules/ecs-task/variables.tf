@@ -32,6 +32,7 @@ variable "memory" {
 variable "container_port" {
   description = "Porta mapeada no container."
   type        = number
+  default     = null
 }
 
 variable "port_mappings" {
