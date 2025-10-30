@@ -11,8 +11,8 @@
 
 locals {
   base_port_mappings = (
-    var.port_mappings != null && length(var.port_mappings) > 0 ?
-    var.port_mappings :
+    length(coalescelist(var.port_mappings, [])) > 0 ?
+    coalescelist(var.port_mappings, []) :
     (
       var.container_port != null ?
       [
