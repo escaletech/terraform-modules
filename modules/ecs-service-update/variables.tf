@@ -43,6 +43,16 @@ variable "container_port" {
   type        = number
   default     = null
 }
+
+variable "load_balancers" {
+  type = list(object({
+    container_name   = optional(string)
+    container_port   = number
+    target_group_arn = string
+  }))
+  default = null
+}
+
 variable "target_group_arn" {
   description = "Target group utilizado pelo load balancer."
   type        = string
