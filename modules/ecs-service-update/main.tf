@@ -39,7 +39,7 @@ resource "aws_ecs_service" "ecs_service_update" {
   }
 
   dynamic "load_balancer" {
-    for_each = var.load_balancers != null && length(var.load_balancers) > 0 ? var.load_balancers : (
+    for_each = try(length(var.load_balancers), 0) > 0 ? var.load_balancers : (
       var.target_group_arn != null ? [
         {
           container_name   = var.service_name
@@ -50,7 +50,7 @@ resource "aws_ecs_service" "ecs_service_update" {
     )
 
     content {
-      container_name   = lookup(load_balancer.value, "container_name", var.service_name)
+      container_name   = try(load_balancer.value.container_name, var.service_name)
       container_port   = load_balancer.value.container_port
       target_group_arn = load_balancer.value.target_group_arn
     }
