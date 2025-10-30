@@ -15,6 +15,7 @@ resource "aws_sqs_queue" "sqs_queue" {
   redrive_policy                    = var.redrive_policy
   kms_master_key_id                 = var.kms_master_key_id
   kms_data_key_reuse_period_seconds = var.kms_data_key_reuse_period_seconds
+  visibility_timeout_seconds        = var.visibility_timeout_seconds
 }
 
 resource "aws_sqs_queue_policy" "sqs_queue" {

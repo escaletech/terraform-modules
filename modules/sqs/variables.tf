@@ -107,3 +107,8 @@ variable "kms_data_key_reuse_period_seconds" {
   type        = number
   default     = null
 }
+
+variable "visibility_timeout_seconds" {
+  type    = number
+  default = 30
+}
