@@ -10,9 +10,11 @@
 # }
 
 locals {
+  provided_port_mappings = var.port_mappings != null ? var.port_mappings : []
+
   base_port_mappings = (
-    length(coalescelist(var.port_mappings, [])) > 0 ?
-    coalescelist(var.port_mappings, []) :
+    length(local.provided_port_mappings) > 0 ?
+    local.provided_port_mappings :
     (
       var.container_port != null ?
       [
