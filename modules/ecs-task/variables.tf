@@ -41,6 +41,7 @@ variable "port_mappings" {
     host_port      = optional(number)
     protocol       = optional(string)
     app_protocol   = optional(string)
+    name           = optional(string)
   }))
   default = null
 }
