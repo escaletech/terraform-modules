@@ -2,6 +2,16 @@ data "aws_cloudfront_cache_policy" "main" {
   name = var.cache_policy_name
 }
 
+resource "aws_cloudfront_origin_access_control" "main" {
+  count = var.origin_access_control != null ? 1 : 0
+
+  name                              = var.domain
+  description                       = "Access control for ${var.domain} S3 origin"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "main" {
   depends_on = [
     aws_s3_bucket.internal
@@ -23,8 +33,9 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   origin {
-    domain_name = aws_s3_bucket_website_configuration.internal.website_endpoint
-    origin_id   = var.domain
+    domain_name              = var.origin_access_domain != null ? var.origin_access_domain : aws_s3_bucket_website_configuration.internal.website_endpoint
+    origin_id                = var.domain
+    origin_access_control_id = var.origin_access_control != null ? aws_cloudfront_origin_access_control.main[0].id : null
 
     custom_origin_config {
       http_port              = 80
