@@ -83,6 +83,6 @@ variable "origin_access_domain" {
 }
 
 variable "origin_access_control" {
-  type    = string
-  default = null
+  type    = bool
+  default = false
 }
