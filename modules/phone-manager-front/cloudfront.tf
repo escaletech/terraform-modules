@@ -14,7 +14,8 @@ resource "aws_cloudfront_origin_access_control" "main" {
 
 resource "aws_cloudfront_distribution" "main" {
   depends_on = [
-    aws_s3_bucket.internal
+    aws_s3_bucket.internal,
+    aws_cloudfront_origin_access_control.main
   ]
   enabled             = true
   is_ipv6_enabled     = true
