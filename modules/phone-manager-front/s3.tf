@@ -20,10 +20,10 @@ resource "aws_s3_bucket" "internal" {
 resource "aws_s3_bucket_public_access_block" "public_access_internal" {
   bucket = aws_s3_bucket.internal.bucket
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = true
-  restrict_public_buckets = false
+  block_public_acls       = var.origin_access_control ? true : true
+  block_public_policy     = var.origin_access_control ? true : false
+  ignore_public_acls      = var.origin_access_control ? true : false
+  restrict_public_buckets = var.origin_access_control ? true : false
 }
 
 resource "aws_s3_bucket_website_configuration" "internal" {
@@ -47,21 +47,7 @@ resource "aws_s3_bucket_logging" "internal" {
 
 resource "aws_s3_bucket_policy" "internal" {
   bucket = aws_s3_bucket.internal.bucket
-  policy = data.aws_iam_policy_document.internal.json
-}
-
-data "aws_iam_policy_document" "internal" {
-  statement {
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    sid       = "PublicRead"
-    actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.internal.arn}/*"]
-    effect    = "Allow"
-  }
+  policy = var.origin_access_control ? data.aws_iam_policy_document.access_origin_control[0].json : data.aws_iam_policy_document.internal.json
 }
 
 resource "aws_s3_bucket_acl" "acl-internal-log" {

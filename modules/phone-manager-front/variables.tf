@@ -18,22 +18,6 @@ variable "cache_policy_name" {
   default = "default-disable"
 }
 
-data "aws_region" "current" {}
-
-data "aws_vpc" "vpc" {
-  filter {
-    name   = "tag:Name"
-    values = [var.vpc_name]
-  }
-}
-
-data "aws_route53_zone" "zone" {
-  name         = var.dns_zone_name
-  private_zone = var.private_zone
-}
-
-data "aws_default_tags" "escale-default-tags" {}
-
 variable "tags" {
   type    = map(any)
   default = {}
@@ -51,4 +35,38 @@ resource "null_resource" "check-tags" {
       error_message = "Tags are required!"
     }
   }
+}
+
+variable "block_public_acls" {
+  description = "Whether Amazon S3 should block public ACLs for this bucket"
+  type        = bool
+  default     = false
+}
+
+variable "block_public_policy" {
+  description = "Whether Amazon S3 should block public bucket policies for this bucket"
+  type        = bool
+  default     = false
+}
+
+variable "ignore_public_acls" {
+  description = "Whether Amazon S3 should ignore public ACLs for this bucket"
+  type        = bool
+  default     = true
+}
+
+variable "restrict_public_buckets" {
+  description = "Whether Amazon S3 should restrict public bucket policies for this bucket"
+  type        = bool
+  default     = false
+}
+
+variable "origin_access_domain" {
+  type    = string
+  default = null
+}
+
+variable "origin_access_control" {
+  type    = bool
+  default = false
 }
