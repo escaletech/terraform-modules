@@ -1,6 +1,3 @@
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
 resource "aws_s3_bucket" "internal-logs" {
   bucket = "${var.domain}-logs"
   tags   = var.tags
@@ -51,43 +48,6 @@ resource "aws_s3_bucket_logging" "internal" {
 resource "aws_s3_bucket_policy" "internal" {
   bucket = aws_s3_bucket.internal.bucket
   policy = var.origin_access_control ? data.aws_iam_policy_document.access_origin_control[0].json : data.aws_iam_policy_document.internal.json
-}
-
-data "aws_iam_policy_document" "internal" {
-  statement {
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    sid       = "PublicRead"
-    actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.internal.arn}/*"]
-    effect    = "Allow"
-  }
-}
-
-data "aws_iam_policy_document" "access_origin_control" {
-  count = var.origin_access_control ? 1 : 0
-
-  statement {
-    sid    = "AllowCloudFrontServicePrincipal"
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["cloudfront.amazonaws.com"]
-    }
-
-    actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.internal.arn}/*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-      values   = ["arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${aws_cloudfront_distribution.main.id}"]
-    }
-  }
 }
 
 resource "aws_s3_bucket_acl" "acl-internal-log" {
