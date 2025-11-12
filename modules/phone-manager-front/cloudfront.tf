@@ -34,7 +34,7 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   origin {
-    domain_name              = var.origin_access_domain != null ? var.origin_access_domain : aws_s3_bucket_website_configuration.internal.website_endpoint
+    domain_name              = var.origin_access_control ? aws_s3_bucket.internal.arn : aws_s3_bucket_website_configuration.internal.website_endpoint
     origin_id                = var.domain
     origin_access_control_id = var.origin_access_control ? aws_cloudfront_origin_access_control.main[0].id : null
 
