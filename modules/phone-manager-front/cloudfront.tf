@@ -38,10 +38,6 @@ resource "aws_cloudfront_distribution" "main" {
     origin_id                = var.domain
     origin_access_control_id = var.origin_access_control ? aws_cloudfront_origin_access_control.main[0].id : null
 
-    s3_origin_config {
-      origin_access_identity = null
-    }
-
     dynamic "custom_origin_config" {
       for_each = var.origin_access_control ? [] : [1]
       content {
