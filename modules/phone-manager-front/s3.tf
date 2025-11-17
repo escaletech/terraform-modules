@@ -20,10 +20,10 @@ resource "aws_s3_bucket" "internal" {
 resource "aws_s3_bucket_public_access_block" "public_access_internal" {
   bucket = aws_s3_bucket.internal.bucket
 
-  block_public_acls       = var.origin_access_control ? true : true
-  block_public_policy     = var.origin_access_control ? true : false
-  ignore_public_acls      = var.origin_access_control ? true : false
-  restrict_public_buckets = var.origin_access_control ? true : false
+  block_public_acls       = var.origin_access_control ? true : var.block_public_acls
+  block_public_policy     = var.origin_access_control ? true : var.block_public_policy
+  ignore_public_acls      = var.origin_access_control ? true : var.ignore_public_acls
+  restrict_public_buckets = var.origin_access_control ? true : var.restrict_public_buckets
 }
 
 resource "aws_s3_bucket_website_configuration" "internal" {
