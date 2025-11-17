@@ -65,6 +65,18 @@ resource "aws_cloudfront_distribution" "main" {
     cache_policy_id        = data.aws_cloudfront_cache_policy.main.id
   }
 
+  dynamic "custom_error_response" {
+    # When using OAC with the REST endpoint, S3 returns AccessDenied for SPA routes;
+    # serve index.html instead so client-side routing continues to work.
+    for_each = var.s3_redirect_enabled ? [] : [403, 404]
+    content {
+      error_code            = custom_error_response.value
+      response_code         = 200
+      response_page_path    = "/index.html"
+      error_caching_min_ttl = 0
+    }
+  }
+
   viewer_certificate {
     acm_certificate_arn = aws_acm_certificate.certificate.arn
     ssl_support_method  = "sni-only"
