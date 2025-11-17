@@ -34,31 +34,24 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   origin {
-    domain_name              = aws_s3_bucket_website_configuration.internal.website_endpoint
+    domain_name              = var.origin_access_control ? aws_s3_bucket.internal.bucket_regional_domain_name : aws_s3_bucket_website_configuration.internal.website_endpoint
     origin_id                = var.domain
     origin_access_control_id = var.origin_access_control ? aws_cloudfront_origin_access_control.main[0].id : null
 
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only" # website endpoints não aceitam https direto
-      origin_ssl_protocols   = ["TLSv1.2"]
+    dynamic "custom_origin_config" {
+      for_each = var.origin_access_control ? [] : [1]
+      content {
+        http_port              = 80
+        https_port             = 443
+        origin_ssl_protocols   = ["TLSv1.2"]
+        origin_protocol_policy = "http-only"
+      }
     }
-
-    # dynamic "custom_origin_config" {
-    #   for_each = var.origin_access_control ? [] : [1]
-    #   content {
-    #     http_port              = 80
-    #     https_port             = 443
-    #     origin_ssl_protocols   = ["TLSv1.2"]
-    #     origin_protocol_policy = "http-only"
-    #   }
-    # }
 
     dynamic "s3_origin_config" {
       for_each = var.origin_access_control ? [1] : []
       content {
-        origin_access_identity = ""
+        origin_access_identity = null
       }
     }
   }
