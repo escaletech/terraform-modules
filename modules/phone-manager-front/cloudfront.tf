@@ -58,7 +58,7 @@ resource "aws_cloudfront_distribution" "main" {
     dynamic "s3_origin_config" {
       for_each = var.origin_access_control ? [1] : []
       content {
-        origin_access_identity = null
+        origin_access_identity = ""
       }
     }
   }
