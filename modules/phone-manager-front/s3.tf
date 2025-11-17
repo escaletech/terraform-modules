@@ -29,12 +29,45 @@ resource "aws_s3_bucket_public_access_block" "public_access_internal" {
 resource "aws_s3_bucket_website_configuration" "internal" {
   bucket = aws_s3_bucket.internal.bucket
 
-  index_document {
-    suffix = "index.html"
+  dynamic "index_document" {
+    for_each = var.s3_redirect_enabled ? [] : [true]
+    content {
+      suffix = "index.html"
+    }
   }
 
-  error_document {
-    key = "index.html"
+  dynamic "error_document" {
+    for_each = var.s3_redirect_enabled ? [] : [true]
+    content {
+      key = "index.html"
+    }
+  }
+
+  dynamic "redirect_all_requests_to" {
+    for_each = var.s3_redirect_enabled && var.s3_redirect_path == null ? [1] : []
+    content {
+      host_name = var.s3_redirect_host_name
+      protocol  = var.s3_redirect_protocol
+    }
+  }
+
+  dynamic "routing_rule" {
+    for_each = var.s3_redirect_enabled && var.s3_redirect_path != null ? [1] : []
+    content {
+      redirect {
+        host_name          = var.s3_redirect_host_name
+        protocol           = var.s3_redirect_protocol
+        replace_key_with   = var.s3_redirect_path
+        http_redirect_code = var.s3_redirect_http_code
+      }
+    }
+  }
+
+  lifecycle {
+    precondition {
+      condition     = !var.s3_redirect_enabled || var.s3_redirect_host_name != null
+      error_message = "s3_redirect_host_name must be provided when s3_redirect_enabled is true."
+    }
   }
 }
 
