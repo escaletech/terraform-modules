@@ -17,9 +17,10 @@ resource "aws_cloudfront_distribution" "main" {
     aws_s3_bucket.internal,
     aws_cloudfront_origin_access_control.main
   ]
-  enabled             = true
-  is_ipv6_enabled     = true
-  default_root_object = "index.html"
+  enabled         = true
+  is_ipv6_enabled = true
+  # Avoid appending index.html when the bucket only issues redirects
+  default_root_object = var.s3_redirect_enabled ? null : "index.html"
   aliases             = ["${var.domain}"]
 
   restrictions {
