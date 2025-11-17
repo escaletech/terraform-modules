@@ -30,7 +30,8 @@ resource "aws_s3_bucket_website_configuration" "internal" {
   bucket = aws_s3_bucket.internal.bucket
 
   dynamic "index_document" {
-    for_each = var.s3_redirect_enabled ? [] : [true]
+    # Required when using routing rules; omit only when redirecting all requests
+    for_each = var.s3_redirect_enabled && var.s3_redirect_path == null ? [] : [true]
     content {
       suffix = "index.html"
     }
