@@ -20,21 +20,55 @@ resource "aws_s3_bucket" "internal" {
 resource "aws_s3_bucket_public_access_block" "public_access_internal" {
   bucket = aws_s3_bucket.internal.bucket
 
-  block_public_acls       = var.origin_access_control ? true : true
-  block_public_policy     = var.origin_access_control ? true : false
-  ignore_public_acls      = var.origin_access_control ? true : false
-  restrict_public_buckets = var.origin_access_control ? true : false
+  block_public_acls       = var.origin_access_control ? true : var.block_public_acls
+  block_public_policy     = var.origin_access_control ? true : var.block_public_policy
+  ignore_public_acls      = var.origin_access_control ? true : var.ignore_public_acls
+  restrict_public_buckets = var.origin_access_control ? true : var.restrict_public_buckets
 }
 
 resource "aws_s3_bucket_website_configuration" "internal" {
   bucket = aws_s3_bucket.internal.bucket
 
-  index_document {
-    suffix = "index.html"
+  dynamic "index_document" {
+    # Required when using routing rules; omit only when redirecting all requests
+    for_each = var.s3_redirect_enabled && var.s3_redirect_path == null ? [] : [true]
+    content {
+      suffix = "index.html"
+    }
   }
 
-  error_document {
-    key = "index.html"
+  dynamic "error_document" {
+    for_each = var.s3_redirect_enabled ? [] : [true]
+    content {
+      key = "index.html"
+    }
+  }
+
+  dynamic "redirect_all_requests_to" {
+    for_each = var.s3_redirect_enabled && var.s3_redirect_path == null ? [1] : []
+    content {
+      host_name = var.s3_redirect_host_name
+      protocol  = var.s3_redirect_protocol
+    }
+  }
+
+  dynamic "routing_rule" {
+    for_each = var.s3_redirect_enabled && var.s3_redirect_path != null ? [1] : []
+    content {
+      redirect {
+        host_name          = var.s3_redirect_host_name
+        protocol           = var.s3_redirect_protocol
+        replace_key_with   = var.s3_redirect_path
+        http_redirect_code = var.s3_redirect_http_code
+      }
+    }
+  }
+
+  lifecycle {
+    precondition {
+      condition     = !var.s3_redirect_enabled || var.s3_redirect_host_name != null
+      error_message = "s3_redirect_host_name must be provided when s3_redirect_enabled is true."
+    }
   }
 }
 

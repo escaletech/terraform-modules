@@ -70,3 +70,33 @@ variable "origin_access_control" {
   type    = bool
   default = false
 }
+
+variable "s3_redirect_enabled" {
+  description = "When true, the S3 website hosting responds with a redirect instead of serving the SPA assets."
+  type        = bool
+  default     = false
+}
+
+variable "s3_redirect_host_name" {
+  description = "Hostname that receives the redirect (for example, app.example.com). Required when s3_redirect_enabled is true."
+  type        = string
+  default     = null
+}
+
+variable "s3_redirect_protocol" {
+  description = "Protocol used in the redirect response."
+  type        = string
+  default     = "https"
+}
+
+variable "s3_redirect_path" {
+  description = "Optional path/key to always redirect to (example: novo-site/index.html). Leave empty to preserve the original path."
+  type        = string
+  default     = null
+}
+
+variable "s3_redirect_http_code" {
+  description = "HTTP status code returned when redirecting to a fixed path."
+  type        = string
+  default     = "301"
+}
