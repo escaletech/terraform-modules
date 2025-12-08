@@ -147,5 +147,10 @@ resource "aws_cloudfront_distribution" "main" {
     ignore_changes = [
       viewer_certificate[0].acm_certificate_arn
     ]
+
+    precondition {
+      condition     = var.certificate_enable || var.certificate_arn != null
+      error_message = "Set certificate_enable to true or provide certificate_arn when disabling certificate creation."
+    }
   }
 }

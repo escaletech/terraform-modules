@@ -1,5 +1,10 @@
 data "aws_route53_zone" "zone" {
-  name = var.dns_zone
+  count = var.dns_zone_id == null ? 1 : 0
+  name  = var.dns_zone
+}
+
+locals {
+  zone_id = var.dns_zone_id != null ? var.dns_zone_id : data.aws_route53_zone.zone[0].zone_id
 }
 
 resource "aws_acm_certificate" "cert" {
@@ -23,7 +28,7 @@ resource "aws_route53_record" "cert_validation" {
     }
   } : {}
 
-  zone_id         = data.aws_route53_zone.zone.zone_id
+  zone_id         = local.zone_id
   name            = each.value.name
   type            = each.value.type
   records         = [each.value.record]
