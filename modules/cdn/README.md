@@ -25,10 +25,6 @@ module "staging-config" {
 }
 ```
 
-# Certificado
-
-Para usar um certificado ACM já existente, defina `create_certificate = false` e informe o ARN com `certificate_arn`. O padrão continua criando e validando o certificado automaticamente.
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
