@@ -117,3 +117,8 @@ variable "additional_error_responses" {
   }))
   default = []
 }
+
+variable "certificate_name" {
+  type    = string
+  default = null
+}
