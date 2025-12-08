@@ -3,6 +3,7 @@ data "aws_route53_zone" "zone" {
 }
 
 resource "aws_acm_certificate" "cert" {
+  count = var.certificate_enable == true ? 1 : 0
   domain_name       = var.certificate_name != null ? var.certificate_name : var.host
   validation_method = "DNS"
   tags              = var.tags

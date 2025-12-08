@@ -122,3 +122,13 @@ variable "certificate_name" {
   type    = string
   default = null
 }
+
+variable "certificate_enable" {
+  type    = bool
+  default = null
+}
+
+variable "certificate_arn" {
+  type    = string
+  default = null
+}
