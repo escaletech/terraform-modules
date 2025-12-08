@@ -130,7 +130,7 @@ variable "certificate_name" {
 
 variable "certificate_enable" {
   type    = bool
-  default = true
+  default = null
 }
 
 variable "certificate_arn" {

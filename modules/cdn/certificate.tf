@@ -4,11 +4,12 @@ data "aws_route53_zone" "zone" {
 }
 
 locals {
-  zone_id = var.dns_zone_id != null ? var.dns_zone_id : data.aws_route53_zone.zone[0].zone_id
+  zone_id             = var.dns_zone_id != null ? var.dns_zone_id : data.aws_route53_zone.zone[0].zone_id
+  certificate_enabled = coalesce(var.certificate_enable, true)
 }
 
 resource "aws_acm_certificate" "cert" {
-  for_each = var.certificate_enable ? { default = true } : {}
+  for_each = local.certificate_enabled ? { default = true } : {}
 
   domain_name       = var.certificate_name != null ? var.certificate_name : var.host
   validation_method = "DNS"
@@ -20,7 +21,7 @@ resource "aws_acm_certificate" "cert" {
 }
 
 resource "aws_route53_record" "cert_validation" {
-  for_each = var.certificate_enable ? {
+  for_each = local.certificate_enabled ? {
     for dvo in aws_acm_certificate.cert["default"].domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       type   = dvo.resource_record_type
@@ -37,7 +38,7 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 resource "aws_acm_certificate_validation" "cert" {
-  for_each = var.certificate_enable ? { default = true } : {}
+  for_each = local.certificate_enabled ? { default = true } : {}
 
   certificate_arn         = aws_acm_certificate.cert["default"].arn
   validation_record_fqdns = values(aws_route53_record.cert_validation)[*].fqdn

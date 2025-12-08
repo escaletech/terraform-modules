@@ -149,7 +149,7 @@ resource "aws_cloudfront_distribution" "main" {
     ]
 
     precondition {
-      condition     = var.certificate_enable || var.certificate_arn != null
+      condition     = var.certificate_enable != null || var.certificate_arn != null
       error_message = "Set certificate_enable to true or provide certificate_arn when disabling certificate creation."
     }
   }
