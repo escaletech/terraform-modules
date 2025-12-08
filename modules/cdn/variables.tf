@@ -117,20 +117,3 @@ variable "additional_error_responses" {
   }))
   default = []
 }
-
-variable "create_certificate" {
-  description = "Whether to create the ACM certificate and DNS validation records for the CDN"
-  type        = bool
-  default     = true
-}
-
-variable "certificate_arn" {
-  description = "Existing ACM certificate ARN to use when create_certificate is false"
-  type        = string
-  default     = null
-
-  validation {
-    condition     = var.create_certificate || var.certificate_arn != null
-    error_message = "Set certificate_arn when create_certificate is false."
-  }
-}
