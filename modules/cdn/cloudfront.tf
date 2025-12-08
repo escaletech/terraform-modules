@@ -1,5 +1,6 @@
 locals {
-  origin_id = "Custom-${var.origin_host}"
+  origin_id        = "Custom-${var.origin_host}"
+  certificate_arn  = var.create_certificate ? aws_acm_certificate_validation.cert[0].certificate_arn : var.certificate_arn
 }
 
 data "aws_cloudfront_cache_policy" "main" {
@@ -27,7 +28,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   viewer_certificate {
     ssl_support_method       = "sni-only"
-    acm_certificate_arn      = aws_acm_certificate_validation.cert.certificate_arn
+    acm_certificate_arn      = local.certificate_arn
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
