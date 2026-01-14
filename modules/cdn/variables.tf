@@ -1,4 +1,9 @@
 variable "dns_zone" { type = string }
+variable "dns_zone_id" {
+  type        = string
+  default     = null
+  description = "Optional hosted zone id to skip the zone lookup by name"
+}
 variable "host" { type = string }
 variable "origin_host" { type = string }
 variable "tags" { type = map(any) }
@@ -119,6 +124,16 @@ variable "additional_error_responses" {
 }
 
 variable "certificate_name" {
+  type    = string
+  default = null
+}
+
+variable "certificate_enable" {
+  type    = bool
+  default = null
+}
+
+variable "certificate_arn" {
   type    = string
   default = null
 }
