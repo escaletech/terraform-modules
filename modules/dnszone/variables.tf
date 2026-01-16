@@ -10,7 +10,8 @@ variable "tags" {
 
 variable "vpc_id" {
   description = "The ID of the VPC where the DNS zone will be created (deprecated; use vpc_associations)"
-  type        = map(any)
+  type        = string
+  default     = null
 }
 
 variable "private" {
@@ -28,7 +29,7 @@ variable "vpc_associations" {
   default = []
 
   validation {
-    condition     = (!var.private) || (length(var.vpc_associations) > 0)
-    error_message = "When private=true, at least one VPC association must be provided in vpc_associations."
+    condition     = (!var.private) || (length(var.vpc_associations) > 0) || (var.vpc_id != null)
+    error_message = "When private=true, at least one VPC association must be provided in vpc_associations (or vpc_id for legacy use)."
   }
 }
