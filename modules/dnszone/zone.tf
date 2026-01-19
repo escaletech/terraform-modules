@@ -18,6 +18,10 @@ resource "aws_route53_zone" "dev" {
       vpc_region = vpc.value.vpc_region
     }
   }
+
+  lifecycle {
+    ignore_changes = [vpc]
+  }
 }
 
 resource "aws_route53_zone_association" "private_vpcs" {
