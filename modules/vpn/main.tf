@@ -3,17 +3,17 @@ resource "aws_customer_gateway" "fortigate" {
   ip_address = var.fortigate_public_ip
   type       = "ipsec.1"
 
-  tags = {
-    Name = "cgw-escale-fgt"
-  }
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-cgw"
+  })
 }
 
 resource "aws_vpn_gateway" "vgw" {
   vpc_id = var.vpc_id
 
-  tags = {
-    Name = "vgw-escale-saas"
-  }
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-vgw"
+  })
 }
 
 resource "aws_vpn_connection" "vpn" {
@@ -23,9 +23,9 @@ resource "aws_vpn_connection" "vpn" {
 
   static_routes_only = true
 
-  tags = {
-    Name = "vpn-fgt-aws"
-  }
+  tags = merge(var.tags, {
+    Name = "${var.name_prefix}-connection"
+  })
 }
 
 resource "aws_vpn_connection_route" "fortigate" {
