@@ -60,6 +60,36 @@ resource "aws_lb_listener" "nlb" {
 
   default_action {
     type             = "forward"
-    target_group_arn = each.value.target_group_arn
+    target_group_arn = coalesce(
+      try(each.value.target_group_arn, null),
+      try(aws_lb_target_group.nlb[each.value.target_group_name].arn, null)
+    )
   }
+}
+
+resource "aws_lb_target_group" "nlb" {
+  for_each = local.create_nlb ? { for tg in var.nlb_target_groups : tg.name => tg } : {}
+
+  name        = each.value.name
+  target_type = each.value.target_type
+  port        = each.value.port
+  protocol    = each.value.protocol
+  vpc_id      = coalesce(each.value.vpc_id, local.vpc_id)
+
+  dynamic "health_check" {
+    for_each = each.value.health_check == null ? [] : [each.value.health_check]
+    content {
+      enabled             = try(health_check.value.enabled, null)
+      interval            = try(health_check.value.interval, null)
+      path                = try(health_check.value.path, null)
+      port                = try(health_check.value.port, null)
+      protocol            = try(health_check.value.protocol, null)
+      timeout             = try(health_check.value.timeout, null)
+      healthy_threshold   = try(health_check.value.healthy_threshold, null)
+      unhealthy_threshold = try(health_check.value.unhealthy_threshold, null)
+      matcher             = try(health_check.value.matcher, null)
+    }
+  }
+
+  tags = merge(var.tags, each.value.tags, { Name = each.value.name })
 }

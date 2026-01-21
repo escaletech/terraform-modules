@@ -195,9 +195,41 @@ variable "nlb_enable_cross_zone_load_balancing" {
 variable "nlb_listeners" {
   description = "Listeners to create for the NLB."
   type = list(object({
-    port             = number
-    protocol         = string
-    target_group_arn = string
+    port              = number
+    protocol          = string
+    target_group_arn  = optional(string)
+    target_group_name = optional(string)
+  }))
+  default = []
+  validation {
+    condition = alltrue([
+      for listener in var.nlb_listeners :
+      try(listener.target_group_arn, null) != null || try(listener.target_group_name, null) != null
+    ])
+    error_message = "Each nlb_listener must set target_group_arn or target_group_name."
+  }
+}
+
+variable "nlb_target_groups" {
+  description = "Target groups to create for the NLB."
+  type = list(object({
+    name        = string
+    port        = number
+    protocol    = string
+    target_type = optional(string, "instance")
+    vpc_id      = optional(string)
+    health_check = optional(object({
+      enabled             = optional(bool)
+      interval            = optional(number)
+      path                = optional(string)
+      port                = optional(string)
+      protocol            = optional(string)
+      timeout             = optional(number)
+      healthy_threshold   = optional(number)
+      unhealthy_threshold = optional(number)
+      matcher             = optional(string)
+    }))
+    tags = optional(map(string), {})
   }))
   default = []
 }

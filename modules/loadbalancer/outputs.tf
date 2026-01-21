@@ -17,3 +17,8 @@ output "security_group_ids" {
   description = "Security group ids attached to the load balancer."
   value       = local.create_alb ? local.alb_security_group_ids : local.nlb_security_group_ids
 }
+
+output "nlb_target_group_arns" {
+  description = "ARNs of the created NLB target groups."
+  value       = { for name, tg in aws_lb_target_group.nlb : name => tg.arn }
+}
