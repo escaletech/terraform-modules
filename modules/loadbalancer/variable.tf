@@ -103,10 +103,10 @@ variable "alb_certificate_arn" {
   description = "ACM certificate ARN for the ALB HTTPS listener."
   type        = string
   default     = null
-  validation {
-    condition     = !var.alb_enable_default_listeners || var.alb_certificate_arn != null
-    error_message = "alb_certificate_arn must be provided when alb_enable_default_listeners is true."
-  }
+  # validation {
+  #   condition     = !var.alb_enable_default_listeners || var.alb_certificate_arn != null
+  #   error_message = "alb_certificate_arn must be provided when alb_enable_default_listeners is true."
+  # }
 }
 
 variable "alb_https_fixed_response" {
