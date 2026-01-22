@@ -18,14 +18,6 @@ resource "aws_appconfig_configuration_profile" "profile" {
   tags           = var.tags
 }
 
-resource "aws_appconfig_hosted_configuration_version" "config_version" {
-  application_id           = aws_appconfig_application.app.id
-  configuration_profile_id = aws_appconfig_configuration_profile.profile.configuration_profile_id
-  content_type             = var.content_type
-  content                  = var.config_content
-  description              = var.config_description
-}
-
 resource "aws_appconfig_deployment_strategy" "strategy" {
   name                           = "${var.app_name}-${var.deployment_strategy_name}"
   description                    = var.deployment_strategy_description
@@ -35,14 +27,4 @@ resource "aws_appconfig_deployment_strategy" "strategy" {
   growth_type                    = var.growth_type
   replicate_to                   = var.replicate_to
   tags                           = var.tags
-}
-
-resource "aws_appconfig_deployment" "deployment" {
-  application_id           = aws_appconfig_application.app.id
-  environment_id           = aws_appconfig_environment.env.environment_id
-  configuration_profile_id = aws_appconfig_configuration_profile.profile.configuration_profile_id
-  configuration_version    = aws_appconfig_hosted_configuration_version.config_version.version_number
-  deployment_strategy_id   = aws_appconfig_deployment_strategy.strategy.id
-  description              = var.deployment_description
-  tags                     = var.tags
 }
