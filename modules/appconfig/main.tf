@@ -28,3 +28,13 @@ resource "aws_appconfig_deployment_strategy" "strategy" {
   replicate_to                   = var.replicate_to
   tags                           = var.tags
 }
+
+resource "aws_appconfig_hosted_configuration_version" "config_version" {
+  count = var.configuration_content != null ? 1 : 0
+
+  application_id          = aws_appconfig_application.app.id
+  configuration_profile_id = aws_appconfig_configuration_profile.profile.id
+  description             = var.configuration_version_description
+  content_type            = var.configuration_content_type
+  content                 = var.configuration_content
+}

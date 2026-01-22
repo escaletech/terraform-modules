@@ -73,3 +73,21 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "configuration_content" {
+  description = "The content of the configuration version. If null, no configuration version is created."
+  type        = string
+  default     = null
+}
+
+variable "configuration_content_type" {
+  description = "The content type of the configuration version."
+  type        = string
+  default     = "application/json"
+}
+
+variable "configuration_version_description" {
+  description = "The description of the configuration version."
+  type        = string
+  default     = null
+}

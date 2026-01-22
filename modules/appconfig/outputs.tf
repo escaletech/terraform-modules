@@ -25,7 +25,7 @@ output "configuration_profile_id" {
 
 output "configuration_version" {
   description = "The version number of the deployed configuration."
-  value       = aws_appconfig_hosted_configuration_version.config_version.version_number
+  value       = var.configuration_content != null ? aws_appconfig_hosted_configuration_version.config_version[0].version_number : null
 }
 
 output "deployment_strategy_id" {
