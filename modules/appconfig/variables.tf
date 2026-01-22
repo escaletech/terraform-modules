@@ -26,23 +26,6 @@ variable "profile_name" {
   default     = "env"
 }
 
-variable "config_content" {
-  description = "The content of the configuration, as a JSON string."
-  type        = string
-}
-
-variable "config_description" {
-  description = "The description of the configuration version."
-  type        = string
-  default     = "Initial configuration version"
-}
-
-variable "content_type" {
-  description = "The content type of the configuration."
-  type        = string
-  default     = "application/json"
-}
-
 variable "deployment_strategy_name" {
   description = "The name for the deployment strategy."
   type        = string
@@ -83,12 +66,6 @@ variable "replicate_to" {
   description = "Where to replicate the deployment strategy."
   type        = string
   default     = "NONE"
-}
-
-variable "deployment_description" {
-  description = "The description for the deployment."
-  type        = string
-  default     = "Deploy configuration"
 }
 
 variable "tags" {
