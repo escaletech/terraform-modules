@@ -10,10 +10,10 @@ Para usar este módulo, inclua-o em seu código Terraform e forneça os valores 
 
 ```terraform
 module "my_app_config" {
-  source = "./modules/appconfig"
+  source = "github.com/escaletech/terraform-modules/modules/appconfig"
 
-  app_name        = "event-to-saas"
-  app_description = "Event to SaaS application configuration"
+  app_name        = "name-project"
+  app_description = "name project application configuration"
   env_name        = "staging"
   
   config_content = jsonencode({
