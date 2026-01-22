@@ -20,7 +20,7 @@ resource "aws_appconfig_configuration_profile" "profile" {
 
 resource "aws_appconfig_hosted_configuration_version" "config_version" {
   application_id           = aws_appconfig_application.app.id
-  configuration_profile_id = aws_appconfig_configuration_profile.profile.id
+  configuration_profile_id = aws_appconfig_configuration_profile.profile.configuration_profile_id
   content_type             = var.content_type
   content                  = var.config_content
   description              = var.config_description
@@ -39,8 +39,8 @@ resource "aws_appconfig_deployment_strategy" "strategy" {
 
 resource "aws_appconfig_deployment" "deployment" {
   application_id           = aws_appconfig_application.app.id
-  environment_id           = aws_appconfig_environment.env.id
-  configuration_profile_id = aws_appconfig_configuration_profile.profile.id
+  environment_id           = aws_appconfig_environment.env.environment_id
+  configuration_profile_id = aws_appconfig_configuration_profile.profile.configuration_profile_id
   configuration_version    = aws_appconfig_hosted_configuration_version.config_version.version_number
   deployment_strategy_id   = aws_appconfig_deployment_strategy.strategy.id
   description              = var.deployment_description
