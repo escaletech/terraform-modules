@@ -12,7 +12,7 @@ module "backup_opensearch" {
   s3_policy_document = {
     statement = [
       {
-        sid = "PublicReadForGetBucketObjects"
+        sid     = "PublicReadForGetBucketObjects"
         actions = [
           "s3:PutObject",
           "s3:GetObject",
@@ -25,11 +25,11 @@ module "backup_opensearch" {
         effect = "Allow"
         principals = {
           type        = "AWS"
-          identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.S3_OpenSearch_Backup.name}"]
+          identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.S3_OpenSearch_Backup[0].name}"]
         }
       }
     ]
   }
-}
 
-# ... (adicione os IAM resources para S3 com count = var.enable_s3_backup ? 1 : 0)
+  tags = var.tags
+}
