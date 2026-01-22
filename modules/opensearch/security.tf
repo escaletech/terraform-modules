@@ -1,5 +1,5 @@
 resource "aws_security_group" "opensearch" {
-  name        = "sg-${var.name}"
+  name        = "sg_${var.name}"
   description = "Security group for OpenSearch domain"
   vpc_id      = data.aws_vpc.selected.id
 
