@@ -79,6 +79,12 @@ variable "cpu_architecture" {
   default     = "X86_64"
 }
 
+variable "create_policy_cloudwatch" {
+  description = "Cria a policy do CloudWatch Logs quando true."
+  type        = bool
+  default     = false
+}
+
 # variable "retention_in_days" {
 #   description = "Quantidade de dias para retenção de logs."
 #   type        = number
