@@ -54,7 +54,7 @@ When `create_vpc_endpoint` is `true`, this module also creates a security group 
 | `private_zone` | `bool` | Whether the Route53 zone is private | no | `true` |
 | `name` | `string` | API Gateway name | yes | n/a |
 | `domain` | `string` | Custom domain for the API Gateway | yes | n/a |
-| `certificate_arn` | `string` | ACM certificate ARN for the domain | yes | n/a |
+| `certificate_arn` | `string` | ACM certificate ARN for the domain (REGIONAL: same region as API; EDGE: us-east-1) | yes | n/a |
 | `vpc_endpoint_ids` | `list(string)` | Existing VPC Endpoint IDs | no | `[]` |
 | `type_endpoint` | `string` | Custom domain endpoint type: `REGIONAL` or `EDGE` | no | `REGIONAL` |
 | `create_vpc_endpoint` | `bool` | Create a VPC Endpoint in this module | no | `false` |
