@@ -3,7 +3,7 @@ resource "aws_lb_target_group" "target" {
   target_type = var.target_type
   port        = var.target_port
   protocol    = var.target_protocol
-  vpc_id      = data.aws_vpc.escale-prod.id
+  vpc_id      = var.vpc_id
 
   health_check {
     interval            = 30
