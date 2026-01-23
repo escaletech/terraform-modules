@@ -34,6 +34,6 @@ resource "aws_lb_listener_rule" "listener" {
   }
 
   tags = {
-    Name = each.key
+    Name = var.target_name
   }
 }
