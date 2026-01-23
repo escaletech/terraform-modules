@@ -26,6 +26,7 @@ variable "certificate_arn" {
 variable "vpc_endpoint_ids" {
   description = "VPC ENDPOINT IDs"
   type        = list(string)
+  default     = []
 }
 
 variable "create_vpc_endpoint" {
