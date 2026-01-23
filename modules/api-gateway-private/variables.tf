@@ -28,14 +28,56 @@ variable "vpc_endpoint_ids" {
   type        = list(string)
 }
 
+variable "create_vpc_endpoint" {
+  description = "Create VPC Endpoint for API Gateway"
+  type        = bool
+  default     = false
+}
+
+variable "vpc_id" {
+  description = "VPC ID used when creating the VPC endpoint"
+  type        = string
+  default     = null
+}
+
+variable "vpc_endpoint_subnet_ids" {
+  description = "Subnet IDs used when creating the VPC endpoint"
+  type        = list(string)
+  default     = []
+}
+
+variable "vpc_endpoint_security_group_ids" {
+  description = "Security Group IDs used when creating the VPC endpoint"
+  type        = list(string)
+  default     = []
+}
+
+variable "vpc_endpoint_private_dns_enabled" {
+  description = "Enable private DNS when creating the VPC endpoint"
+  type        = bool
+  default     = true
+}
+
+variable "vpc_endpoint_service_name" {
+  description = "Override VPC endpoint service name (default: regional execute-api)"
+  type        = string
+  default     = null
+}
+
 variable "type_endpoint" {
-  description = ""
-  type = string
-  default = "null"
+  description = "Endpoint type for the custom domain (REGIONAL or EDGE)"
+  type        = string
+  default     = "REGIONAL"
+
+  validation {
+    condition     = contains(["REGIONAL", "EDGE"], var.type_endpoint)
+    error_message = "type_endpoint must be REGIONAL or EDGE."
+  }
 }
 
 locals {
-  name            = var.name
-  domain          = var.domain
-  certificate_arn = var.certificate_arn  
+  name                     = var.name
+  domain                   = var.domain
+  certificate_arn          = var.certificate_arn
+  vpc_endpoint_ids_effective = var.create_vpc_endpoint ? [aws_vpc_endpoint.api_gateway_vpc_endpoint[0].id] : var.vpc_endpoint_ids
 }

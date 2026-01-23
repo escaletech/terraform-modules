@@ -2,8 +2,19 @@ resource "aws_api_gateway_domain_name" "custom_domain" {
   certificate_arn = local.certificate_arn
   domain_name     = local.domain
   endpoint_configuration {
-    types = ["${var.type_endpoint}"]
+    types = [var.type_endpoint]
   }
+}
+
+resource "aws_vpc_endpoint" "api_gateway_vpc_endpoint" {
+  count               = var.create_vpc_endpoint ? 1 : 0
+  vpc_id              = var.vpc_id
+  service_name        = var.vpc_endpoint_service_name != null ? var.vpc_endpoint_service_name : "com.amazonaws.${data.aws_region.current.name}.execute-api"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = var.vpc_endpoint_private_dns_enabled
+
+  security_group_ids = var.vpc_endpoint_security_group_ids
+  subnet_ids         = var.vpc_endpoint_subnet_ids
 }
 
 resource "aws_api_gateway_rest_api" "gateway_api" {
@@ -12,7 +23,7 @@ resource "aws_api_gateway_rest_api" "gateway_api" {
 
   endpoint_configuration {
     types            = ["PRIVATE"]
-    vpc_endpoint_ids = var.vpc_endpoint_ids
+    vpc_endpoint_ids = local.vpc_endpoint_ids_effective
   }
 }
 
@@ -38,7 +49,7 @@ resource "aws_api_gateway_rest_api_policy" "policy_invoke" {
         "Resource": "${aws_api_gateway_rest_api.gateway_api.execution_arn}/*/*",
         "Condition" : {
             "ForAllValues:StringNotEquals": {
-                "aws:SourceVpce": ${jsonencode(var.vpc_endpoint_ids)}
+                "aws:SourceVpce": ${jsonencode(local.vpc_endpoint_ids_effective)}
             }
         }
     }
