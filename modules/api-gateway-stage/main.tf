@@ -16,10 +16,10 @@ resource "aws_api_gateway_stage" "stage" {
   stage_name    = local.name
   variables     = local.variables
   depends_on    = [aws_cloudwatch_log_group.log_api_gateway]
-  # access_log_settings {
-  #   destination_arn = aws_cloudwatch_log_group.log_api_gateway.arn
-  #   format          = "[ip:$context.identity.sourceIp] [iss:$context.domainName] $context.httpMethod $context.resourcePath - $context.status duration: $context.responseLatency ms [trackingId: $context.requestId] [user: $context.authorizer.email]"
-  # }
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.log_api_gateway.arn
+    format          = "[ip:$context.identity.sourceIp] [iss:$context.domainName] $context.httpMethod $context.resourcePath - $context.status duration: $context.responseLatency ms [trackingId: $context.requestId] [user: $context.authorizer.email]"
+  }
 }
 
 resource "aws_api_gateway_base_path_mapping" "mapping" {
