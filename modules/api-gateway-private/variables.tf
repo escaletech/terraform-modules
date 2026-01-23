@@ -28,6 +28,12 @@ variable "vpc_endpoint_ids" {
   type        = list(string)
 }
 
+variable "type_endpoint" {
+  description = ""
+  type = string
+  default = "null"
+}
+
 locals {
   name            = var.name
   domain          = var.domain

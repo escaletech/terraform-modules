@@ -1,6 +1,9 @@
 resource "aws_api_gateway_domain_name" "custom_domain" {
   certificate_arn = local.certificate_arn
   domain_name     = local.domain
+  endpoint_configuration {
+    types = ["${var.type_endpoint}"]
+  }
 }
 
 resource "aws_api_gateway_rest_api" "gateway_api" {
