@@ -44,6 +44,8 @@ module "api_gateway_private" {
 }
 ```
 
+When `create_vpc_endpoint` is `true`, this module also creates a security group that allows HTTPS from the VPC CIDR and attaches it to the VPC endpoint. Any `vpc_endpoint_security_group_ids` provided are added to that list.
+
 ## Inputs
 
 | Name | Type | Description | Required | Default |
@@ -58,7 +60,7 @@ module "api_gateway_private" {
 | `create_vpc_endpoint` | `bool` | Create a VPC Endpoint in this module | no | `false` |
 | `vpc_id` | `string` | VPC ID used to create the endpoint | no | `null` |
 | `vpc_endpoint_subnet_ids` | `list(string)` | Subnet IDs for the endpoint | no | `[]` |
-| `vpc_endpoint_security_group_ids` | `list(string)` | Security Group IDs for the endpoint | no | `[]` |
+| `vpc_endpoint_security_group_ids` | `list(string)` | Additional Security Group IDs for the endpoint (appended to the module-created SG when `create_vpc_endpoint = true`) | no | `[]` |
 | `vpc_endpoint_private_dns_enabled` | `bool` | Enable private DNS on the endpoint | no | `true` |
 | `vpc_endpoint_service_name` | `string` | Override service name (default uses regional execute-api) | no | `null` |
 
@@ -70,4 +72,4 @@ module "api_gateway_private" {
 | `root_resource_api_id` | Root resource ID |
 | `gateway_api_arn` | API Gateway ARN |
 | `vpc_endpoint_ids` | Effective VPC Endpoint IDs used by the API |
-
+| `vpc_endpoint_security_group_ids` | Effective Security Group IDs used by the VPC endpoint |

@@ -76,8 +76,10 @@ variable "type_endpoint" {
 }
 
 locals {
-  name                     = var.name
-  domain                   = var.domain
-  certificate_arn          = var.certificate_arn
+  name            = var.name
+  domain          = var.domain
+  certificate_arn = var.certificate_arn
+  vpc_cidr_block  = var.create_vpc_endpoint ? data.aws_vpc.selected[0].cidr_block : null
   vpc_endpoint_ids_effective = var.create_vpc_endpoint ? [aws_vpc_endpoint.api_gateway_vpc_endpoint[0].id] : var.vpc_endpoint_ids
+  vpc_endpoint_security_group_ids_effective = var.create_vpc_endpoint ? concat([aws_security_group.vpc_endpoint[0].id], var.vpc_endpoint_security_group_ids) : var.vpc_endpoint_security_group_ids
 }

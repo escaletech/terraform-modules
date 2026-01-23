@@ -14,3 +14,7 @@ output "gateway_api_arn" {
 output "vpc_endpoint_ids" {
   value = local.vpc_endpoint_ids_effective
 }
+
+output "vpc_endpoint_security_group_ids" {
+  value = local.vpc_endpoint_security_group_ids_effective
+}

@@ -13,8 +13,40 @@ resource "aws_vpc_endpoint" "api_gateway_vpc_endpoint" {
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = var.vpc_endpoint_private_dns_enabled
 
-  security_group_ids = var.vpc_endpoint_security_group_ids
+  security_group_ids = local.vpc_endpoint_security_group_ids_effective
   subnet_ids         = var.vpc_endpoint_subnet_ids
+}
+
+resource "aws_security_group" "vpc_endpoint" {
+  count = var.create_vpc_endpoint ? 1 : 0
+
+  name        = "${var.name}-vpce"
+  description = "Security group for API Gateway VPC endpoint"
+  vpc_id      = var.vpc_id
+}
+
+resource "aws_security_group_rule" "vpc_endpoint_ingress_https" {
+  count = var.create_vpc_endpoint ? 1 : 0
+
+  type              = "ingress"
+  description       = "Allow HTTPS from VPC"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = [local.vpc_cidr_block]
+  security_group_id = aws_security_group.vpc_endpoint[0].id
+}
+
+resource "aws_security_group_rule" "vpc_endpoint_egress_all" {
+  count = var.create_vpc_endpoint ? 1 : 0
+
+  type              = "egress"
+  description       = "Allow all outbound traffic"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.vpc_endpoint[0].id
 }
 
 resource "aws_api_gateway_rest_api" "gateway_api" {
