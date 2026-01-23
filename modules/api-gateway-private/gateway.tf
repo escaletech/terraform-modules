@@ -52,11 +52,11 @@ resource "aws_security_group_rule" "vpc_endpoint_egress_all" {
 resource "aws_api_gateway_rest_api" "gateway_api" {
   name                         = local.name
   disable_execute_api_endpoint = false
-  ip_address_type              = "dualstack"
 
   endpoint_configuration {
     types            = ["PRIVATE"]
     vpc_endpoint_ids = local.vpc_endpoint_ids_effective
+    ip_address_type  = "dualstack"
   }
 }
 
