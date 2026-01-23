@@ -9,7 +9,7 @@ resource "aws_api_gateway_domain_name" "custom_domain" {
 resource "aws_vpc_endpoint" "api_gateway_vpc_endpoint" {
   count               = var.create_vpc_endpoint ? 1 : 0
   vpc_id              = var.vpc_id
-  service_name        = var.vpc_endpoint_service_name != null ? var.vpc_endpoint_service_name : "com.amazonaws.${data.aws_region.current.name}.execute-api"
+  service_name        = var.vpc_endpoint_service_name != null ? var.vpc_endpoint_service_name : "com.amazonaws.${data.aws_region.current.id}.execute-api"
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = var.vpc_endpoint_private_dns_enabled
 
@@ -52,6 +52,7 @@ resource "aws_security_group_rule" "vpc_endpoint_egress_all" {
 resource "aws_api_gateway_rest_api" "gateway_api" {
   name                         = local.name
   disable_execute_api_endpoint = false
+  ip_address_type              = "dualstack"
 
   endpoint_configuration {
     types            = ["PRIVATE"]
