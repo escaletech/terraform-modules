@@ -3,7 +3,7 @@ resource "aws_lb_listener_rule" "listener" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.platform-conversational[each.key].arn
+    target_group_arn = aws_lb_target_group.target.arn
   }
 
   dynamic "condition" {
@@ -34,6 +34,6 @@ resource "aws_lb_listener_rule" "listener" {
   }
 
   tags = {
-    Name = each.key
+    Name = var.target_name
   }
 }

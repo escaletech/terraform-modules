@@ -17,7 +17,7 @@ variable "target_port" {
 
 variable "target_protocol" {
   type        = string
-  default     = "http"
+  default     = "HTTP"
 }
 
 variable "health_path" {
