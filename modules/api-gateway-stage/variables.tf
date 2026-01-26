@@ -24,10 +24,11 @@ variable "variables" {
   default = {}
 }
 
-# variable "hash" {
-#   description = "Hash to redeploy the stage"
-#   type    = string
-# }
+variable "hash" {
+  description = "Hash to redeploy the stage"
+  type        = string
+  default     = null
+}
 
 variable "base_path" {
   type    = string
@@ -46,5 +47,6 @@ locals {
 }
 
 variable "deployment_id" {
-  type = string
+  type    = string
+  default = null
 }
