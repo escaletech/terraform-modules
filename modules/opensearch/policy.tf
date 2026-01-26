@@ -60,7 +60,7 @@ resource "aws_iam_role_policy_attachment" "attach_S3_OpenSearch_Backup_Policy" {
 # =============================================
 
 resource "aws_iam_role" "OpenSearch_Snapshot_Backup" {
-  name = "OpenSearch_SaaS_Snapshot_Backup"
+  name = "OpenSearch_SaaS_Snapshot_Backup_${var.region}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -77,7 +77,7 @@ resource "aws_iam_role" "OpenSearch_Snapshot_Backup" {
 }
 
 resource "aws_iam_policy" "OpenSearch_Snapshot_Backup_Policy_S3" {
-  name = "OpenSearch_SaaS_Snapshot_Backup_Policy_S3"
+  name = "OpenSearch_SaaS_Snapshot_Backup_Policy_S3_${var.region}"
 
   policy = jsonencode({
     Version = "2012-10-17"

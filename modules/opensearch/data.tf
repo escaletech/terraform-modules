@@ -30,13 +30,3 @@ data "aws_route53_zone" "zone" {
 data "aws_kms_key" "opensearch" {
   key_id = "alias/aws/es"
 }
-
-data "aws_lambda_function" "opensearch_scaleUp" {
-  count = var.enable_event_bridge ? 1 : 0
-  function_name = "opensearch-saas-autoscaling-upscale"
-}
-
-data "aws_lambda_function" "opensearch_scaleDown" {
-  count = var.enable_event_bridge ? 1 : 0
-  function_name = "opensearch-saas-autoscaling-downscale"
-}

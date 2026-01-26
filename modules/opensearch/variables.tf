@@ -50,22 +50,10 @@ variable "engine_version" {
   description = "OpenSearch engine version"
 }
 
-variable "enable_alarms" {
-  type        = bool
-  default     = false
-  description = "Enable CloudWatch alarms"
-}
-
 variable "enable_s3_backup" {
   type        = bool
   default     = false
   description = "Enable S3 backup bucket and policies"
-}
-
-variable "enable_event_bridge" {
-  type        = bool
-  default     = false
-  description = "Enable EventBridge for autoscaling"
 }
 
 variable "ingress_cidrs" {
