@@ -1,12 +1,30 @@
 data "aws_api_gateway_resource" "paths_cors" {
-  for_each = var.create_cors_options ? toset(var.cors_paths) : toset([])
+  for_each = var.create_cors_options ? toset([
+    for path in var.cors_paths : path
+    if !(local.create_proxy_resource_effective && path == local.cors_proxy_path)
+  ]) : toset([])
 
   rest_api_id = aws_api_gateway_rest_api.gateway_api.id
   path        = each.value
 }
 
+resource "aws_api_gateway_resource" "cors_proxy" {
+  count = local.create_proxy_resource_effective ? 1 : 0
+
+  rest_api_id = aws_api_gateway_rest_api.gateway_api.id
+  parent_id   = aws_api_gateway_rest_api.gateway_api.root_resource_id
+  path_part   = "{proxy+}"
+}
+
+locals {
+  cors_resource_map = var.create_cors_options ? merge(
+    { for path, res in data.aws_api_gateway_resource.paths_cors : path => res },
+    local.create_proxy_resource_effective ? { (local.cors_proxy_path) = aws_api_gateway_resource.cors_proxy[0] } : {}
+  ) : {}
+}
+
 resource "aws_api_gateway_method" "cors" {
-  for_each = var.create_cors_options ? { for path, res in data.aws_api_gateway_resource.paths_cors : path => res } : {}
+  for_each = local.cors_resource_map
 
   rest_api_id   = aws_api_gateway_rest_api.gateway_api.id
   resource_id   = each.value.id

@@ -46,6 +46,25 @@ module "api_gateway_private" {
 
 When `create_vpc_endpoint` is `true`, this module also creates a security group that allows HTTPS from the VPC CIDR and attaches it to the VPC endpoint. Any `vpc_endpoint_security_group_ids` provided are added to that list.
 
+### Enable CORS for `/{proxy+}`
+
+```hcl
+module "api_gateway_private" {
+  source = "./modules/api-gateway-private"
+
+  name            = "my-private-api"
+  domain          = "api.internal.example.com"
+  zone            = "internal.example.com"
+  private_zone    = true
+  certificate_arn = "arn:aws:acm:us-east-1:111111111111:certificate/abcd"
+
+  create_cors_options   = true
+  cors_paths            = ["/{proxy+}"]
+  cors_allowed_origins  = ["https://app.internal.example.com"]
+  create_proxy_resource = true
+}
+```
+
 ## Inputs
 
 | Name | Type | Description | Required | Default |
@@ -64,6 +83,7 @@ When `create_vpc_endpoint` is `true`, this module also creates a security group 
 | `vpc_endpoint_private_dns_enabled` | `bool` | Enable private DNS on the endpoint | no | `true` |
 | `vpc_endpoint_service_name` | `string` | Override service name (default uses regional execute-api) | no | `null` |
 | `create_cors_options` | `bool` | Create OPTIONS method responses for CORS on the specified paths | no | `false` |
+| `create_proxy_resource` | `bool` | Create a `/{proxy+}` resource when `cors_paths` includes that path | no | `true` |
 | `cors_paths` | `list(string)` | API Gateway resource paths that should receive an OPTIONS method for CORS | no | `[]` |
 | `cors_allowed_origins` | `list(string)` | Allowed Origin list for CORS preflight responses | no | `[]` |
 

@@ -82,6 +82,12 @@ variable "create_cors_options" {
   default     = false
 }
 
+variable "create_proxy_resource" {
+  description = "Create a /{proxy+} resource when cors_paths includes that path"
+  type        = bool
+  default     = true
+}
+
 variable "cors_paths" {
   description = "API Gateway resource paths that should receive an OPTIONS method for CORS"
   type        = list(string)
@@ -101,4 +107,7 @@ locals {
   vpc_cidr_block  = var.create_vpc_endpoint ? data.aws_vpc.selected[0].cidr_block : null
   vpc_endpoint_ids_effective = var.create_vpc_endpoint ? [aws_vpc_endpoint.api_gateway_vpc_endpoint[0].id] : var.vpc_endpoint_ids
   vpc_endpoint_security_group_ids_effective = var.create_vpc_endpoint ? concat([aws_security_group.vpc_endpoint[0].id], var.vpc_endpoint_security_group_ids) : var.vpc_endpoint_security_group_ids
+  cors_paths_set         = toset(var.cors_paths)
+  cors_proxy_path        = "/{proxy+}"
+  create_proxy_resource_effective = var.create_proxy_resource && contains(local.cors_paths_set, local.cors_proxy_path)
 }
