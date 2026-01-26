@@ -63,6 +63,9 @@ When `create_vpc_endpoint` is `true`, this module also creates a security group 
 | `vpc_endpoint_security_group_ids` | `list(string)` | Additional Security Group IDs for the endpoint (appended to the module-created SG when `create_vpc_endpoint = true`) | no | `[]` |
 | `vpc_endpoint_private_dns_enabled` | `bool` | Enable private DNS on the endpoint | no | `true` |
 | `vpc_endpoint_service_name` | `string` | Override service name (default uses regional execute-api) | no | `null` |
+| `create_cors_options` | `bool` | Create OPTIONS method responses for CORS on the specified paths | no | `false` |
+| `cors_paths` | `list(string)` | API Gateway resource paths that should receive an OPTIONS method for CORS | no | `[]` |
+| `cors_allowed_origins` | `list(string)` | Allowed Origin list for CORS preflight responses | no | `[]` |
 
 ## Outputs
 

@@ -76,6 +76,24 @@ variable "type_endpoint" {
   }
 }
 
+variable "create_cors_options" {
+  description = "Create OPTIONS method responses for CORS on the specified paths"
+  type        = bool
+  default     = false
+}
+
+variable "cors_paths" {
+  description = "API Gateway resource paths that should receive an OPTIONS method for CORS"
+  type        = list(string)
+  default     = []
+}
+
+variable "cors_allowed_origins" {
+  description = "Allowed Origin list for CORS preflight responses"
+  type        = list(string)
+  default     = []
+}
+
 locals {
   name            = var.name
   domain          = var.domain
