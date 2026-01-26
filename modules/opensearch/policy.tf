@@ -5,7 +5,7 @@
 resource "aws_iam_role" "S3_OpenSearch_Backup" {
   count = var.enable_s3_backup ? 1 : 0
 
-  name = "S3_OpenSearch_SaaS_Backup"
+  name = "S3_OpenSearch_SaaS_Backup_${var.region}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -25,7 +25,7 @@ resource "aws_iam_role" "S3_OpenSearch_Backup" {
 resource "aws_iam_policy" "S3_OpenSearch_Backup_Policy" {
   count = var.enable_s3_backup ? 1 : 0
 
-  name        = "S3_OpenSearch_SaaS_Backup_Policy"
+  name        = "S3_OpenSearch_SaaS_Backup_Policy_${var.region}"
   description = "Policy para permitir que o bucket S3 de backup do OpenSearch seja acessado"
 
   policy = jsonencode({
@@ -105,7 +105,7 @@ resource "aws_iam_role_policy_attachment" "role_OpenSearch_Snapshot_Backup_Polic
 }
 
 resource "aws_iam_policy" "OpenSearch_Snapshot_Backup_Policy_PassRole" {
-  name = "OpenSearch_SaaS_Snapshot_Backup_Policy_PassRole"
+  name = "OpenSearch_SaaS_Snapshot_Backup_Policy_PassRole_${var.region}"
 
   policy = jsonencode({
     Version = "2012-10-17"
