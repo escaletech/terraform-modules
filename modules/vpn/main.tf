@@ -26,6 +26,25 @@ resource "aws_vpn_connection" "vpn" {
   tags = merge(var.tags, {
     Name = "${var.name_prefix}-connection"
   })
+
+  lifecycle {
+    ignore_changes = [
+      tunnel1_ike_versions,
+      tunnel1_phase1_dh_group_numbers,
+      tunnel1_phase1_encryption_algorithms,
+      tunnel1_phase1_integrity_algorithms,
+      tunnel1_phase2_dh_group_numbers,
+      tunnel1_phase2_encryption_algorithms,
+      tunnel1_phase2_integrity_algorithms,
+      tunnel2_ike_versions,
+      tunnel2_phase1_dh_group_numbers,
+      tunnel2_phase1_encryption_algorithms,
+      tunnel2_phase1_integrity_algorithms,
+      tunnel2_phase2_dh_group_numbers,
+      tunnel2_phase2_encryption_algorithms,
+      tunnel2_phase2_integrity_algorithms,
+    ]
+  }
 }
 
 resource "aws_vpn_connection_route" "fortigate" {
