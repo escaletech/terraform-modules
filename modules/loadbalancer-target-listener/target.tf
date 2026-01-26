@@ -3,7 +3,7 @@ resource "aws_lb_target_group" "target" {
   target_type = var.target_type
   port        = var.target_port
   protocol    = var.target_protocol
-  vpc_id      = data.aws_vpc.escale-prod.id
+  vpc_id      = var.vpc_id
 
   health_check {
     interval            = 30
@@ -17,7 +17,9 @@ resource "aws_lb_target_group" "target" {
 }
 
 resource "aws_lb_target_group_attachment" "internal" {
+  count = var.ip != "" && var.target_type == "ip" ? 1 : 0
+
   target_group_arn = aws_lb_target_group.target.arn
-  target_id        = (var.target_type == "ip") ? var.ip : null
+  target_id        = var.ip
   port             = var.target_port
 }

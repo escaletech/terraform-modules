@@ -137,7 +137,7 @@ resource "aws_network_acl" "private" {
     rule_no    = 100
     protocol   = "-1"
     action     = "allow"
-    cidr_block = aws_vpc.this.cidr_block
+    cidr_block = "0.0.0.0/0"
     from_port  = 0
     to_port    = 0
   }
