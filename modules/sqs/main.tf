@@ -5,9 +5,7 @@ locals {
   queue_base_name = join("-", [var.name, "sqs", var.environment])
   queue_name      = var.fifo_queue == true ? "${local.queue_base_name}.fifo" : local.queue_base_name
 
-  effective_kms_key_id = var.kms_master_key_id != null
-    ? var.kms_master_key_id
-    : aws_kms_key.sqs[0].arn
+  effective_kms_key_id = var.kms_master_key_id != null ? var.kms_master_key_id : aws_kms_key.sqs[0].arn
 
   kms_tags = merge(
     {
