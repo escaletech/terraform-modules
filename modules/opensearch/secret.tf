@@ -5,8 +5,13 @@ resource "aws_secretsmanager_secret" "dbpass" {
 }
 
 resource "random_password" "password" {
-  length  = 16
-  special = true
+  length           = 16
+  min_upper        = 1
+  min_lower        = 1
+  min_numeric      = 1
+  min_special      = 1
+  special          = true
+  override_special = "_%-^!#"
 }
 
 resource "aws_secretsmanager_secret_version" "dbpass" {
