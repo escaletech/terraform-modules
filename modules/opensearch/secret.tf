@@ -1,5 +1,5 @@
 resource "aws_secretsmanager_secret" "dbpass" {
-  name = "escale/${var.name}/production/master-password"
+  name = "escale/saas-${var.name}/production/master-password"
 
   tags = var.tags
 }
