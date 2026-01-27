@@ -1,4 +1,5 @@
 data "aws_route53_zone" "zone" {
+  count        = var.create_route53_record ? 1 : 0
   name         = var.zone
   private_zone = var.private_zone
 }

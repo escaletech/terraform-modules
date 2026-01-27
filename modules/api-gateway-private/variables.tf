@@ -1,10 +1,21 @@
 variable "zone" {
   description = "zone where the domain will be created"
   type        = string
+  default     = null
+  validation {
+    condition     = var.create_route53_record ? (var.zone != null && var.zone != "") : true
+    error_message = "zone must be set when create_route53_record is true."
+  }
 }
 
 variable "private_zone" {
   description = "zone is private"
+  type        = bool
+  default     = true
+}
+
+variable "create_route53_record" {
+  description = "Create Route53 record for the API Gateway custom domain"
   type        = bool
   default     = true
 }
