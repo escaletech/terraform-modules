@@ -27,7 +27,7 @@ resource "aws_cloudfront_distribution" "main" {
 
   viewer_certificate {
     ssl_support_method       = "sni-only"
-    acm_certificate_arn      = aws_acm_certificate_validation.cert.certificate_arn
+    acm_certificate_arn      = var.certificate_arn != null ? var.certificate_arn : aws_acm_certificate_validation.cert["default"].certificate_arn
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
@@ -147,5 +147,10 @@ resource "aws_cloudfront_distribution" "main" {
     ignore_changes = [
       viewer_certificate[0].acm_certificate_arn
     ]
+
+    precondition {
+      condition     = var.certificate_enable != null || var.certificate_arn != null
+      error_message = "Set certificate_enable to true or provide certificate_arn when disabling certificate creation."
+    }
   }
 }
