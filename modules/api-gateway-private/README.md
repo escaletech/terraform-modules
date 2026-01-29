@@ -1,6 +1,6 @@
 # api-gateway-private module
 
-Creates a private API Gateway REST API with a custom domain, Route53 record, and an optional VPC Endpoint.
+Creates a private API Gateway REST API with a custom domain, optional Route53 record, and an optional VPC Endpoint.
 
 ## Usage
 
@@ -65,12 +65,27 @@ module "api_gateway_private" {
 }
 ```
 
+### Disable Route53 record creation
+
+```hcl
+module "api_gateway_private" {
+  source = "./modules/api-gateway-private"
+
+  name                  = "my-private-api"
+  domain                = "api.internal.example.com"
+  certificate_arn       = "arn:aws:acm:us-east-1:111111111111:certificate/abcd"
+
+  create_route53_record = false
+}
+```
+
 ## Inputs
 
 | Name | Type | Description | Required | Default |
 |------|------|-------------|----------|---------|
-| `zone` | `string` | Route53 zone name | yes | n/a |
+| `zone` | `string` | Route53 zone name (required when `create_route53_record = true`) | conditional | `null` |
 | `private_zone` | `bool` | Whether the Route53 zone is private | no | `true` |
+| `create_route53_record` | `bool` | Create a Route53 record for the custom domain | no | `true` |
 | `name` | `string` | API Gateway name | yes | n/a |
 | `domain` | `string` | Custom domain for the API Gateway | yes | n/a |
 | `certificate_arn` | `string` | ACM certificate ARN for the domain (REGIONAL: same region as API; EDGE: us-east-1) | yes | n/a |
