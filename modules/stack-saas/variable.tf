@@ -72,6 +72,34 @@ locals {
     }
   }
 
+  default_listener_source_ips = {
+    "${var.client_name}-chat" = [
+      "186.225.143.246/32",
+      "3.225.122.61/32",
+      "52.22.27.47/32",
+      "54.166.93.109/32"
+    ]
+    "${var.client_name}-chatwootMedia" = ["0.0.0.0/0"]
+    "${var.client_name}-evolution" = [
+      "186.225.143.246/32",
+      "3.225.122.61/32",
+      "52.22.27.47/32",
+      "54.166.93.109/32"
+    ]
+    "${var.client_name}-evolutionWebhook" = ["192.168.0.0/16"]
+    "${var.client_name}-editor" = [
+      "186.225.143.246/32",
+      "3.225.122.61/32",
+      "52.22.27.47/32",
+      "54.166.93.109/32"
+    ]
+    "${var.client_name}-viewer" = [
+      "186.225.143.246/32",
+      "3.225.122.61/32",
+      "52.22.27.47/32",
+      "54.166.93.109/32"
+    ]
+  }
 }
 
 variable "instance_type" {
@@ -165,7 +193,7 @@ variable "ipv4_cidr_blocks" {
 variable "ports_ingress_allowed" {
   description = "List of ports allowed to access the instance"
   type        = list(number)
-  default     = [22, 80, 443, 2375]
+  default     = [22, 80, 443]
 }
 
 variable "s3_name" {
@@ -198,4 +226,10 @@ variable "dns_builder" {
 variable "dns_bot" {
   description = "Create DNS record for Typebot Viewer"
   type        = string
+}
+
+variable "listener_source_ips" {
+  description = "Override source IPs per application for ALB listener rules"
+  type        = map(list(string))
+  default     = {}
 }

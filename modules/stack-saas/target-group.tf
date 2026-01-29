@@ -2,7 +2,7 @@
 resource "aws_lb_target_group" "platform-conversational" {
   for_each = toset(local.applications)
 
-  name        = each.key
+  name        = "${substr(replace(each.key, "_", "-"), 0, 24)}-${substr(md5(each.key), 0, 7)}"
   target_type = "ip"
   port        = local.ingress[each.key].port
   protocol    = local.ingress[each.key].protocol
@@ -46,7 +46,7 @@ resource "aws_lb_listener_rule" "listener" {
 
   condition {
     source_ip {
-      values = each.key == "${var.client_name}-chatwootMedia" ? ["0.0.0.0/0"] : (each.key == "${var.client_name}-evolutionWebhook" ? ["192.168.0.0/16"] : ["186.225.143.246/32", "3.225.122.61/32", "52.22.27.47/32", "54.166.93.109/32"])
+      values = lookup(var.listener_source_ips, each.key, local.default_listener_source_ips[each.key])
     }
   }
 
