@@ -54,3 +54,9 @@ variable "root_permissions" {
   type    = string
   default = "0755"
 }
+
+variable "efs_mount_path" {
+  description = "Caminho onde o EFS será montado dentro do container (ex.: /home/node)"
+  type        = string
+  default     = "/home/node"
+}
