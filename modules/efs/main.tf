@@ -1,7 +1,7 @@
 # Security Group específico para o EFS
 resource "aws_security_group" "efs" {
   name        = "efs-${var.service_name}"
-  description = "Permite NFS (2049) apenas das tasks do serviço ${var.service_name}"
+  description = "Permite NFS porta 2049 apenas das tasks do servico ${var.service_name}"
   vpc_id      = var.vpc_id
 
   ingress {
