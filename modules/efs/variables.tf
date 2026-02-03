@@ -16,6 +16,7 @@ variable "subnet_ids" {
 variable "ecs_task_security_group_ids" {
   description = "Lista de Security Groups das tasks ECS que vão acessar o EFS"
   type        = list(string)
+  default     = null
 }
 
 variable "tags" {

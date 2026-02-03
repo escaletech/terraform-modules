@@ -8,7 +8,7 @@ resource "aws_security_group" "efs" {
     from_port       = 2049
     to_port         = 2049
     protocol        = "tcp"
-    security_groups = var.ecs_task_security_group_ids
+    security_groups = var.ecs_task_security_group_ids == null ? [] : var.ecs_task_security_group_ids
   }
 
   egress {

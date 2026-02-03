@@ -79,6 +79,28 @@ variable "cpu_architecture" {
   default     = "X86_64"
 }
 
+# Variáveis necessárias para o submódulo EFS
+variable "vpc_id" {
+  description = "VPC ID onde o EFS será criado."
+  type        = string
+}
+
+variable "subnet_ids" {
+  description = "Subnets onde o EFS criará os mount targets."
+  type        = list(string)
+}
+
+variable "ecs_task_sg_id" {
+  description = "Security Group ID das tasks ECS para permitir acesso ao EFS."
+  type        = string
+}
+
+variable "tags" {
+  description = "Tags aplicadas ao EFS."
+  type        = map(string)
+  default     = {}
+}
+
 # variable "retention_in_days" {
 #   description = "Quantidade de dias para retenção de logs."
 #   type        = number
