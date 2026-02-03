@@ -13,93 +13,6 @@ locals {
     "${var.client_name}-viewer"
   ]
 
-  ingress = {
-    "${var.client_name}-chat" = {
-      host         = "${var.dns_chatwoot}"
-      path_pattern = "*"
-      health_check = "/"
-      port         = 443
-      protocol     = "HTTPS"
-    }
-    "${var.client_name}-chatwootMedia" = {
-      host         = "${var.dns_chatwoot}"
-      path_pattern = "/rails/active_storage/*"
-      health_check = "/"
-      port         = 443
-      protocol     = "HTTPS"
-    }
-    "${var.client_name}-evolution" = {
-      host         = "${var.dns_evolution}"
-      path_pattern = "*"
-      health_check = "/"
-      port         = 80
-      protocol     = "HTTP"
-    }
-    "${var.client_name}-evolutionWebhook" = {
-      host         = "${var.dns_evolution}"
-      path_pattern = "*"
-      health_check = "/webhook/*"
-      port         = 80
-      protocol     = "HTTP"
-    }
-    "${var.client_name}-editor" = {
-      host         = "${var.dns_builder}"
-      path_pattern = "*"
-      health_check = "/"
-      port         = 80
-      protocol     = "HTTP"
-    }
-    "${var.client_name}-viewer" = {
-      host         = "${var.dns_bot}"
-      path_pattern = "*"
-      health_check = "/"
-      port         = 80
-      protocol     = "HTTP"
-    }
-  }
-  dns = {
-    "${var.client_name}-chat" = {
-      host = "${var.dns_chatwoot}"
-    }
-    "${var.client_name}-evolution" = {
-      host = "${var.dns_evolution}"
-    }
-    "${var.client_name}-editor" = {
-      host = "${var.dns_builder}"
-    }
-    "${var.client_name}-viewer" = {
-      host = "${var.dns_bot}"
-    }
-  }
-
-  default_listener_source_ips = {
-    "${var.client_name}-chat" = [
-      "186.225.143.246/32",
-      "3.225.122.61/32",
-      "52.22.27.47/32",
-      "54.166.93.109/32"
-    ]
-    "${var.client_name}-chatwootMedia" = ["0.0.0.0/0"]
-    "${var.client_name}-evolution" = [
-      "186.225.143.246/32",
-      "3.225.122.61/32",
-      "52.22.27.47/32",
-      "54.166.93.109/32"
-    ]
-    "${var.client_name}-evolutionWebhook" = ["192.168.0.0/16"]
-    "${var.client_name}-editor" = [
-      "186.225.143.246/32",
-      "3.225.122.61/32",
-      "52.22.27.47/32",
-      "54.166.93.109/32"
-    ]
-    "${var.client_name}-viewer" = [
-      "186.225.143.246/32",
-      "3.225.122.61/32",
-      "52.22.27.47/32",
-      "54.166.93.109/32"
-    ]
-  }
 }
 
 variable "instance_type" {
@@ -144,16 +57,6 @@ variable "key_name" {
   default     = ""
 }
 
-variable "initial_secret_value" {
-  description = "Value initial for the secret start"
-  type        = string
-  default     = "{\"placeholder\": \"init\"}"
-}
-
-variable "environment" {
-  description = "Environment"
-  type        = string
-}
 
 variable "vpc_id" {
   description = "VPC ID where resources will be created"
@@ -165,27 +68,12 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "listener_arn" {
-  description = "ARN of the ALB listener"
-  type        = string
-}
-
-variable "lb_id" {
-  description = "ID of the Load Balancer"
-  type        = string
-}
-
-variable "lb_name" {
-  description = "Name of the Load Balancer"
-  type        = string
-}
-
 variable "route53_id" {
   description = "Route53 Zone ID"
   type        = string
 }
 
-variable "ipv4_cidr_blocks" {
+variable "ipv4_cidr_blocks_allowed" {
   description = "List of IPv4 CIDR blocks allowed to access the instance"
   type        = list(string)
 }
@@ -208,25 +96,6 @@ variable "containers_name" {
   default     = ["chatwoot", "sidekiq", "typebot-builder", "typebot-viewer", "evolution"]
 }
 
-variable "dns_chatwoot" {
-  description = "Create DNS record for Chatwoot"
-  type        = string
-}
-
-variable "dns_evolution" {
-  description = "Create DNS record for Evolution"
-  type        = string
-}
-
-variable "dns_builder" {
-  description = "Create DNS record for Typebot Builder"
-  type        = string
-}
-
-variable "dns_bot" {
-  description = "Create DNS record for Typebot Viewer"
-  type        = string
-}
 
 variable "listener_source_ips" {
   description = "Override source IPs per application for ALB listener rules"
