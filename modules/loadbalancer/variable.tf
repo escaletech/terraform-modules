@@ -229,6 +229,11 @@ variable "nlb_target_groups" {
       unhealthy_threshold = optional(number)
       matcher             = optional(string)
     }))
+    targets = optional(list(object({
+      target_id         = string
+      port              = optional(number)
+      availability_zone = optional(string)
+    })), [])
     tags = optional(map(string), {})
   }))
   default = []
