@@ -23,6 +23,7 @@ variable "instance_type" {
 variable "ami" {
   description = "AMI"
   type        = string
+  default     = "ami-0be5a830e851483f9" ## Amazon Linux 2023
 }
 
 variable "tags" {
@@ -68,11 +69,6 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "route53_id" {
-  description = "Route53 Zone ID"
-  type        = string
-}
-
 variable "ipv4_cidr_blocks_allowed" {
   description = "List of IPv4 CIDR blocks allowed to access the instance"
   type        = list(string)
@@ -88,17 +84,4 @@ variable "s3_name" {
   description = "S3 Bucket name"
   type        = string
   default     = ""
-}
-
-variable "containers_name" {
-  description = "Container names"
-  type        = list(string)
-  default     = ["chatwoot", "sidekiq", "typebot-builder", "typebot-viewer", "evolution"]
-}
-
-
-variable "listener_source_ips" {
-  description = "Override source IPs per application for ALB listener rules"
-  type        = map(list(string))
-  default     = {}
 }
