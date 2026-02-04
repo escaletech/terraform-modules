@@ -3,17 +3,6 @@ locals {
   name_prefix = var.name_prefix != "" ? var.name_prefix : "platform-conversational-${var.client_name}"
   iam_prefix = var.role_prefix != "" ? var.role_prefix : local.name_prefix
   key_name = var.key_name != "" ? var.key_name : "platform-conversational"
-
-
-  applications = [
-    "${var.client_name}-evolutionWebhook",
-    "${var.client_name}-chatwootMedia",
-    "${var.client_name}-chat",
-    "${var.client_name}-evolution",
-    "${var.client_name}-editor",
-    "${var.client_name}-viewer"
-  ]
-
 }
 
 variable "instance_type" {

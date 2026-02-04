@@ -123,7 +123,7 @@ resource "aws_instance" "platform_conversational" {
 }
 
 resource "aws_cloudwatch_log_group" "logs" {
-  name              = "ec2/platform-conversational-${var.client_name}"
+  name              = "ec2/${role_prefix}"
   retention_in_days = 14
   tags              = var.tags
 }
