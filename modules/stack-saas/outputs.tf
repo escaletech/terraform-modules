@@ -17,9 +17,3 @@ output "s3_bucket_name" {
   description = "S3 bucket name"
   value       = aws_s3_bucket.bucket-saas.bucket
 }
-
-output "target_group_arns" {
-  description = "Target group ARNs by application name"
-  value       = { for k, v in aws_lb_target_group.platform-conversational : k => v.arn }
-}
-
