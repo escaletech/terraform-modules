@@ -51,6 +51,7 @@ module "stack_saas" {
 
   # opcionais
   name_prefix     = "platform-conversational-cliente-x"
+  role_prefix     = "platform-conversational-cliente-x-01"
   key_name        = "minha-chave-ssh"
   s3_name         = "cliente-x-saas"
   create_s3       = true
@@ -85,6 +86,7 @@ module "stack_saas" {
 | dns_builder | string | sim | - | DNS do Typebot Builder |
 | dns_bot | string | sim | - | DNS do Typebot Viewer |
 | name_prefix | string | nao | "" | Prefixo para nomes IAM/EC2 |
+| role_prefix | string | nao | "" | Prefixo para nomes IAM (role/policies/profile) |
 | key_name | string | nao | "" | Key pair para SSH |
 | initial_secret_value | string | nao | "{\"placeholder\": \"init\"}" | Valor inicial do secret |
 | ports_ingress_allowed | list(number) | nao | [22,80,443] | Portas liberadas no SG |
