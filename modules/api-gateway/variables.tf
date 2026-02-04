@@ -8,6 +8,12 @@ variable "zone" {
   type        = string
 }
 
+variable "create_dns" {
+  description = "Whether to create the Route53 DNS record"
+  type        = bool
+  default     = true
+}
+
 variable "certificate_arn" {
   type = string
 }
