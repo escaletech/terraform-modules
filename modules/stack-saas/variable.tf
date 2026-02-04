@@ -85,3 +85,9 @@ variable "s3_name" {
   type        = string
   default     = ""
 }
+
+variable "create_s3" {
+  description = "Create S3 bucket and attach policy"
+  type        = bool
+  default     = true
+}

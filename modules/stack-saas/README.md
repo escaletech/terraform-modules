@@ -53,6 +53,7 @@ module "stack_saas" {
   name_prefix     = "platform-conversational-cliente-x"
   key_name        = "minha-chave-ssh"
   s3_name         = "cliente-x-saas"
+  create_s3       = true
   ports_ingress_allowed = [22, 80, 443]
   containers_name = ["chatwoot", "sidekiq", "typebot-builder", "typebot-viewer", "evolution"]
 
@@ -88,6 +89,7 @@ module "stack_saas" {
 | initial_secret_value | string | nao | "{\"placeholder\": \"init\"}" | Valor inicial do secret |
 | ports_ingress_allowed | list(number) | nao | [22,80,443] | Portas liberadas no SG |
 | s3_name | string | nao | "" | Nome do bucket S3 |
+| create_s3 | bool | nao | true | Criar bucket S3 e anexar policy |
 | containers_name | list(string) | nao | ["chatwoot","sidekiq","typebot-builder","typebot-viewer","evolution"] | Containers monitorados |
 | listener_source_ips | map(list(string)) | nao | {} | Override de IPs por app nos listener rules |
 

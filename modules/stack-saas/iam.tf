@@ -116,8 +116,9 @@ resource "aws_iam_role_policy_attachment" "pass_role_to_scheduler_attachment" {
 }
 
 resource "aws_iam_role_policy_attachment" "s3_bucket_policy_attachment" {
+  count      = var.create_s3 ? 1 : 0
   role       = aws_iam_role.ec2_role.name
-  policy_arn = aws_iam_policy.policy-bucket-saas.arn
+  policy_arn = aws_iam_policy.policy-bucket-saas[0].arn
 }
 
 resource "aws_iam_instance_profile" "platform_conversational_iam_profile" {

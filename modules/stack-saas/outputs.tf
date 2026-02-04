@@ -15,5 +15,5 @@ output "security_group_id" {
 
 output "s3_bucket_name" {
   description = "S3 bucket name"
-  value       = aws_s3_bucket.bucket-saas.bucket
+  value       = var.create_s3 ? aws_s3_bucket.bucket-saas[0].bucket : null
 }
