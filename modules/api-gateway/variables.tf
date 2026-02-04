@@ -29,6 +29,17 @@ variable "api_key_source" {
   default     = "HEADER"
 }
 
+variable "endpoint_type" {
+  description = "API Gateway custom domain endpoint type: EDGE or REGIONAL"
+  type        = string
+  default     = "EDGE"
+
+  validation {
+    condition     = contains(["EDGE", "REGIONAL"], var.endpoint_type)
+    error_message = "endpoint_type must be either \"EDGE\" or \"REGIONAL\"."
+  }
+}
+
 locals {
   domain          = var.domain
   name            = var.name

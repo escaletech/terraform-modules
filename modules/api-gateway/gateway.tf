@@ -1,9 +1,10 @@
 resource "aws_api_gateway_domain_name" "custom_domain" {
   domain_name              = local.domain
-  regional_certificate_arn = local.certificate_arn
+  certificate_arn          = var.endpoint_type == "EDGE" ? local.certificate_arn : null
+  regional_certificate_arn = var.endpoint_type == "REGIONAL" ? local.certificate_arn : null
 
   endpoint_configuration {
-    types = ["REGIONAL"]
+    types = [var.endpoint_type]
   }
 }
 
@@ -40,8 +41,8 @@ resource "aws_route53_record" "domain" {
 
   alias {
     evaluate_target_health = true
-    name                   = aws_api_gateway_domain_name.custom_domain.regional_domain_name
-    zone_id                = aws_api_gateway_domain_name.custom_domain.regional_zone_id
+    name                   = var.endpoint_type == "REGIONAL" ? aws_api_gateway_domain_name.custom_domain.regional_domain_name : aws_api_gateway_domain_name.custom_domain.cloudfront_domain_name
+    zone_id                = var.endpoint_type == "REGIONAL" ? aws_api_gateway_domain_name.custom_domain.regional_zone_id : aws_api_gateway_domain_name.custom_domain.cloudfront_zone_id
   }
 
   depends_on = [
