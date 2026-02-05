@@ -20,13 +20,13 @@ variable "environment-variables" {
 variable "cpu" {
   description = "A quantidade de CPU alocada para a tarefa ECS."
   type        = number
-  default     = 256
+  default     = 1024
 }
 
 variable "memory" {
   description = "A quantidade de memória alocada para a tarefa ECS."
   type        = number
-  default     = 512
+  default     = 2048
 }
 
 variable "container_port" {
