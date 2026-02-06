@@ -34,6 +34,18 @@ variable "alias_zone_id" {
   description = "ALB Zone ID"
 }
 
+variable "records" {
+  type        = list(string)
+  default     = []
+  description = "Record values for non-alias records (e.g., CNAME target)."
+}
+
+variable "ttl" {
+  type        = number
+  default     = null
+  description = "TTL (seconds) for non-alias records. Defaults to default_ttl when null."
+}
+
 variable "default_ttl" {
   type        = number
   default     = 300
