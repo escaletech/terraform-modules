@@ -15,7 +15,7 @@ resource "aws_s3_bucket_public_access_block" "bucket-saas" {
 
 resource "aws_iam_policy" "policy-bucket-saas" {
   count = var.create_s3 ? 1 : 0
-  name = "${local.s3_name}-policy"
+  name  = "${local.s3_name}-policy"
 
   policy = jsonencode({
     Version = "2012-10-17"

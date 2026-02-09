@@ -1,7 +1,7 @@
 ##### SECURITY GROUP #####
 
 resource "aws_security_group" "opensource" {
-  name        = "${var.role_prefix}"
+  name        = var.role_prefix
   description = "SG used by the platform Opensource - ${var.role_prefix}"
   vpc_id      = var.vpc_id
 
