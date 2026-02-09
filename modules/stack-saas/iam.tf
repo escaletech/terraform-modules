@@ -78,6 +78,20 @@ resource "aws_iam_policy" "ec2_policy" {
         ]
         Effect   = "Allow"
         Resource = "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "appconfig:ListApplications",
+          "appconfig:GetApplication",
+          "appconfig:ListEnvironments",
+          "appconfig:GetEnvironment",
+          "appconfig:ListConfigurationProfiles",
+          "appconfig:GetConfigurationProfile",
+          "appconfig:GetConfiguration",
+          "appconfig:StartConfigurationSession"
+        ],
+        "Resource" : "*"
       }
     ]
   })
