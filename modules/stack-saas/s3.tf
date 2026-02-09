@@ -1,37 +1,21 @@
 resource "aws_s3_bucket" "bucket-saas" {
-  bucket = var.s3_name
-  tags = {
-    Name = var.s3_name
-  }
+  count  = var.create_s3 ? 1 : 0
+  bucket = local.s3_name
+  tags   = merge(var.tags, { Name = local.s3_name })
 }
 
 resource "aws_s3_bucket_public_access_block" "bucket-saas" {
-  bucket                  = aws_s3_bucket.bucket-saas.id
+  count                   = var.create_s3 ? 1 : 0
+  bucket                  = aws_s3_bucket.bucket-saas[0].id
   block_public_acls       = true
-  block_public_policy     = false
+  block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
 
-resource "aws_iam_role" "role-bucket-saas" {
-  name = "${var.s3_name}-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = "sts:AssumeRole"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
 resource "aws_iam_policy" "policy-bucket-saas" {
-  name = "${var.s3_name}-policy"
+  count = var.create_s3 ? 1 : 0
+  name = "${local.s3_name}-policy"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -45,15 +29,10 @@ resource "aws_iam_policy" "policy-bucket-saas" {
           "s3:DeleteObject"
         ]
         Resource = [
-          "arn:aws:s3:::${var.s3_name}/*",
-          "arn:aws:s3:::${var.s3_name}"
+          "arn:aws:s3:::${local.s3_name}/*",
+          "arn:aws:s3:::${local.s3_name}"
         ]
       }
     ]
   })
-}
-
-resource "aws_iam_role_policy_attachment" "attachment-bucket-saas" {
-  role       = aws_iam_role.role-bucket-saas.name
-  policy_arn = aws_iam_policy.policy-bucket-saas.arn
 }

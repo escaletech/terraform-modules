@@ -17,7 +17,7 @@ resource "aws_lb_target_group" "target" {
 }
 
 resource "aws_lb_target_group_attachment" "internal" {
-  count = var.ip != "" && var.target_type == "ip" ? 1 : 0
+  count = var.enable_attachment != null ? (var.enable_attachment ? 1 : 0) : (var.ip != "" && var.target_type == "ip" ? 1 : 0)
 
   target_group_arn = aws_lb_target_group.target.arn
   target_id        = var.ip

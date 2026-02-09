@@ -4,7 +4,7 @@ resource "aws_instance" "platform_conversational" {
 
   ami                    = var.ami
   instance_type          = var.instance_type
-  subnet_id              = data.aws_subnets.subnet_private_staging.ids[1]
+  subnet_id              = var.subnet_ids[0]
   vpc_security_group_ids = [aws_security_group.opensource.id]
   key_name               = var.key_name
   iam_instance_profile   = aws_iam_instance_profile.platform_conversational_iam_profile.name
@@ -26,7 +26,7 @@ resource "aws_instance" "platform_conversational" {
     sudo mkdir -p /etc/docker
     sudo tee /etc/docker/daemon.json <<EOF
     {
-      "hosts": ["tcp://0.0.0.0:2375", "unix:///var/run/docker.sock"],
+      "hosts": ["unix:///var/run/docker.sock"],
       "log-driver": "json-file",
       "log-opts": {
         "max-size": "50m",
@@ -63,7 +63,7 @@ resource "aws_instance" "platform_conversational" {
             "collect_list": [
               {
                 "file_path": "/var/log/docker.log",
-                "log_group_name": "docker-logs",
+                "log_group_name": "${aws_cloudwatch_log_group.logs.name}",
                 "log_stream_name": "{instance_id}",
                 "retention_in_days": 30
               }
@@ -123,7 +123,7 @@ resource "aws_instance" "platform_conversational" {
 }
 
 resource "aws_cloudwatch_log_group" "logs" {
-  name              = "ec2/platform-conversational-${var.client_name}"
+  name              = "ec2/${var.role_prefix}"
   retention_in_days = 14
   tags              = var.tags
 }
