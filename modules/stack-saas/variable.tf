@@ -87,3 +87,9 @@ variable "create_s3" {
   type        = bool
   default     = true
 }
+
+variable "enable_api_gateway" {
+  description = "Create API"
+  type        = bool
+  default     = false
+}
