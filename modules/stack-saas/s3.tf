@@ -36,3 +36,30 @@ resource "aws_iam_policy" "policy-bucket-saas" {
     ]
   })
 }
+
+resource "aws_s3_bucket_policy" "bucket-saas-policy" {
+  count  = var.create_s3 ? 1 : 0
+  bucket = aws_s3_bucket.bucket-saas[0].id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = aws_iam_role.ec2_role.arn
+        }
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket",
+          "s3:DeleteObject"
+        ]
+        Resource = [
+          "arn:aws:s3:::${local.s3_name}",
+          "arn:aws:s3:::${local.s3_name}/*"
+        ]
+      }
+    ]
+  })
+}
