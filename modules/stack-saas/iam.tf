@@ -92,6 +92,14 @@ resource "aws_iam_policy" "ec2_policy" {
           "appconfig:StartConfigurationSession"
         ],
         "Resource" : "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "appconfigdata:StartConfigurationSession",
+          "appconfigdata:GetLatestConfiguration"
+        ],
+        "Resource" : "*"
       }
     ]
   })
