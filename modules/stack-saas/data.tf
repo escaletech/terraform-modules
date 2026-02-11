@@ -1,5 +1,6 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
+data "aws_partition" "current" {}
 
 data "aws_api_gateway_rest_api" "api-escale" {
   count = var.enable_api_gateway ? 1 : 0
