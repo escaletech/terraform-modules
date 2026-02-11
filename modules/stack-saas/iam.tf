@@ -103,7 +103,7 @@ resource "aws_iam_policy" "pass_role_to_scheduler" {
       {
         Effect   = "Allow"
         Action   = "iam:PassRole"
-        Resource = "arn:aws:iam::389855184132:role/EventBridgeSchedulerRole"
+        Resource = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:role/EventBridgeSchedulerRole"
         Condition = {
           StringEquals = {
             "iam:PassedToService" = "scheduler.amazonaws.com"

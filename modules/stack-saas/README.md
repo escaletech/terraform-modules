@@ -57,6 +57,11 @@ module "stack_saas" {
   create_s3       = true
   ports_ingress_allowed = [22, 80, 443]
   containers_name = ["chatwoot", "sidekiq", "typebot-builder", "typebot-viewer", "evolution"]
+  enable_api_gateway = true
+  api_gateway_name = "api.saas.escale.ai"
+  api_gateway_vpc_link_name = "vpc-link-api-escale-saas"
+  api_gateway_certificate_domain = "*.saas.xclapi.in"
+  api_gateway_zone_name = "saas.xclapi.in" # dominio final: <client_name>.saas.xclapi.in
 
   # opcional: override dos IPs por app
   listener_source_ips = {
@@ -92,6 +97,11 @@ module "stack_saas" {
 | ports_ingress_allowed | list(number) | nao | [22,80,443] | Portas liberadas no SG |
 | s3_name | string | nao | "" | Nome do bucket S3 |
 | create_s3 | bool | nao | true | Criar bucket S3 e anexar policy |
+| enable_api_gateway | bool | nao | false | Criar resources do API Gateway para Escale |
+| api_gateway_name | string | nao | "api.saas.escale.ai" | Nome do API Gateway REST existente |
+| api_gateway_vpc_link_name | string | nao | "vpc-link-api-escale-saas" | Nome do VPC Link existente |
+| api_gateway_certificate_domain | string | nao | "*.saas.xclapi.in" | Dominio do certificado ACM |
+| api_gateway_zone_name | string | nao | "saas.xclapi.in" | Zona Route53 do dominio (host do custom domain e criado como <client_name>.<zona>) |
 | containers_name | list(string) | nao | ["chatwoot","sidekiq","typebot-builder","typebot-viewer","evolution"] | Containers monitorados |
 | listener_source_ips | map(list(string)) | nao | {} | Override de IPs por app nos listener rules |
 
