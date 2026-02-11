@@ -55,7 +55,7 @@ resource "aws_api_gateway_integration" "api_evolution_meta_any" {
 resource "aws_api_gateway_domain_name" "custom_domain_name" {
   count           = var.enable_api_gateway ? 1 : 0
   certificate_arn = data.aws_acm_certificate.xclapi.arn
-  domain_name     = "${var.client_name}.saas.xclapi.in"
+  domain_name     = "${var.client_name}.${var.api_gateway_zone_name}"
 }
 
 resource "aws_route53_record" "domain_name" {

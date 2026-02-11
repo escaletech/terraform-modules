@@ -93,3 +93,27 @@ variable "enable_api_gateway" {
   type        = bool
   default     = false
 }
+
+variable "api_gateway_name" {
+  description = "API Gateway REST API name used for Escale routes."
+  type        = string
+  default     = "api.saas.escale.ai"
+}
+
+variable "api_gateway_vpc_link_name" {
+  description = "API Gateway VPC Link name used for integrations."
+  type        = string
+  default     = "vpc-link-api-escale-saas"
+}
+
+variable "api_gateway_certificate_domain" {
+  description = "ACM certificate domain used for the Escale custom domain."
+  type        = string
+  default     = "*.saas.xclapi.in"
+}
+
+variable "api_gateway_zone_name" {
+  description = "Route53 hosted zone name for the Escale custom domain."
+  type        = string
+  default     = "saas.xclapi.in"
+}
