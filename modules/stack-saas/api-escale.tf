@@ -53,9 +53,13 @@ resource "aws_api_gateway_integration" "api_evolution_meta_any" {
 ### Custom Domain ###
 
 resource "aws_api_gateway_domain_name" "custom_domain_name" {
-  count           = var.enable_api_gateway ? 1 : 0
-  certificate_arn = data.aws_acm_certificate.xclapi[0].arn
-  domain_name     = "${var.client_name}.${var.api_gateway_zone_name}"
+  count                    = var.enable_api_gateway ? 1 : 0
+  regional_certificate_arn = data.aws_acm_certificate.xclapi[0].arn
+  domain_name              = "${var.client_name}.${var.api_gateway_zone_name}"
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
 
 resource "aws_route53_record" "domain_name" {
@@ -66,8 +70,8 @@ resource "aws_route53_record" "domain_name" {
 
   alias {
     evaluate_target_health = true
-    name                   = aws_api_gateway_domain_name.custom_domain_name[0].cloudfront_domain_name
-    zone_id                = aws_api_gateway_domain_name.custom_domain_name[0].cloudfront_zone_id
+    name                   = aws_api_gateway_domain_name.custom_domain_name[0].regional_domain_name
+    zone_id                = aws_api_gateway_domain_name.custom_domain_name[0].regional_zone_id
   }
 }
 

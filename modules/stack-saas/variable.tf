@@ -97,7 +97,7 @@ variable "enable_api_gateway" {
 variable "api_gateway_name" {
   description = "API Gateway REST API name used for Escale routes."
   type        = string
-  default     = "api.saas.escale.ai"
+  default     = "api-escale-saas"
 }
 
 variable "api_gateway_vpc_link_name" {
