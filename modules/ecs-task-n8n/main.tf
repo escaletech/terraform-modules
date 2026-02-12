@@ -39,7 +39,7 @@ locals {
 # Módulo EFS separado (um EFS por chamada do ecs-task)
 # =============================================
 module "efs" {
-  source = "github.com/escaletech/terraform-modules//modules//efs?ref=CIT-1739-create-module-n8n-efs"
+  source = "github.com/escaletech/terraform-modules/modules/efs"
   
   service_name                  = var.family
   vpc_id                        = var.vpc_id
