@@ -17,6 +17,19 @@ module "dns_record" {
 }
 ```
 
+```hcl
+module "dns_record_cname" {
+  source = "./modules/dns-record"
+
+  zone_id     = "Z1234567890ABC"
+  record_name = "app.example.com"
+  record_type = "CNAME"
+
+  records = ["target.example.net"]
+  ttl     = 300
+}
+```
+
 ## Inputs
 
 | Name | Type | Default | Description |
@@ -27,6 +40,8 @@ module "dns_record" {
 | record_type | string | "A" | Route 53 record type (e.g., A, CNAME, TXT). |
 | alias_name | string | null | ALB/NLB target DNS name. |
 | alias_zone_id | string | null | ALB/NLB hosted zone ID. |
+| records | list(string) | [] | Record values for non-alias records (e.g., CNAME target). |
+| ttl | number | null | TTL (seconds) for non-alias records. Defaults to `default_ttl` when null. |
 | default_ttl | number | 300 | Default TTL (not used for alias records). |
 | allow_overwrite | bool | true | Whether to allow overwriting existing records. |
 
