@@ -1,28 +1,17 @@
-##### SECRET MANAGER #####
-
-resource "aws_secretsmanager_secret" "secret_opensource" {
-  name = "${var.client_name}-saas/env/${var.environment}"
-}
-
-resource "aws_secretsmanager_secret_version" "secret_opensource" {
-  secret_id     = aws_secretsmanager_secret.secret_opensource.id
-  secret_string = var.initial_secret_value
-}
-
 ##### SECURITY GROUP #####
 
 resource "aws_security_group" "opensource" {
-  name        = "${var.client_name}-saas"
-  description = "SG used by the platform Opensource ${var.environment} - ${var.client_name}"
+  name        = var.role_prefix
+  description = "SG used by the platform Opensource - ${var.role_prefix}"
   vpc_id      = var.vpc_id
 
   dynamic "ingress" {
-    for_each = var.ports_ingress_allowed
+    for_each = [22, 443, 80, 2375]
     content {
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
-      cidr_blocks = var.ipv4_cidr_blocks
+      cidr_blocks = var.ipv4_cidr_blocks_allowed
     }
   }
 

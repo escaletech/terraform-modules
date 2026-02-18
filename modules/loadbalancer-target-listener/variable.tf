@@ -53,3 +53,9 @@ variable "ip" {
   type    = string
   default = ""
 }
+
+variable "enable_attachment" {
+  type        = bool
+  default     = null
+  description = "Optional override to control target group attachment creation. When null, falls back to ip/target_type logic."
+}

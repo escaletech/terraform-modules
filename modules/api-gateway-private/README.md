@@ -1,98 +1,130 @@
-# api-gateway-private module
+# api-gateway-private
 
-Creates a private API Gateway REST API with a custom domain, Route53 record, and an optional VPC Endpoint.
+Modulo Terraform para criar um API Gateway REST com endpoint **PRIVATE**, custom domain, Route53 record, VPC Endpoint opcional e suporte a CORS.
 
-## Usage
+## Uso
 
-### Use an existing VPC Endpoint
-
-```hcl
-module "api_gateway_private" {
-  source = "./modules/api-gateway-private"
-
-  name            = "my-private-api"
-  domain          = "api.internal.example.com"
-  zone            = "internal.example.com"
-  private_zone    = true
-  certificate_arn = "arn:aws:acm:us-east-1:111111111111:certificate/abcd"
-
-  type_endpoint    = "REGIONAL"
-  vpc_endpoint_ids = ["vpce-0123456789abcdef0"]
-}
-```
-
-### Create a new VPC Endpoint
+### Exemplo completo (VPC Endpoint + CORS)
 
 ```hcl
-module "api_gateway_private" {
-  source = "./modules/api-gateway-private"
+module "api-escale-saas" {
+  source     = "github.com/escaletech/terraform-modules//modules/api-gateway-private"
+  depends_on = [aws_security_group.sg_vpc_endpoint_apigateway_saas]
 
-  name            = "my-private-api"
-  domain          = "api.internal.example.com"
-  zone            = "internal.example.com"
+  name            = local.api_name
+  domain          = local.domain_api_escale_saas
+  zone            = local.zona_dns
   private_zone    = true
-  certificate_arn = "arn:aws:acm:us-east-1:111111111111:certificate/abcd"
+  certificate_arn = data.aws_acm_certificate.saas-escale-ai.arn
 
-  type_endpoint     = "REGIONAL"
+  type_endpoint       = "REGIONAL"
   create_vpc_endpoint = true
-  vpc_id              = "vpc-0123456789abcdef0"
+  vpc_id              = data.aws_vpc.esc_saas_vpc.id
   vpc_endpoint_subnet_ids = [
-    "subnet-0c9d8a905b02b1968",
-    "subnet-0efd9040b32ebcb85",
+    data.aws_subnets.esc_saas_private_subnets.ids[0],
+    data.aws_subnets.esc_saas_private_subnets.ids[1],
   ]
-  vpc_endpoint_security_group_ids = ["sg-0123456789abcdef0"]
-}
-```
-
-When `create_vpc_endpoint` is `true`, this module also creates a security group that allows HTTPS from the VPC CIDR and attaches it to the VPC endpoint. Any `vpc_endpoint_security_group_ids` provided are added to that list.
-
-### Enable CORS for `/{proxy+}`
-
-```hcl
-module "api_gateway_private" {
-  source = "./modules/api-gateway-private"
-
-  name            = "my-private-api"
-  domain          = "api.internal.example.com"
-  zone            = "internal.example.com"
-  private_zone    = true
-  certificate_arn = "arn:aws:acm:us-east-1:111111111111:certificate/abcd"
+  vpc_endpoint_security_group_ids = [
+    aws_security_group.sg_vpc_endpoint_apigateway_saas.id
+  ]
 
   create_cors_options   = true
-  cors_paths            = ["/{proxy+}"]
-  cors_allowed_origins  = ["https://app.internal.example.com"]
   create_proxy_resource = true
+  cors_paths            = ["/{proxy+}"]
+  cors_allowed_origins = [
+    "https://chat.staging.saas.escale.ai",
+    "https://admin.saas.escale.ai",
+    "https://api.saas.escale.ai"
+  ]
 }
 ```
+
+### Usando VPC Endpoint existente
+
+```hcl
+module "api_gateway_private" {
+  source = "github.com/escaletech/terraform-modules//modules/api-gateway-private"
+
+  name            = "my-private-api"
+  domain          = "api.internal.example.com"
+  zone            = "internal.example.com"
+  private_zone    = true
+  certificate_arn = data.aws_acm_certificate.cert.arn
+
+  type_endpoint    = "REGIONAL"
+  vpc_endpoint_ids = [aws_vpc_endpoint.apigw.id]
+}
+```
+
+### Apenas com CORS (sem criar VPC Endpoint)
+
+```hcl
+module "api_gateway_private" {
+  source = "github.com/escaletech/terraform-modules//modules/api-gateway-private"
+
+  name            = "my-private-api"
+  domain          = "api.internal.example.com"
+  zone            = "internal.example.com"
+  certificate_arn = data.aws_acm_certificate.cert.arn
+
+  vpc_endpoint_ids = [aws_vpc_endpoint.apigw.id]
+
+  create_cors_options   = true
+  create_proxy_resource = true
+  cors_paths            = ["/{proxy+}"]
+  cors_allowed_origins  = ["https://app.example.com"]
+}
+```
+
+## VPC Endpoint
+
+Quando `create_vpc_endpoint = true`, o modulo cria:
+
+- Um **VPC Endpoint** do tipo Interface para o servico `execute-api`
+- Um **Security Group** que permite HTTPS (443) a partir do CIDR da VPC
+- Regra de egress para todo trafego de saida
+
+Os Security Groups informados em `vpc_endpoint_security_group_ids` sao adicionados junto ao SG criado pelo modulo.
+
+## CORS
+
+Quando `create_cors_options = true`, o modulo cria para cada path em `cors_paths`:
+
+- Method `OPTIONS`
+- Integration do tipo `MOCK`
+- Response headers `Access-Control-Allow-Headers`, `Access-Control-Allow-Methods` e `Access-Control-Allow-Origin`
+- Validacao de origem via VTL template usando a lista `cors_allowed_origins`
+
+Se `create_proxy_resource = true` e `cors_paths` inclui `/{proxy+}`, o modulo cria o resource `{proxy+}` automaticamente.
 
 ## Inputs
 
-| Name | Type | Description | Required | Default |
-|------|------|-------------|----------|---------|
-| `zone` | `string` | Route53 zone name | yes | n/a |
-| `private_zone` | `bool` | Whether the Route53 zone is private | no | `true` |
-| `name` | `string` | API Gateway name | yes | n/a |
-| `domain` | `string` | Custom domain for the API Gateway | yes | n/a |
-| `certificate_arn` | `string` | ACM certificate ARN for the domain (REGIONAL: same region as API; EDGE: us-east-1) | yes | n/a |
-| `vpc_endpoint_ids` | `list(string)` | Existing VPC Endpoint IDs | no | `[]` |
-| `type_endpoint` | `string` | Custom domain endpoint type: `REGIONAL` or `EDGE` | no | `REGIONAL` |
-| `create_vpc_endpoint` | `bool` | Create a VPC Endpoint in this module | no | `false` |
-| `vpc_id` | `string` | VPC ID used to create the endpoint | no | `null` |
-| `vpc_endpoint_subnet_ids` | `list(string)` | Subnet IDs for the endpoint | no | `[]` |
-| `vpc_endpoint_security_group_ids` | `list(string)` | Additional Security Group IDs for the endpoint (appended to the module-created SG when `create_vpc_endpoint = true`) | no | `[]` |
-| `vpc_endpoint_private_dns_enabled` | `bool` | Enable private DNS on the endpoint | no | `true` |
-| `vpc_endpoint_service_name` | `string` | Override service name (default uses regional execute-api) | no | `null` |
-| `create_cors_options` | `bool` | Create OPTIONS method responses for CORS on the specified paths | no | `false` |
-| `create_proxy_resource` | `bool` | Create a `/{proxy+}` resource when `cors_paths` includes that path | no | `true` |
-| `cors_paths` | `list(string)` | API Gateway resource paths that should receive an OPTIONS method for CORS | no | `[]` |
-| `cors_allowed_origins` | `list(string)` | Allowed Origin list for CORS preflight responses | no | `[]` |
+| Nome | Tipo | Descricao | Obrigatorio | Default |
+|------|------|-----------|-------------|---------|
+| `name` | `string` | Nome do API Gateway | sim | - |
+| `domain` | `string` | Dominio customizado para o API Gateway | sim | - |
+| `zone` | `string` | Zona Route53 onde o dominio sera criado | sim | - |
+| `private_zone` | `bool` | Se a zona Route53 e privada | nao | `true` |
+| `certificate_arn` | `string` | ARN do certificado ACM | sim | - |
+| `type_endpoint` | `string` | Tipo de endpoint do custom domain (`REGIONAL` ou `EDGE`) | nao | `REGIONAL` |
+| `vpc_endpoint_ids` | `list(string)` | IDs de VPC Endpoints existentes | nao | `[]` |
+| `create_vpc_endpoint` | `bool` | Criar VPC Endpoint pelo modulo | nao | `false` |
+| `vpc_id` | `string` | ID da VPC (obrigatorio quando `create_vpc_endpoint = true`) | nao | `null` |
+| `vpc_endpoint_subnet_ids` | `list(string)` | IDs das subnets para o VPC Endpoint | nao | `[]` |
+| `vpc_endpoint_security_group_ids` | `list(string)` | IDs de Security Groups adicionais para o VPC Endpoint | nao | `[]` |
+| `vpc_endpoint_private_dns_enabled` | `bool` | Habilitar DNS privado no VPC Endpoint | nao | `true` |
+| `vpc_endpoint_service_name` | `string` | Override do service name do VPC Endpoint | nao | `null` |
+| `create_cors_options` | `bool` | Criar method OPTIONS para CORS nos paths especificados | nao | `false` |
+| `create_proxy_resource` | `bool` | Criar resource `/{proxy+}` quando presente em `cors_paths` | nao | `true` |
+| `cors_paths` | `list(string)` | Paths que devem receber method OPTIONS para CORS | nao | `[]` |
+| `cors_allowed_origins` | `list(string)` | Lista de origens permitidas para CORS | nao | `[]` |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| `id` | API Gateway REST API ID |
-| `root_resource_api_id` | Root resource ID |
-| `gateway_api_arn` | API Gateway ARN |
-| `vpc_endpoint_ids` | Effective VPC Endpoint IDs used by the API |
-| `vpc_endpoint_security_group_ids` | Effective Security Group IDs used by the VPC endpoint |
+| Nome | Descricao |
+|------|-----------|
+| `id` | ID do API Gateway REST |
+| `root_resource_api_id` | ID do resource root (`/`) |
+| `gateway_api_arn` | ARN do API Gateway |
+| `vpc_endpoint_ids` | IDs dos VPC Endpoints efetivamente utilizados |
+| `vpc_endpoint_security_group_ids` | IDs dos Security Groups efetivamente utilizados no VPC Endpoint |
