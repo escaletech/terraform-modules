@@ -1,5 +1,5 @@
 resource "aws_route53_record" "main" {
-  zone_id         = data.aws_route53_zone.zone.zone_id
+  zone_id         = local.zone_id
   name            = var.host
   type            = "A"
   allow_overwrite = true
