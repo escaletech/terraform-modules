@@ -67,6 +67,12 @@ variable "domain_name" {
   description = "OpenSearch domain name"
 }
 
+variable "create_inside_vpc" {
+  type    = bool
+  default = true
+}
+
+
 # =============================================
 # Cross-Cluster Replication (CCR)
 # =============================================
