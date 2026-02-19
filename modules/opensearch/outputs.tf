@@ -1,5 +1,5 @@
 output "opensearch_endpoint" {
-  value       = aws_opensearch_domain.opensearch.arn
+  value       = aws_opensearch_domain.opensearch.endpoint
   description = "OpenSearch domain endpoint"
 }
 
