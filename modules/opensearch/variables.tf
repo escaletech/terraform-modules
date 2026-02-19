@@ -72,6 +72,12 @@ variable "create_inside_vpc" {
   default = true
 }
 
+variable "custom_access_policy" {
+  type        = string
+  default     = null
+  description = "Override access policy JSON"
+}
+
 
 # =============================================
 # Cross-Cluster Replication (CCR)
