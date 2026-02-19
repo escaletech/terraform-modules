@@ -94,7 +94,8 @@ resource "aws_opensearch_domain" "opensearch" {
     enabled                  = false
     log_type                 = "SEARCH_SLOW_LOGS"
   }
-  access_policies = data.aws_iam_policy_document.policy-opensearch.json
+  # access_policies = data.aws_iam_policy_document.policy-opensearch.json
+  access_policies = var.custom_access_policy != null ? var.custom_access_policy : data.aws_iam_policy_document.policy-opensearch.json
 
   tags = var.tags
 }
