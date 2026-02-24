@@ -35,3 +35,14 @@ resource "aws_cloudwatch_log_group" "log_api_gateway" {
   name              = "API-Gateway-Execution-Logs_${data.aws_api_gateway_rest_api.gateway_api.name}/${local.name}"
   retention_in_days = 400
 }
+
+# =============================================
+# Associação opcional com WAF existente (seu WAF default manual)
+# =============================================
+resource "aws_wafv2_web_acl_association" "waf_association" {
+  count = var.enable_waf_association ? 1 : 0
+
+  resource_arn = aws_api_gateway_stage.stage.arn
+  web_acl_arn  = var.waf_web_acl_arn  # ARN do seu WAF default
+  depends_on   = [aws_api_gateway_stage.stage]
+}
