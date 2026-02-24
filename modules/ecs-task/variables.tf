@@ -79,6 +79,16 @@ variable "cpu_architecture" {
   default     = "X86_64"
 }
 
+variable "sqs_queue_arn" {
+  description = "ARN da fila SQS A"
+  type        = string
+}
+
+variable "kms_key_arn" {
+  description = "ARN da chave KMS utilizada para criptografia"
+  type        = string
+}
+
 # variable "retention_in_days" {
 #   description = "Quantidade de dias para retenção de logs."
 #   type        = number
