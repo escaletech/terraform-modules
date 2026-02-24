@@ -55,10 +55,19 @@ resource "aws_opensearch_domain" "opensearch" {
     automated_snapshot_start_hour = 0
   }
 
-  vpc_options {
-    subnet_ids = values(data.aws_subnet.subnet-private-ids)[*].id
-    security_group_ids = [aws_security_group.opensearch.id]
+  dynamic "vpc_options" {
+    for_each = var.create_inside_vpc ? [1] : []
+
+    content {
+      subnet_ids         = values(data.aws_subnet.subnet-private-ids)[*].id
+      security_group_ids = [aws_security_group.opensearch.id]
+    }
   }
+
+  # vpc_options {
+  #   subnet_ids = values(data.aws_subnet.subnet-private-ids)[*].id
+  #   security_group_ids = [aws_security_group.opensearch.id]
+  # }
 
   domain_endpoint_options {
     custom_endpoint_enabled         = true
@@ -85,7 +94,8 @@ resource "aws_opensearch_domain" "opensearch" {
     enabled                  = false
     log_type                 = "SEARCH_SLOW_LOGS"
   }
-  access_policies = data.aws_iam_policy_document.policy-opensearch.json
+  # access_policies = data.aws_iam_policy_document.policy-opensearch.json
+  access_policies = var.custom_access_policy != null ? var.custom_access_policy : data.aws_iam_policy_document.policy-opensearch.json
 
   tags = var.tags
 }

@@ -67,6 +67,28 @@ resource "aws_lb_listener" "nlb" {
   }
 }
 
+locals {
+  nlb_tg_attachments = local.create_nlb ? flatten([
+    for tg in var.nlb_target_groups : [
+      for target in tg.targets : {
+        tg_name           = tg.name
+        target_id         = target.target_id
+        port              = target.port
+        availability_zone = target.availability_zone
+      }
+    ]
+  ]) : []
+}
+
+resource "aws_lb_target_group_attachment" "nlb" {
+  for_each = { for item in local.nlb_tg_attachments : "${item.tg_name}-${item.target_id}" => item }
+
+  target_group_arn  = aws_lb_target_group.nlb[each.value.tg_name].arn
+  target_id         = each.value.target_id
+  port              = each.value.port
+  availability_zone = each.value.availability_zone
+}
+
 resource "aws_lb_target_group" "nlb" {
   for_each = local.create_nlb ? { for tg in var.nlb_target_groups : tg.name => tg } : {}
 

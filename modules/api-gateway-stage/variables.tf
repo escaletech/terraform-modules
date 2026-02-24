@@ -50,3 +50,15 @@ variable "deployment_id" {
   type    = string
   default = null
 }
+
+variable "enable_waf_association" {
+  description = "Ativa a associacao com um WAF existente de modo opcional"
+  type        = bool
+  default     = false
+}
+
+variable "waf_web_acl_arn" {
+  description = "ARN do Web ACL WAF a ser associado sendo obrigatorio se enable waf association for true"
+  type        = string
+  default     = null
+}

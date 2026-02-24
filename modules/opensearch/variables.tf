@@ -66,3 +66,34 @@ variable "domain_name" {
   type        = string
   description = "OpenSearch domain name"
 }
+
+variable "create_inside_vpc" {
+  type    = bool
+  default = true
+}
+
+variable "custom_access_policy" {
+  type        = string
+  default     = null
+  description = "Override access policy JSON"
+}
+
+
+# =============================================
+# Cross-Cluster Replication (CCR)
+# =============================================
+
+variable "ccr" {
+  type = object({
+    connection_alias             = optional(string, "")
+    connection_mode              = optional(string, "DIRECT")
+    remote_domain                = optional(object({
+      domain_name = string
+      region      = string
+      owner_id    = string
+    }))
+    accept_inbound_connection_id = optional(string, "")
+  })
+  default     = null
+  description = "Cross-Cluster Replication (CCR) configuration. Set to null to disable."
+}
