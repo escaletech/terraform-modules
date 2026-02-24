@@ -67,6 +67,18 @@ variable "domain_name" {
   description = "OpenSearch domain name"
 }
 
+variable "create_inside_vpc" {
+  type    = bool
+  default = true
+}
+
+variable "custom_access_policy" {
+  type        = string
+  default     = null
+  description = "Override access policy JSON"
+}
+
+
 # =============================================
 # Cross-Cluster Replication (CCR)
 # =============================================
