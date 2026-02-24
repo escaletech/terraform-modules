@@ -30,6 +30,12 @@ variable "hash" {
   default     = null
 }
 
+variable "create_deployment" {
+  description = "Whether this module should create an API Gateway deployment"
+  type        = bool
+  default     = false
+}
+
 variable "base_path" {
   type    = string
   default = null

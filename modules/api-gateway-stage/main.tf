@@ -1,5 +1,5 @@
 resource "aws_api_gateway_deployment" "deployment" {
-  count       = var.deployment_id == null ? 1 : 0
+  count       = var.create_deployment ? 1 : 0
   rest_api_id = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
   description = "Deployment"
 
@@ -11,7 +11,7 @@ resource "aws_api_gateway_deployment" "deployment" {
 }
 
 resource "aws_api_gateway_stage" "stage" {
-  deployment_id = var.deployment_id != null ? var.deployment_id : aws_api_gateway_deployment.deployment[0].id
+  deployment_id = var.create_deployment ? aws_api_gateway_deployment.deployment[0].id : var.deployment_id
   rest_api_id   = (var.gateway_api_id == null) ? data.aws_api_gateway_rest_api.gateway_api.id : var.gateway_api_id
   stage_name    = local.name
   variables     = local.variables
