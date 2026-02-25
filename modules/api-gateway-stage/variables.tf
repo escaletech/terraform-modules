@@ -24,17 +24,17 @@ variable "variables" {
   default = {}
 }
 
-variable "hash" {
-  description = "Hash to redeploy the stage"
-  type        = string
-  default     = null
-}
+# variable "hash" {
+#   description = "Hash to redeploy the stage"
+#   type        = string
+#   default     = null
+# }
 
-variable "create_deployment" {
-  description = "Whether this module should create an API Gateway deployment"
-  type        = bool
-  default     = false
-}
+# variable "create_deployment" {
+#   description = "Whether this module should create an API Gateway deployment"
+#   type        = bool
+#   default     = false
+# }
 
 variable "base_path" {
   type    = string
