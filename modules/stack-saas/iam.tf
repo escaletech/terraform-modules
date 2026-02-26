@@ -85,6 +85,15 @@ resource "aws_iam_policy" "ec2_policy" {
         "Resource" : "*"
       },
       {
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
         "Effect" : "Allow",
         "Action" : "appconfigdata:*",
         "Resource" : "*"
