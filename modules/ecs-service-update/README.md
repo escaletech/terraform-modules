@@ -33,6 +33,7 @@ module "ecs_service_update" {
   assign_public_ip     = false
   container_port       = 8080
   target_group_arn     = "arn:aws:elasticloadbalancing:us-west-2:123456789012:targetgroup/tg/abc"
+  health_check_grace_period_seconds = 60
 
   tags = {
     owner    = "team-platform"
@@ -113,6 +114,7 @@ module "ecs_service_update" {
 | `spot` | `bool` | `false` | nao | Habilita capacity providers com Spot. |
 | `weight_fargate` | `number` | `2` | nao | Peso do provider `FARGATE` quando `spot=true`. |
 | `weight_fargate_spot` | `number` | `1` | nao | Peso do provider `FARGATE_SPOT` quando `spot=true`. |
+| `health_check_grace_period_seconds` | `number` | `null` | nao | Define o grace period dos health checks do servico ECS; quando nao informado, o atributo permanece `null`. |
 
 ## Observacoes
 
@@ -120,4 +122,4 @@ module "ecs_service_update" {
 - Nome da variavel: `desire_count` (sem "d"), manter esse nome para compatibilidade.
 - Quando `spot = false`, o modulo usa `launch_type = "FARGATE"` e nao usa `capacity_provider_strategy`.
 - Quando `spot = true`, o modulo usa `capacity_provider_strategy` e `launch_type = null`.
-
+- `health_check_grace_period_seconds` so e aplicado quando informado; caso contrario, o provider recebe `null`.

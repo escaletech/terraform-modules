@@ -9,9 +9,9 @@ resource "aws_lb_target_group" "target" {
     interval            = 30
     path                = var.health_path
     protocol            = var.target_protocol
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
+    timeout             = var.health_timout
+    healthy_threshold   = var.healthy_threshold
+    unhealthy_threshold = var.unhealthy_threshold
     matcher             = var.health_statuscode
   }
 }

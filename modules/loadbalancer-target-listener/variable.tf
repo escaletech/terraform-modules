@@ -34,6 +34,21 @@ variable "listener_arn" {
     type = string
 }
 
+variable "health_timout" {
+  type    = number
+  default = 5
+}
+
+variable "healthy_threshold" {
+    type    = number
+    default = 2
+}
+
+variable "unhealthy_threshold" {
+    type    = number
+    default = 2
+}
+
 variable "host_header" {
     type    = list(string)
     default = []
