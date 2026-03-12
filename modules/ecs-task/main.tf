@@ -54,29 +54,34 @@ resource "aws_ecs_task_definition" "task_definition" {
   skip_destroy             = true
 
   container_definitions = jsonencode([
-    merge(
-      {
-        name      = var.family
-        image     = var.image
-        cpu       = var.cpu
-        memory    = var.memory
-        essential = true
-        logConfiguration = {
-          logDriver = "awslogs"
-          options = {
-            awslogs-group         = var.family
-            awslogs-region        = data.aws_region.current.name
-            awslogs-stream-prefix = "task"
-            awslogs-create-group  = "true"
+    {
+      for key, value in merge(
+        {
+          name             = var.family
+          image            = var.image
+          cpu              = var.cpu
+          memory           = var.memory
+          essential        = true
+          command          = var.command
+          entryPoint       = var.entrypoint
+          workingDirectory = var.workdir
+          logConfiguration = {
+            logDriver = "awslogs"
+            options = {
+              awslogs-group         = var.family
+              awslogs-region        = data.aws_region.current.name
+              awslogs-stream-prefix = "task"
+              awslogs-create-group  = "true"
+            }
           }
-        }
-        environment = var.environment-variables
-        secrets     = length(var.secrets) > 0 ? var.secrets : []
-      },
-      length(local.normalized_port_mappings) > 0 ? {
-        portMappings = local.normalized_port_mappings
-      } : {}
-    )
+          environment = var.environment-variables
+          secrets     = length(var.secrets) > 0 ? var.secrets : []
+        },
+        length(local.normalized_port_mappings) > 0 ? {
+          portMappings = local.normalized_port_mappings
+        } : {}
+      ) : key => value if value != null
+    }
   ])
 
   runtime_platform {
