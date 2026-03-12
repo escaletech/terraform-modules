@@ -3,35 +3,40 @@ variable "vpc_id" {
 }
 
 variable "target_name" {
-  type        = string
+  type = string
 }
 
 variable "target_type" {
-  type        = string
-  default     = "ip"
+  type    = string
+  default = "ip"
 }
 
 variable "target_port" {
-  type        = number
+  type = number
 }
 
 variable "target_protocol" {
-  type        = string
-  default     = "HTTP"
+  type    = string
+  default = "HTTP"
 }
 
 variable "health_path" {
-  type        = string
-  default     = "/"
+  type    = string
+  default = "/"
+}
+
+variable "health_interval" {
+  type    = number
+  default = 30
 }
 
 variable "health_statuscode" {
-  type        = string
-  default     = "200"
+  type    = string
+  default = "200"
 }
 
 variable "listener_arn" {
-    type = string
+  type = string
 }
 
 variable "health_timout" {
@@ -40,28 +45,28 @@ variable "health_timout" {
 }
 
 variable "healthy_threshold" {
-    type    = number
-    default = 2
+  type    = number
+  default = 2
 }
 
 variable "unhealthy_threshold" {
-    type    = number
-    default = 2
+  type    = number
+  default = 2
 }
 
 variable "host_header" {
-    type    = list(string)
-    default = []
+  type    = list(string)
+  default = []
 }
 
 variable "source_ip" {
-    type    = list(string)
-    default = []
+  type    = list(string)
+  default = []
 }
 
 variable "path_pattern" {
-    type    = list(string)
-    default = []
+  type    = list(string)
+  default = []
 }
 
 variable "ip" {
