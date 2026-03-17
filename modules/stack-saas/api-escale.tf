@@ -78,7 +78,7 @@ resource "aws_route53_record" "domain_name" {
 resource "aws_api_gateway_base_path_mapping" "evolution" {
   count       = var.enable_api_gateway ? 1 : 0
   api_id      = data.aws_api_gateway_rest_api.api-escale[0].id
-  stage_name  = "production"
+  stage_name  = var.stage_name
   domain_name = aws_api_gateway_domain_name.custom_domain_name[0].domain_name
 
   depends_on = [aws_api_gateway_domain_name.custom_domain_name, aws_route53_record.domain_name]

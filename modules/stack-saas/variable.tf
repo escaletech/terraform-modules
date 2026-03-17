@@ -117,3 +117,9 @@ variable "api_gateway_zone_name" {
   type        = string
   default     = "saas.xclapi.in"
 }
+
+variable "stage_name" {
+  description = "Stage name for the API Gateway"
+  type        = string
+  default     = "production"
+}
