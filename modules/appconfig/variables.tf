@@ -26,6 +26,12 @@ variable "profile_name" {
   default     = "env"
 }
 
+variable "deployment_strategy_id" {
+  description = "The ID of an existing deployment strategy. If provided, skips creating a new one."
+  type        = string
+  default     = null
+}
+
 variable "deployment_strategy_name" {
   description = "The name for the deployment strategy."
   type        = string
