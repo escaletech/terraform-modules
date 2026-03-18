@@ -19,8 +19,6 @@ resource "aws_appconfig_configuration_profile" "profile" {
 }
 
 resource "aws_appconfig_deployment_strategy" "strategy" {
-  count = var.deployment_strategy_id == null ? 1 : 0
-
   name                           = "${var.app_name}-${var.deployment_strategy_name}"
   description                    = var.deployment_strategy_description
   deployment_duration_in_minutes = var.deployment_duration_in_minutes
