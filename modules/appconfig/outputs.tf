@@ -30,5 +30,5 @@ output "configuration_version" {
 
 output "deployment_strategy_id" {
   description = "The ID of the deployment strategy."
-  value       = var.deployment_strategy_id != null ? var.deployment_strategy_id : aws_appconfig_deployment_strategy.strategy[0].id
+  value       = aws_appconfig_deployment_strategy.strategy.id
 }
