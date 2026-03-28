@@ -6,12 +6,12 @@ resource "aws_lb_target_group" "target" {
   vpc_id      = var.vpc_id
 
   health_check {
-    interval            = 30
+    interval            = var.health_interval
     path                = var.health_path
     protocol            = var.target_protocol
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
+    timeout             = var.health_timout
+    healthy_threshold   = var.healthy_threshold
+    unhealthy_threshold = var.unhealthy_threshold
     matcher             = var.health_statuscode
   }
 }
