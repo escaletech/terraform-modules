@@ -29,3 +29,14 @@ variable "lambda_function_name" {
     error_message = "The lambda_function_name is required."
   }
 }
+
+variable "lambda_tracing_mode" {
+  type        = string
+  description = "AWS Lambda X-Ray tracing mode"
+  default     = "Active"
+
+  validation {
+    condition     = contains(["Active", "PassThrough"], var.lambda_tracing_mode)
+    error_message = "The lambda_tracing_mode must be either Active or PassThrough."
+  }
+}
