@@ -4,6 +4,7 @@ Useful [terraform](https://www.terraform.io/) modules.
 ### Available Modules
 
 - [CloudFront Website](./modules/cdn)
+- [CloudFront Website Multi Zone](./modules/cdn-multi-zone)
 - [MySQL](./modules/mysql)
 - [RDS PostgreSQL](./modules/rds_postgres)
 - [SQS Queue](./modules/sqs_queue)
