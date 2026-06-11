@@ -53,6 +53,7 @@ resource "aws_security_group_rule" "vpc_endpoint_egress_all" {
 resource "aws_api_gateway_rest_api" "gateway_api" {
   name                         = local.name
   disable_execute_api_endpoint = false
+  minimum_compression_size     = var.minimum_compression_size
 
   endpoint_configuration {
     types            = ["PRIVATE"]
