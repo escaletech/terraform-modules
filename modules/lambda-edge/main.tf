@@ -11,7 +11,7 @@ data "archive_file" "lambda_zip" {
 resource "aws_iam_role" "lambda_edge_role" {
   name = var.lambda_edge_role_name
 
-  assume_role_policy = <<EOF
+  assume_role_policy = <<EOF_ASSUME_ROLE
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -28,9 +28,31 @@ resource "aws_iam_role" "lambda_edge_role" {
     }
   ]
 }
-EOF
+EOF_ASSUME_ROLE
 
   tags = var.tags
+}
+
+resource "aws_iam_role_policy" "lambda_edge_xray" {
+  name = "${var.lambda_edge_role_name}-xray"
+  role = aws_iam_role.lambda_edge_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "xray:PutTraceSegments",
+          "xray:PutTelemetryRecords",
+          "xray:GetSamplingRules",
+          "xray:GetSamplingTargets",
+          "xray:GetSamplingStatisticSummaries"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
 }
 
 resource "aws_lambda_function" "edge_security_headers_lambda" {
@@ -42,4 +64,8 @@ resource "aws_lambda_function" "edge_security_headers_lambda" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256 // Should only update when Lambda code changes
   role             = aws_iam_role.lambda_edge_role.arn
   tags             = var.tags
+
+  tracing_config {
+    mode = var.lambda_tracing_mode
+  }
 }
