@@ -100,14 +100,25 @@ variable "cors_allowed_origins" {
   default     = []
 }
 
+variable "minimum_compression_size" {
+  description = "Minimum response size in bytes to enable gzip compression on the REST API. Default 1024 compresses responses >= 1 KB. Use -1 to compress all eligible responses. Set null to disable compression."
+  type        = number
+  default     = 1024
+
+  validation {
+    condition     = var.minimum_compression_size == null || (var.minimum_compression_size >= -1 && var.minimum_compression_size <= 10485760)
+    error_message = "minimum_compression_size must be null, -1, or between 0 and 10485760 (10MB)."
+  }
+}
+
 locals {
-  name            = var.name
-  domain          = var.domain
-  certificate_arn = var.certificate_arn
-  vpc_cidr_block  = var.create_vpc_endpoint ? data.aws_vpc.selected[0].cidr_block : null
-  vpc_endpoint_ids_effective = var.create_vpc_endpoint ? [aws_vpc_endpoint.api_gateway_vpc_endpoint[0].id] : var.vpc_endpoint_ids
+  name                                      = var.name
+  domain                                    = var.domain
+  certificate_arn                           = var.certificate_arn
+  vpc_cidr_block                            = var.create_vpc_endpoint ? data.aws_vpc.selected[0].cidr_block : null
+  vpc_endpoint_ids_effective                = var.create_vpc_endpoint ? [aws_vpc_endpoint.api_gateway_vpc_endpoint[0].id] : var.vpc_endpoint_ids
   vpc_endpoint_security_group_ids_effective = var.create_vpc_endpoint ? concat([aws_security_group.vpc_endpoint[0].id], var.vpc_endpoint_security_group_ids) : var.vpc_endpoint_security_group_ids
-  cors_paths_set         = toset(var.cors_paths)
-  cors_proxy_path        = "/{proxy+}"
-  create_proxy_resource_effective = var.create_proxy_resource && contains(local.cors_paths_set, local.cors_proxy_path)
+  cors_paths_set                            = toset(var.cors_paths)
+  cors_proxy_path                           = "/{proxy+}"
+  create_proxy_resource_effective           = var.create_proxy_resource && contains(local.cors_paths_set, local.cors_proxy_path)
 }

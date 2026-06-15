@@ -76,6 +76,27 @@ module "api_gateway_private" {
 }
 ```
 
+
+## Compressao de respostas (gzip)
+
+Por padrao, o modulo habilita compressao gzip com `minimum_compression_size = 1024` (respostas >= 1 KB). O API Gateway adiciona automaticamente o header `Content-Encoding: gzip` quando o cliente envia `Accept-Encoding: gzip`.
+
+```hcl
+# Comportamento padrao — nenhum input extra necessario
+module "api_gateway_private" {
+  source = "...//modules/api-gateway-private"
+  # minimum_compression_size = 1024  # default
+}
+
+# Desabilitar compressao
+minimum_compression_size = null
+
+# Comprimir todas as respostas elegiveis
+minimum_compression_size = -1
+```
+
+Apos alterar a configuracao, e necessario criar um **novo deployment** da API para a compressao entrar em vigor.
+
 ## VPC Endpoint
 
 Quando `create_vpc_endpoint = true`, o modulo cria:
@@ -118,6 +139,7 @@ Se `create_proxy_resource = true` e `cors_paths` inclui `/{proxy+}`, o modulo cr
 | `create_proxy_resource` | `bool` | Criar resource `/{proxy+}` quando presente em `cors_paths` | nao | `true` |
 | `cors_paths` | `list(string)` | Paths que devem receber method OPTIONS para CORS | nao | `[]` |
 | `cors_allowed_origins` | `list(string)` | Lista de origens permitidas para CORS | nao | `[]` |
+| `minimum_compression_size` | `number` | Tamanho minimo em bytes para habilitar gzip (`1024` default, `-1` para tudo, `null` para desabilitar) | nao | `1024` |
 
 ## Outputs
 
@@ -128,3 +150,7 @@ Se `create_proxy_resource = true` e `cors_paths` inclui `/{proxy+}`, o modulo cr
 | `gateway_api_arn` | ARN do API Gateway |
 | `vpc_endpoint_ids` | IDs dos VPC Endpoints efetivamente utilizados |
 | `vpc_endpoint_security_group_ids` | IDs dos Security Groups efetivamente utilizados no VPC Endpoint |
+
+## Documentacao
+
+Consulte [`docs/api-gateway-gzip-compression.md`](../../docs/api-gateway-gzip-compression.md) para detalhes sobre rollout, impacto em consumidores e atendimento a alertas ZaNSHIN.

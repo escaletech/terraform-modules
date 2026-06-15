@@ -29,6 +29,17 @@ variable "api_key_source" {
   default     = "HEADER"
 }
 
+variable "minimum_compression_size" {
+  description = "Minimum response size in bytes to enable gzip compression on the REST API. Default 1024 compresses responses >= 1 KB. Use -1 to compress all eligible responses. Set null to disable compression."
+  type        = number
+  default     = 1024
+
+  validation {
+    condition     = var.minimum_compression_size == null || (var.minimum_compression_size >= -1 && var.minimum_compression_size <= 10485760)
+    error_message = "minimum_compression_size must be null, -1, or between 0 and 10485760 (10MB)."
+  }
+}
+
 locals {
   domain          = var.domain
   name            = var.name

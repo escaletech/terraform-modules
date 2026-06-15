@@ -7,6 +7,7 @@ resource "aws_api_gateway_rest_api" "gateway_api" {
   name                         = local.name
   disable_execute_api_endpoint = true
   api_key_source               = var.api_key_source
+  minimum_compression_size     = var.minimum_compression_size
 }
 
 resource "aws_api_gateway_rest_api_policy" "policy_invoke" {
