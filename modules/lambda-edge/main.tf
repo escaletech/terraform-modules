@@ -34,6 +34,8 @@ EOF_ASSUME_ROLE
 }
 
 resource "aws_iam_role_policy" "lambda_edge_xray" {
+  count = var.lambda_tracing_mode == "Active" ? 1 : 0
+
   name = "${var.lambda_edge_role_name}-xray"
   role = aws_iam_role.lambda_edge_role.id
 
@@ -65,7 +67,10 @@ resource "aws_lambda_function" "edge_security_headers_lambda" {
   role             = aws_iam_role.lambda_edge_role.arn
   tags             = var.tags
 
-  tracing_config {
-    mode = var.lambda_tracing_mode
+  dynamic "tracing_config" {
+    for_each = var.lambda_tracing_mode == "Off" ? [] : [var.lambda_tracing_mode]
+    content {
+      mode = tracing_config.value
+    }
   }
 }
