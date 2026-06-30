@@ -60,3 +60,9 @@ variable "efs_mount_path" {
   type        = string
   default     = "/home/node"
 }
+
+variable "access_point_root_path" {
+  description = "Caminho raiz do access point EFS (ex.: /n8n-data, /sftpgo-data)"
+  type        = string
+  default     = "/n8n-data"
+}
