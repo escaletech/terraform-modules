@@ -49,7 +49,7 @@ resource "aws_efs_access_point" "this" {
   }
 
   root_directory {
-    path = "/n8n-data"
+    path = var.access_point_root_path
     creation_info {
       owner_uid   = var.uid
       owner_gid   = var.gid
