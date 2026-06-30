@@ -31,7 +31,9 @@ resource "aws_iam_role_policy_attachment" "attach_ecs_task_cloudwatch_logs_polic
 }
 
 resource "aws_iam_role_policy_attachment" "attach_additional_policy" {
-  for_each = toset(var.arn_attach_additional_policy)
+  for_each = {
+    for idx, arn in var.arn_attach_additional_policy : tostring(idx) => arn
+  }
 
   policy_arn = each.value
   role       = aws_iam_role.ecs_task_role.name

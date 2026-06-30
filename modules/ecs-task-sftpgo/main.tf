@@ -22,15 +22,15 @@ locals {
   )
 
   normalized_port_mappings = [
-    for mapping in local.base_port_mappings : {
-      for key, value in {
-        containerPort = mapping.container_port
-        hostPort      = lookup(mapping, "host_port", mapping.container_port)
+    for mapping in local.base_port_mappings : merge(
+      {
+        containerPort = tonumber(mapping.container_port)
+        hostPort      = tonumber(lookup(mapping, "host_port", mapping.container_port))
         protocol      = lookup(mapping, "protocol", "tcp")
-        appProtocol   = lookup(mapping, "app_protocol", null)
-        name          = lookup(mapping, "name", null)
-      } : key => value if value != null
-    }
+      },
+      lookup(mapping, "app_protocol", null) != null ? { appProtocol = mapping.app_protocol } : {},
+      lookup(mapping, "name", null) != null ? { name = mapping.name } : {}
+    )
   ]
 
   volume_name = coalesce(var.volume_name, "sftpgo-efs-volume")
