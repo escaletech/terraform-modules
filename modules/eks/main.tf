@@ -223,10 +223,11 @@ resource "aws_autoscaling_group_tag" "nodes_group_name" {
 ##############
 
 resource "aws_eks_addon" "kube_proxy" {
-  cluster_name      = aws_eks_cluster.cluster.name
-  addon_name        = "kube-proxy"
-  addon_version     = var.kube_proxy_version
-  resolve_conflicts = "OVERWRITE"
+  cluster_name                = aws_eks_cluster.cluster.name
+  addon_name                  = "kube-proxy"
+  addon_version               = var.kube_proxy_version
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
   tags = merge(var.tags, {
     "eks_addon" = "kube-proxy"
     }
@@ -234,10 +235,11 @@ resource "aws_eks_addon" "kube_proxy" {
 }
 
 resource "aws_eks_addon" "core_dns" {
-  cluster_name      = aws_eks_cluster.cluster.name
-  addon_name        = "coredns"
-  addon_version     = var.core_dns_version
-  resolve_conflicts = "OVERWRITE"
+  cluster_name                = aws_eks_cluster.cluster.name
+  addon_name                  = "coredns"
+  addon_version               = var.core_dns_version
+  resolve_conflicts_on_create = "OVERWRITE"
+  resolve_conflicts_on_update = "OVERWRITE"
   tags = merge(var.tags, {
     "eks_addon" = "coredns"
     }

@@ -25,3 +25,11 @@ output "nat_gateway_ids" {
 output "db_subnet_group_name" {
   value = var.create_db_subnet_group ? aws_db_subnet_group.this[0].name : null
 }
+
+output "public_route_table_id" {
+  value = aws_route_table.public.id
+}
+
+output "private_route_table_ids" {
+  value = { for k, v in aws_route_table.private : k => v.id }
+}
