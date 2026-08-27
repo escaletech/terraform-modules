@@ -2,8 +2,15 @@ repos:
 - repo: https://github.com/gruntwork-io/pre-commit
   rev: v0.1.12
   hooks:
-    - id: tflint
-      args:
-        - "--module"
-        - "--config=.tflint.hcl"
     - id: terraform-fmt
+- repo: local
+  hooks:
+    - id: tflint
+      name: tflint
+      language: system
+      pass_filenames: false
+      files: ^modules/waf-shared-platform/
+      entry: bash
+      args:
+        - -lc
+        - tflint --chdir=modules/waf-shared-platform --call-module-type=all --config="$PWD/.tflint.hcl"
