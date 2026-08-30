@@ -15,6 +15,42 @@ resource "aws_iam_role" "ecs_task_role" {
   })
 }
 
+resource "aws_iam_role_policy" "ecs_task_kms_policy" {
+  count = var.sqs_queue_arn != null ? 1 : 0
+
+  name = "ecs-task-policy-sqs-kms-${var.family}"
+  role = aws_iam_role.ecs_task_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowSQSAccessToQueue"
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes",
+          "sqs:GetQueueUrl"
+        ]
+        Resource = var.sqs_queue_arn
+      },
+      {
+        Sid    = "AllowKMSForQueue"
+        Effect = "Allow"
+        Action = [
+          "kms:Decrypt",
+          "kms:GenerateDataKey"
+        ]
+        # Se informou a fila mas não informou a chave, usa "*" para KMS 
+        # ou você pode passar o ARN da chave KMS se houver uma.
+        Resource = var.kms_key_arn != null ? var.kms_key_arn : "*"
+      }
+    ]
+  })
+}
+
+
 resource "aws_iam_role_policy_attachment" "attach_ecsTaskExecutionRole" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   role       = aws_iam_role.ecs_task_role.name
