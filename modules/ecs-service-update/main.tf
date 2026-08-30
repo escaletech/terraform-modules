@@ -1,9 +1,10 @@
 resource "aws_ecs_service" "ecs_service_update" {
-  name            = var.service_name
-  cluster         = var.cluster_name
-  task_definition = var.task_definition_arn
-  desired_count   = var.desire_count
-  launch_type     = var.spot ? null : "FARGATE"
+  name                              = var.service_name
+  cluster                           = var.cluster_name
+  task_definition                   = var.task_definition_arn
+  desired_count                     = var.desire_count
+  launch_type                       = var.spot ? null : "FARGATE"
+  health_check_grace_period_seconds = var.health_check_grace_period_seconds
 
   network_configuration {
     assign_public_ip = var.assign_public_ip

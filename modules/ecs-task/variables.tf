@@ -17,6 +17,24 @@ variable "environment-variables" {
   default = []
 }
 
+variable "command" {
+  description = "Comando a ser executado no container."
+  type        = list(string)
+  default     = null
+}
+
+variable "entrypoint" {
+  description = "Entrypoint do container."
+  type        = list(string)
+  default     = null
+}
+
+variable "workdir" {
+  description = "Diretório de trabalho do container."
+  type        = string
+  default     = null
+}
+
 variable "cpu" {
   description = "A quantidade de CPU alocada para a tarefa ECS."
   type        = number

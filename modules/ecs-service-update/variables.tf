@@ -123,3 +123,9 @@ variable "weight_fargate_spot" {
   type        = number
   default     = 1
 }
+
+variable "health_check_grace_period_seconds" {
+  description = "Tempo de grace period, em segundos, para os health checks do servico ECS."
+  type        = number
+  default     = null
+}
