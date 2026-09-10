@@ -17,17 +17,17 @@ variable "ami" {
 }
 
 variable "tags" {
-  description = "Tags para o serviço ECS."
+  description = "Tags do stack. Use module.tags.tags do módulo modules/tags/ para gerar."
   type        = map(string)
 
   validation {
     condition = alltrue([
-      contains([for k in keys(var.tags) : lower(k)], "owner"),
-      contains([for k in keys(var.tags) : lower(k)], "partner"),
-      contains([for k in keys(var.tags) : lower(k)], "business"),
-      contains([for k in keys(var.tags) : lower(k)], "product")
+      contains(keys(var.tags), "business-partner"),
+      contains(keys(var.tags), "operation"),
+      contains(keys(var.tags), "vertical"),
+      contains(keys(var.tags), "team"),
     ])
-    error_message = "Tags 'owner', 'partner', 'business' and 'product' is mandatory."
+    error_message = "Tags obrigatórias ausentes: business-partner, operation, vertical, team. Use o módulo modules/tags/ para gerar o map."
   }
 }
 
