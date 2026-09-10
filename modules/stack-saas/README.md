@@ -42,12 +42,8 @@ module "stack_saas" {
   dns_builder   = "builder.cliente-x.seudominio.com"
   dns_bot       = "bot.cliente-x.seudominio.com"
 
-  tags = {
-    owner    = "time-x"
-    partner  = "parceiro-y"
-    business = "produto-z"
-    product  = "saas"
-  }
+  # tags: gere o map pelo modulo canonico modules/tags/
+  tags = module.tags.tags
 
   # opcionais
   name_prefix     = "platform-conversational-cliente-x"
@@ -70,13 +66,44 @@ module "stack_saas" {
 }
 ```
 
+## Tags: padronizacao do ambiente
+
+> **Nota:** as tags obrigatorias deste modulo mudaram de `owner`, `partner`, `business` e `product`
+> para `business-partner`, `operation`, `vertical` e `team`. A mudanca faz parte da padronizacao
+> de tags do ambiente, que unifica o esquema de tagueamento em todos os modulos deste repositorio
+> para permitir rastreio de custo, ownership e classificacao de dados de forma consistente.
+
+O map deve ser gerado pelo modulo canonico [`modules/tags`](../tags/README.md), que valida os
+valores e monta as chaves no formato esperado:
+
+```hcl
+module "tags" {
+  source           = "github.com/escaletech/terraform-modules/modules/tags"
+  env              = "staging"
+  business_partner = "parceiro-y"
+  operation        = "operacao-z"
+  vertical         = "telecom"
+  team             = "time-x"
+  repository       = "github.com/escaletech/infra-cliente-x"
+}
+
+module "stack_saas" {
+  source = "github.com/escaletech/terraform-modules/modules/stack-saas"
+  tags   = module.tags.tags
+  # ...
+}
+```
+
+**Impacto:** stacks que ainda passam o conjunto antigo de tags vao falhar na validacao durante o
+`terraform plan`. A migracao consiste em substituir o map literal por `module.tags.tags`.
+
 ## Variaveis
 
 | Nome | Tipo | Obrigatorio | Default | Descricao |
 |------|------|-------------|---------|-----------|
 | instance_type | string | sim | - | Tipo da instancia EC2 |
 | ami | string | sim | - | AMI usada na EC2 |
-| tags | map(string) | sim | - | Tags obrigatorias (owner, partner, business, product) |
+| tags | map(string) | sim | - | Tags do stack. Obrigatorias: `business-partner`, `operation`, `vertical`, `team`. Use `module.tags.tags` (ver [modules/tags](../tags/README.md)) |
 | client_name | string | sim | - | Nome do cliente |
 | environment | string | sim | - | Ambiente |
 | vpc_id | string | sim | - | VPC onde os recursos serao criados |
