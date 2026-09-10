@@ -7,7 +7,7 @@
 #
 # Uso:
 #
-#   module "tags" {
+#   module "standard_tags" {
 #     source           = "../../modules/tags"
 #     env              = "production"
 #     business_partner = "claro"

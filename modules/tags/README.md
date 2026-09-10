@@ -9,7 +9,7 @@ Não cria nenhum recurso — apenas valida os inputs e retorna o map via `output
 ## Uso básico
 
 ```hcl
-module "tags" {
+module "standard_tags" {
   source = "../../modules/tags"
 
   # Obrigatórias
@@ -25,7 +25,7 @@ module "tags" {
 provider "aws" {
   region = "us-east-1"
   default_tags {
-    tags = module.tags.tags
+    tags = module.standard_tags.tags
   }
 }
 ```
@@ -35,7 +35,7 @@ provider "aws" {
 ## Uso com tags opcionais
 
 ```hcl
-module "tags" {
+module "standard_tags" {
   source = "../../modules/tags"
 
   env              = "staging"
@@ -92,7 +92,7 @@ module "tags" {
 resource "aws_s3_bucket" "pii_exports" {
   bucket = "escale-pii-exports"
 
-  tags = merge(module.tags.tags, {
+  tags = merge(module.standard_tags.tags, {
     data-scope = "sensitive-pii"   # sobrescreve apenas esta tag
     backup     = "monthly-90d"
   })

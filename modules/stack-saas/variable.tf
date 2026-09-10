@@ -17,7 +17,7 @@ variable "ami" {
 }
 
 variable "tags" {
-  description = "Tags do stack. Use module.tags.tags do módulo modules/tags/ para gerar."
+  description = "Tags do stack. Use module.standard_tags.tags do módulo modules/tags/ para gerar."
   type        = map(string)
 
   validation {

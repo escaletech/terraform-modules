@@ -43,7 +43,7 @@ module "stack_saas" {
   dns_bot       = "bot.cliente-x.seudominio.com"
 
   # tags: gere o map pelo modulo canonico modules/tags/
-  tags = module.tags.tags
+  tags = module.standard_tags.tags
 
   # opcionais
   name_prefix     = "platform-conversational-cliente-x"
@@ -77,7 +77,7 @@ O map deve ser gerado pelo modulo canonico [`modules/tags`](../tags/README.md), 
 valores e monta as chaves no formato esperado:
 
 ```hcl
-module "tags" {
+module "standard_tags" {
   source           = "github.com/escaletech/terraform-modules/modules/tags"
   env              = "staging"
   business_partner = "parceiro-y"
@@ -89,13 +89,13 @@ module "tags" {
 
 module "stack_saas" {
   source = "github.com/escaletech/terraform-modules/modules/stack-saas"
-  tags   = module.tags.tags
+  tags   = module.standard_tags.tags
   # ...
 }
 ```
 
 **Impacto:** stacks que ainda passam o conjunto antigo de tags vao falhar na validacao durante o
-`terraform plan`. A migracao consiste em substituir o map literal por `module.tags.tags`.
+`terraform plan`. A migracao consiste em substituir o map literal por `module.standard_tags.tags`.
 
 ## Variaveis
 
@@ -103,7 +103,7 @@ module "stack_saas" {
 |------|------|-------------|---------|-----------|
 | instance_type | string | sim | - | Tipo da instancia EC2 |
 | ami | string | sim | - | AMI usada na EC2 |
-| tags | map(string) | sim | - | Tags do stack. Obrigatorias: `business-partner`, `operation`, `vertical`, `team`. Use `module.tags.tags` (ver [modules/tags](../tags/README.md)) |
+| tags | map(string) | sim | - | Tags do stack. Obrigatorias: `business-partner`, `operation`, `vertical`, `team`. Use `module.standard_tags.tags` (ver [modules/tags](../tags/README.md)) |
 | client_name | string | sim | - | Nome do cliente |
 | environment | string | sim | - | Ambiente |
 | vpc_id | string | sim | - | VPC onde os recursos serao criados |
