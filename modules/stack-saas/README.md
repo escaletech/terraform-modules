@@ -42,12 +42,8 @@ module "stack_saas" {
   dns_builder   = "builder.cliente-x.seudominio.com"
   dns_bot       = "bot.cliente-x.seudominio.com"
 
-  tags = {
-    owner    = "time-x"
-    partner  = "parceiro-y"
-    business = "produto-z"
-    product  = "saas"
-  }
+  # tags: gere o map pelo modulo canonico modules/tags/
+  tags = module.standard_tags.tags
 
   # opcionais
   name_prefix     = "platform-conversational-cliente-x"
@@ -70,13 +66,52 @@ module "stack_saas" {
 }
 ```
 
+## Tags: padronizacao do ambiente
+
+> **Nota:** as tags obrigatorias deste modulo mudaram de `Owner`, `Partner`, `Business` e `Product`
+> para `Environment`, `Partner`, `Operation`, `Owner`, `ManagedBy` e `Repository`. A mudanca faz parte
+> da padronizacao de tags do ambiente, que unifica o esquema de tagueamento em todos os modulos deste
+> repositorio para permitir rastreio de custo, ownership e classificacao de dados de forma consistente.
+>
+> As chaves seguem **PascalCase**, o padrao ja em uso nos stacks. Chaves em lowercase, kebab-case ou
+> snake_case sao rejeitadas na validacao — tags na AWS sao case-sensitive, e `Partner` e `partner`
+> contam como tags distintas no Cost Explorer.
+
+O map deve ser gerado pelo modulo canonico [`modules/tags`](../tags/README.md), que valida os
+valores e monta as chaves no formato esperado:
+
+```hcl
+module "standard_tags" {
+  source      = "github.com/escaletech/terraform-modules/modules/tags"
+  environment = "Staging"
+  partner     = "parceiro-y"
+  operation   = "operacao-z"
+  owner       = "Time X"
+  repository  = "https://github.com/escaletech/infra-cliente-x"
+
+  # criticality e data_classification sao obrigatorias quando environment = "Production"
+}
+
+module "stack_saas" {
+  source = "github.com/escaletech/terraform-modules/modules/stack-saas"
+  tags   = module.standard_tags.tags
+  # ...
+}
+```
+
+**Impacto:** stacks que ainda passam o conjunto antigo de tags vao falhar na validacao durante o
+`terraform plan`. A migracao consiste em substituir o map literal por `module.standard_tags.tags`.
+
+Stacks que ja usam `Owner`, `Partner`, `Environment` e `Repository` em PascalCase mantem essas quatro
+chaves — so precisam acrescentar `Operation` e `ManagedBy`.
+
 ## Variaveis
 
 | Nome | Tipo | Obrigatorio | Default | Descricao |
 |------|------|-------------|---------|-----------|
 | instance_type | string | sim | - | Tipo da instancia EC2 |
 | ami | string | sim | - | AMI usada na EC2 |
-| tags | map(string) | sim | - | Tags obrigatorias (owner, partner, business, product) |
+| tags | map(string) | sim | - | Tags do stack em PascalCase. Obrigatorias: `Environment`, `Partner`, `Operation`, `Owner`, `ManagedBy`, `Repository`. Use `module.standard_tags.tags` (ver [modules/tags](../tags/README.md)) |
 | client_name | string | sim | - | Nome do cliente |
 | environment | string | sim | - | Ambiente |
 | vpc_id | string | sim | - | VPC onde os recursos serao criados |
