@@ -69,7 +69,7 @@ module "stack_saas" {
 ## Tags: padronizacao do ambiente
 
 > **Nota:** as tags obrigatorias deste modulo mudaram de `owner`, `partner`, `business` e `product`
-> para `business-partner`, `operation`, `vertical` e `team`. A mudanca faz parte da padronizacao
+> para `environment`, `partner`, `operation`, `team`, `managed-by` e `repository`. A mudanca faz parte da padronizacao
 > de tags do ambiente, que unifica o esquema de tagueamento em todos os modulos deste repositorio
 > para permitir rastreio de custo, ownership e classificacao de dados de forma consistente.
 
@@ -78,13 +78,14 @@ valores e monta as chaves no formato esperado:
 
 ```hcl
 module "standard_tags" {
-  source           = "github.com/escaletech/terraform-modules/modules/tags"
-  env              = "staging"
-  business_partner = "parceiro-y"
-  operation        = "operacao-z"
-  vertical         = "telecom"
-  team             = "time-x"
-  repository       = "github.com/escaletech/infra-cliente-x"
+  source      = "github.com/escaletech/terraform-modules/modules/tags"
+  environment = "staging"
+  partner     = "parceiro-y"
+  operation   = "operacao-z"
+  team        = "time-x"
+  repository  = "github.com/escaletech/infra-cliente-x"
+
+  # criticality e data_classification sao obrigatorias quando environment = "production"
 }
 
 module "stack_saas" {
@@ -103,7 +104,7 @@ module "stack_saas" {
 |------|------|-------------|---------|-----------|
 | instance_type | string | sim | - | Tipo da instancia EC2 |
 | ami | string | sim | - | AMI usada na EC2 |
-| tags | map(string) | sim | - | Tags do stack. Obrigatorias: `business-partner`, `operation`, `vertical`, `team`. Use `module.standard_tags.tags` (ver [modules/tags](../tags/README.md)) |
+| tags | map(string) | sim | - | Tags do stack. Obrigatorias: `environment`, `partner`, `operation`, `team`, `managed-by`, `repository`. Use `module.standard_tags.tags` (ver [modules/tags](../tags/README.md)) |
 | client_name | string | sim | - | Nome do cliente |
 | environment | string | sim | - | Ambiente |
 | vpc_id | string | sim | - | VPC onde os recursos serao criados |

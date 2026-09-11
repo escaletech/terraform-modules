@@ -1,22 +1,21 @@
 locals {
   required_tags = {
-    env              = var.env
-    business-partner = var.business_partner
-    operation        = var.operation
-    vertical         = var.vertical
-    team             = var.team
-    managed-by       = "terraform"
-    repository       = var.repository
+    environment = var.environment
+    partner     = var.partner
+    operation   = var.operation
+    team        = var.team
+    managed-by  = "terraform"
+    repository  = var.repository
   }
 
   optional_tags = { for k, v in {
+    criticality         = var.criticality
+    data-classification = var.data_classification
+    vertical            = var.vertical
     product             = var.product
     cost-center         = var.cost_center
-    criticality         = var.criticality
-    data-scope          = var.data_scope
     auto-stop           = var.auto_stop
     backup              = var.backup
-    data-classification = var.data_classification
   } : k => v if v != null }
 }
 

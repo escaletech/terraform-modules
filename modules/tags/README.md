@@ -13,12 +13,15 @@ module "standard_tags" {
   source = "../../modules/tags"
 
   # Obrigatórias
-  env              = "production"           # production | staging | homolog
-  business_partner = "claro"               # valor livre — cadastrado no banco
-  operation        = "broadband-retention" # valor livre — cadastrado no banco
-  vertical         = "telecom"             # telecom | finance | health | cross | internal
-  team             = "platform"
-  repository       = "github.com/escale-ai/infra-claro"
+  environment = "production"           # production | staging | homolog
+  partner     = "claro"                # valor livre — cadastrado no banco
+  operation   = "broadband-retention"  # valor livre — cadastrado no banco
+  team        = "platform"
+  repository  = "github.com/escale-ai/infra-claro"
+
+  # Obrigatórias quando environment = "production"
+  criticality         = "high"          # critical | high | medium | low
+  data_classification = "confidential"  # public | internal | confidential
 }
 
 # Aplicar via default_tags no provider (propaga a TODOS os recursos)
@@ -38,8 +41,8 @@ provider "aws" {
 module "standard_tags" {
   source = "../../modules/tags"
 
-  env              = "staging"
-  business_partner = "vivo"
+  environment      = "staging"
+  partner          = "vivo"
   operation        = "pre-paid-recharge"
   vertical         = "telecom"
   team             = "growth"
@@ -49,7 +52,6 @@ module "standard_tags" {
   product         = "recharge-api"
   cost_center     = "cc-telecom-vivo"
   criticality     = "high"
-  data_scope      = "pii"               # pii | sensitive-pii | non-pii
   auto_stop       = "true"              # desliga instâncias fora do horário comercial
   backup          = "daily-7d"          # daily-7d | weekly-30d | monthly-90d | none
   data_classification = "confidential"  # public | internal | confidential
@@ -62,27 +64,34 @@ module "standard_tags" {
 
 ### Obrigatórias
 
-| Chave             | Origem                | Valores                                             |
-|-------------------|-----------------------|-----------------------------------------------------|
-| `env`             | `var.env`             | `production`, `staging`, `homolog`                  |
-| `business-partner`| `var.business_partner`| Livre — gerenciado no banco de dados da plataforma  |
-| `operation`       | `var.operation`       | Livre — gerenciado no banco de dados da plataforma  |
-| `vertical`        | `var.vertical`        | `telecom`, `finance`, `health`, `cross`, `internal` |
-| `team`            | `var.team`            | Livre                                               |
-| `repository`      | `var.repository`      | URL do repositório IaC                              |
-| `managed-by`      | Fixo                  | `terraform`                                         |
+| Chave         | Origem            | Valores                                            |
+|---------------|-------------------|----------------------------------------------------|
+| `environment` | `var.environment` | `production`, `staging`, `homolog`                 |
+| `partner`     | `var.partner`     | Livre — gerenciado no banco de dados da plataforma |
+| `operation`   | `var.operation`   | Livre — gerenciado no banco de dados da plataforma |
+| `team`        | `var.team`        | Livre                                              |
+| `repository`  | `var.repository`  | URL do repositório IaC                             |
+| `managed-by`  | Fixo              | `terraform`                                        |
+
+### Obrigatórias em produção
+
+Opcionais em `staging` e `homolog`; quando `environment = "production"`, a ausência
+falha no `terraform plan`.
+
+| Chave                | Origem                    | Valores                                |
+|----------------------|---------------------------|----------------------------------------|
+| `criticality`        | `var.criticality`         | `critical`, `high`, `medium`, `low`    |
+| `data-classification`| `var.data_classification` | `public`, `internal`, `confidential`   |
 
 ### Opcionais (omitidas quando `null`)
 
-| Chave               | Valores permitidos                               | Finalidade                        |
-|---------------------|--------------------------------------------------|-----------------------------------|
-| `product`           | Livre                                            | Nome de produto legível           |
-| `cost-center`       | Livre                                            | Centro de custo financeiro        |
-| `criticality`       | `critical`, `high`, `medium`, `low`              | SLA e prioridade de incidentes    |
-| `data-scope`        | `pii`, `sensitive-pii`, `non-pii`                | Conformidade LGPD                 |
-| `auto-stop`         | `true`, `false`                                  | AWS Instance Scheduler            |
-| `backup`            | `daily-7d`, `weekly-30d`, `monthly-90d`, `none`  | AWS Backup                        |
-| `data-classification`| `public`, `internal`, `confidential`            | Sensibilidade dos dados           |
+| Chave         | Valores permitidos                              | Finalidade                     |
+|---------------|-------------------------------------------------|--------------------------------|
+| `vertical`    | `telecom`, `finance`, `health`, `cross`, `internal` | Agrupamento financeiro     |
+| `product`     | Livre                                           | Nome de produto legível        |
+| `cost-center` | Livre                                           | Centro de custo financeiro     |
+| `auto-stop`   | `true`, `false`                                 | AWS Instance Scheduler         |
+| `backup`      | `daily-7d`, `weekly-30d`, `monthly-90d`, `none` | AWS Backup                     |
 
 ---
 
@@ -93,8 +102,8 @@ resource "aws_s3_bucket" "pii_exports" {
   bucket = "escale-pii-exports"
 
   tags = merge(module.standard_tags.tags, {
-    data-scope = "sensitive-pii"   # sobrescreve apenas esta tag
-    backup     = "monthly-90d"
+    data-classification = "confidential"  # sobrescreve apenas esta tag
+    backup              = "monthly-90d"
   })
 }
 ```

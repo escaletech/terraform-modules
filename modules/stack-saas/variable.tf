@@ -22,12 +22,14 @@ variable "tags" {
 
   validation {
     condition = alltrue([
-      contains(keys(var.tags), "business-partner"),
+      contains(keys(var.tags), "environment"),
+      contains(keys(var.tags), "partner"),
       contains(keys(var.tags), "operation"),
-      contains(keys(var.tags), "vertical"),
       contains(keys(var.tags), "team"),
+      contains(keys(var.tags), "managed-by"),
+      contains(keys(var.tags), "repository"),
     ])
-    error_message = "Tags obrigatórias ausentes: business-partner, operation, vertical, team. Use o módulo modules/tags/ para gerar o map."
+    error_message = "Tags obrigatórias ausentes: environment, partner, operation, team, managed-by, repository. Use o módulo modules/tags/ para gerar o map."
   }
 }
 

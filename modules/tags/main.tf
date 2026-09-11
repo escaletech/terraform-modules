@@ -9,16 +9,16 @@
 #
 #   module "standard_tags" {
 #     source           = "../../modules/tags"
-#     env              = "production"
-#     business_partner = "claro"
+#     environment      = "production"
+#     partner          = "claro"
 #     operation        = "broadband-retention"
 #     vertical         = "telecom"
 #     team             = "platform"
 #     repository       = "github.com/escale-ai/infra-claro"
 #     backup           = "daily-7d"
-#     data_scope       = "non-pii"
+#     criticality      = "high"
 #   }
 
 terraform {
-  required_version = ">= 1.5"
+  required_version = ">= 1.9"
 }
