@@ -6,6 +6,16 @@ Não cria nenhum recurso — apenas valida os inputs e retorna o map via `output
 
 ---
 
+## Convenção de chaves: PascalCase
+
+As chaves do map são geradas em **PascalCase** (`Environment`, `Partner`, `ManagedBy`), que é o padrão já em uso nos stacks da Escale. Chaves de tag na AWS são *case-sensitive*: `Partner` e `partner` são tags diferentes no Cost Explorer.
+
+Por isso o módulo **rejeita** chaves fora do padrão em `extra_tags`, e os módulos consumidores rejeitam maps com chaves em lowercase, kebab-case ou snake_case.
+
+Os nomes das **variáveis** seguem `snake_case`, por convenção do Terraform. Só as chaves geradas são PascalCase.
+
+---
+
 ## Uso básico
 
 ```hcl
@@ -13,15 +23,15 @@ module "standard_tags" {
   source = "../../modules/tags"
 
   # Obrigatórias
-  environment = "production"           # production | staging | homolog
-  partner     = "claro"                # valor livre — cadastrado no banco
-  operation   = "broadband-retention"  # valor livre — cadastrado no banco
-  team        = "platform"
-  repository  = "github.com/escale-ai/infra-claro"
+  environment = "Production"            # Production | Staging | Homolog
+  partner     = "claro"                 # valor livre — cadastrado no banco
+  operation   = "broadband-retention"   # valor livre — cadastrado no banco
+  owner       = "Infra Cloud Team"
+  repository  = "https://github.com/escaletech/infra-claro"
 
-  # Obrigatórias quando environment = "production"
-  criticality         = "high"          # critical | high | medium | low
-  data_classification = "confidential"  # public | internal | confidential
+  # Obrigatórias quando environment = "Production"
+  criticality         = "High"          # Critical | High | Medium | Low
+  data_classification = "Confidential"  # Public | Internal | Confidential
 }
 
 # Aplicar via default_tags no provider (propaga a TODOS os recursos)
@@ -33,6 +43,21 @@ provider "aws" {
 }
 ```
 
+Resultado:
+
+```hcl
+{
+  Environment        = "Production"
+  Partner            = "claro"
+  Operation          = "broadband-retention"
+  Owner              = "Infra Cloud Team"
+  ManagedBy          = "Terraform"
+  Repository         = "https://github.com/escaletech/infra-claro"
+  Criticality        = "High"
+  DataClassification = "Confidential"
+}
+```
+
 ---
 
 ## Uso com tags opcionais
@@ -41,20 +66,18 @@ provider "aws" {
 module "standard_tags" {
   source = "../../modules/tags"
 
-  environment      = "staging"
-  partner          = "vivo"
-  operation        = "pre-paid-recharge"
-  vertical         = "telecom"
-  team             = "growth"
-  repository       = "github.com/escale-ai/infra-vivo"
+  environment = "Staging"
+  partner     = "vivo"
+  operation   = "pre-paid-recharge"
+  owner       = "Growth Team"
+  repository  = "https://github.com/escaletech/infra-vivo"
 
   # Opcionais
-  product         = "recharge-api"
-  cost_center     = "cc-telecom-vivo"
-  criticality     = "high"
-  auto_stop       = "true"              # desliga instâncias fora do horário comercial
-  backup          = "daily-7d"          # daily-7d | weekly-30d | monthly-90d | none
-  data_classification = "confidential"  # public | internal | confidential
+  vertical    = "Telecom"
+  product     = "recharge-api"
+  cost_center = "cc-telecom-vivo"
+  auto_stop   = "true"
+  backup      = "Weekly30d"
 }
 ```
 
@@ -66,60 +89,71 @@ module "standard_tags" {
 
 | Chave         | Origem            | Valores                                            |
 |---------------|-------------------|----------------------------------------------------|
-| `environment` | `var.environment` | `production`, `staging`, `homolog`                 |
-| `partner`     | `var.partner`     | Livre — gerenciado no banco de dados da plataforma |
-| `operation`   | `var.operation`   | Livre — gerenciado no banco de dados da plataforma |
-| `team`        | `var.team`        | Livre                                              |
-| `repository`  | `var.repository`  | URL do repositório IaC                             |
-| `managed-by`  | Fixo              | `terraform`                                        |
+| `Environment` | `var.environment` | `Production`, `Staging`, `Homolog`                 |
+| `Partner`     | `var.partner`     | Livre — gerenciado no banco de dados da plataforma |
+| `Operation`   | `var.operation`   | Livre — gerenciado no banco de dados da plataforma |
+| `Owner`       | `var.owner`       | Livre — time responsável pelo stack                |
+| `Repository`  | `var.repository`  | URL do repositório IaC                             |
+| `ManagedBy`   | Fixo              | `Terraform`                                        |
 
 ### Obrigatórias em produção
 
-Opcionais em `staging` e `homolog`; quando `environment = "production"`, a ausência
-falha no `terraform plan`.
+Opcionais em `Staging` e `Homolog`; quando `environment = "Production"`, a ausência falha no `terraform plan`.
 
-| Chave                | Origem                    | Valores                                |
-|----------------------|---------------------------|----------------------------------------|
-| `criticality`        | `var.criticality`         | `critical`, `high`, `medium`, `low`    |
-| `data-classification`| `var.data_classification` | `public`, `internal`, `confidential`   |
+| Chave                | Origem                    | Valores                              |
+|----------------------|---------------------------|--------------------------------------|
+| `Criticality`        | `var.criticality`         | `Critical`, `High`, `Medium`, `Low`  |
+| `DataClassification` | `var.data_classification` | `Public`, `Internal`, `Confidential` |
 
 ### Opcionais (omitidas quando `null`)
 
-| Chave         | Valores permitidos                              | Finalidade                     |
-|---------------|-------------------------------------------------|--------------------------------|
-| `vertical`    | `telecom`, `finance`, `health`, `cross`, `internal` | Agrupamento financeiro     |
-| `product`     | Livre                                           | Nome de produto legível        |
-| `cost-center` | Livre                                           | Centro de custo financeiro     |
-| `auto-stop`   | `true`, `false`                                 | AWS Instance Scheduler         |
-| `backup`      | `daily-7d`, `weekly-30d`, `monthly-90d`, `none` | AWS Backup                     |
+| Chave        | Valores permitidos                                  | Finalidade                 |
+|--------------|-----------------------------------------------------|----------------------------|
+| `Vertical`   | `Telecom`, `Finance`, `Health`, `Cross`, `Internal` | Agrupamento financeiro     |
+| `Product`    | Livre                                               | Nome de produto legível    |
+| `CostCenter` | Livre                                               | Centro de custo financeiro |
+| `AutoStop`   | `true`, `false`                                     | AWS Instance Scheduler     |
+| `Backup`     | `Daily7d`, `Weekly30d`, `Monthly90d`, `None`        | AWS Backup                 |
+
+---
+
+## Tags adicionais por stack
+
+`extra_tags` mescla chaves extras no map final e sobrescreve conflitos. As chaves passam por validação de PascalCase.
+
+```hcl
+module "standard_tags" {
+  source = "../../modules/tags"
+  # ...
+
+  extra_tags = {
+    Name     = "Platform-SaaS-Evolution-cliente-x"
+    Business = "SaaS"
+  }
+}
+```
+
+Chaves como `business-unit`, `business_unit` ou `businessUnit` falham no `terraform plan`.
 
 ---
 
 ## Override por recurso
 
 ```hcl
-resource "aws_s3_bucket" "pii_exports" {
-  bucket = "escale-pii-exports"
+resource "aws_s3_bucket" "exports" {
+  bucket = "escale-exports"
 
   tags = merge(module.standard_tags.tags, {
-    data-classification = "confidential"  # sobrescreve apenas esta tag
-    backup              = "monthly-90d"
+    DataClassification = "Confidential"  # sobrescreve apenas esta tag
+    Backup             = "Monthly90d"
   })
 }
 ```
 
 ---
 
-## Outputs
-
-| Nome   | Tipo          | Descrição                                          |
-|--------|---------------|----------------------------------------------------|
-| `tags` | `map(string)` | Map completo de tags, pronto para `default_tags`   |
-
----
-
 ## Requisitos
 
-| Nome      | Versão mínima |
-|-----------|---------------|
-| terraform | >= 1.5        |
+Terraform `>= 1.9` — o módulo usa validação entre variáveis (`criticality` e `data_classification` obrigatórias conforme `environment`), recurso introduzido nessa versão.
+
+> **Atenção:** validação entre variáveis é avaliada apenas quando os valores são resolvidos, ou seja, no `terraform plan`. O `terraform validate` retorna sucesso mesmo com um stack de produção sem `criticality`. Pipelines que rodam apenas `validate` não pegam essa regra.

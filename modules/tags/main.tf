@@ -8,16 +8,17 @@
 # Uso:
 #
 #   module "standard_tags" {
-#     source           = "../../modules/tags"
-#     environment      = "production"
-#     partner          = "claro"
-#     operation        = "broadband-retention"
-#     vertical         = "telecom"
-#     team             = "platform"
-#     repository       = "github.com/escale-ai/infra-claro"
-#     backup           = "daily-7d"
-#     criticality      = "high"
+#     source              = "../../modules/tags"
+#     environment         = "Production"
+#     partner             = "claro"
+#     operation           = "broadband-retention"
+#     owner               = "Infra Cloud Team"
+#     repository          = "https://github.com/escaletech/infra-claro"
+#     criticality         = "High"
+#     data_classification = "Confidential"
 #   }
+#
+# As chaves geradas seguem PascalCase (Environment, Partner, ManagedBy...).
 
 terraform {
   required_version = ">= 1.9"

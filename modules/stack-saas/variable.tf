@@ -17,19 +17,24 @@ variable "ami" {
 }
 
 variable "tags" {
-  description = "Tags do stack. Use module.standard_tags.tags do módulo modules/tags/ para gerar."
+  description = "Tags do stack em PascalCase. Use module.standard_tags.tags do módulo modules/tags/ para gerar."
   type        = map(string)
 
   validation {
     condition = alltrue([
-      contains(keys(var.tags), "environment"),
-      contains(keys(var.tags), "partner"),
-      contains(keys(var.tags), "operation"),
-      contains(keys(var.tags), "team"),
-      contains(keys(var.tags), "managed-by"),
-      contains(keys(var.tags), "repository"),
+      contains(keys(var.tags), "Environment"),
+      contains(keys(var.tags), "Partner"),
+      contains(keys(var.tags), "Operation"),
+      contains(keys(var.tags), "Owner"),
+      contains(keys(var.tags), "ManagedBy"),
+      contains(keys(var.tags), "Repository"),
     ])
-    error_message = "Tags obrigatórias ausentes: environment, partner, operation, team, managed-by, repository. Use o módulo modules/tags/ para gerar o map."
+    error_message = "Tags obrigatórias ausentes: Environment, Partner, Operation, Owner, ManagedBy, Repository. Use o módulo modules/tags/ para gerar o map."
+  }
+
+  validation {
+    condition     = alltrue([for k in keys(var.tags) : can(regex("^[A-Z][A-Za-z0-9]*$", k))])
+    error_message = "Chaves de tag devem estar em PascalCase, iniciando com maiúscula e sem separadores. Chaves em lowercase, kebab-case ou snake_case não são aceitas. Ex: ManagedBy — não managed-by, managedby ou managed_by."
   }
 }
 

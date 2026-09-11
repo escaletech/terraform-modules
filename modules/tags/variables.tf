@@ -1,33 +1,44 @@
 # ---------------------------------------------------------------------------
+# Convenção de chaves
+#
+# As chaves do map final são geradas em PascalCase (Environment, Partner,
+# ManagedBy...) — o padrão já em uso nos stacks da Escale. Chaves em lowercase
+# ou kebab-case são rejeitadas pela validação de `extra_tags` e pelos módulos
+# consumidores.
+#
+# Os nomes das *variáveis* seguem snake_case por convenção do Terraform.
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
 # Tags obrigatórias — sempre presentes no map final
 # ---------------------------------------------------------------------------
 
 variable "environment" {
-  description = "Ambiente de execução do stack."
+  description = "Ambiente de execução do stack. Gera a tag Environment."
   type        = string
   validation {
-    condition     = contains(["production", "staging", "homolog"], var.environment)
-    error_message = "environment deve ser production, staging ou homolog."
+    condition     = contains(["Production", "Staging", "Homolog"], var.environment)
+    error_message = "environment deve ser Production, Staging ou Homolog."
   }
 }
 
 variable "partner" {
-  description = "Identificador do parceiro de negócio. Valor livre — cadastrado no banco de dados da plataforma. Responsabilidade da equipe no momento da implementação."
+  description = "Identificador do parceiro de negócio. Valor livre — cadastrado no banco de dados da plataforma. Gera a tag Partner."
   type        = string
 }
 
 variable "operation" {
-  description = "Nome da operação dentro do parceiro. Valor livre — cadastrado no banco de dados da plataforma. Responsabilidade da equipe no momento da implementação."
+  description = "Nome da operação dentro do parceiro. Valor livre — cadastrado no banco de dados da plataforma. Gera a tag Operation."
   type        = string
 }
 
-variable "team" {
-  description = "Time responsável pelo stack (owner)."
+variable "owner" {
+  description = "Time responsável pelo stack. Gera a tag Owner."
   type        = string
 }
 
 variable "repository" {
-  description = "URL do repositório GitHub que contém o código IaC deste stack."
+  description = "URL do repositório GitHub que contém o código IaC deste stack. Gera a tag Repository."
   type        = string
 }
 
@@ -36,34 +47,34 @@ variable "repository" {
 # ---------------------------------------------------------------------------
 
 variable "criticality" {
-  description = "Nível de criticidade para SLA. Obrigatória quando environment = production."
+  description = "Nível de criticidade para SLA. Obrigatória quando environment = Production. Gera a tag Criticality."
   type        = string
   default     = null
 
   validation {
-    condition     = var.criticality == null || contains(["critical", "high", "medium", "low"], var.criticality)
-    error_message = "criticality deve ser critical, high, medium ou low."
+    condition     = var.criticality == null || contains(["Critical", "High", "Medium", "Low"], var.criticality)
+    error_message = "criticality deve ser Critical, High, Medium ou Low."
   }
 
   validation {
-    condition     = var.environment != "production" || var.criticality != null
-    error_message = "criticality é obrigatória quando environment = production."
+    condition     = var.environment != "Production" || var.criticality != null
+    error_message = "criticality é obrigatória quando environment = Production."
   }
 }
 
 variable "data_classification" {
-  description = "Sensibilidade dos dados. Obrigatória quando environment = production."
+  description = "Sensibilidade dos dados. Obrigatória quando environment = Production. Gera a tag DataClassification."
   type        = string
   default     = null
 
   validation {
-    condition     = var.data_classification == null || contains(["public", "internal", "confidential"], var.data_classification)
-    error_message = "data_classification deve ser public, internal ou confidential."
+    condition     = var.data_classification == null || contains(["Public", "Internal", "Confidential"], var.data_classification)
+    error_message = "data_classification deve ser Public, Internal ou Confidential."
   }
 
   validation {
-    condition     = var.environment != "production" || var.data_classification != null
-    error_message = "data_classification é obrigatória quando environment = production."
+    condition     = var.environment != "Production" || var.data_classification != null
+    error_message = "data_classification é obrigatória quando environment = Production."
   }
 }
 
@@ -72,29 +83,29 @@ variable "data_classification" {
 # ---------------------------------------------------------------------------
 
 variable "vertical" {
-  description = "Vertical de negócio para agrupamento financeiro."
+  description = "Vertical de negócio para agrupamento financeiro. Gera a tag Vertical."
   type        = string
   default     = null
   validation {
-    condition     = var.vertical == null || contains(["telecom", "finance", "health", "cross", "internal"], var.vertical)
-    error_message = "vertical deve ser telecom, finance, health, cross ou internal."
+    condition     = var.vertical == null || contains(["Telecom", "Finance", "Health", "Cross", "Internal"], var.vertical)
+    error_message = "vertical deve ser Telecom, Finance, Health, Cross ou Internal."
   }
 }
 
 variable "product" {
-  description = "Nome de produto legível. Ex: whatsapp-tracking, lead-distribution."
+  description = "Nome de produto legível. Gera a tag Product."
   type        = string
   default     = null
 }
 
 variable "cost_center" {
-  description = "Centro de custo financeiro. Ex: cc-telecom-claro."
+  description = "Centro de custo financeiro. Gera a tag CostCenter."
   type        = string
   default     = null
 }
 
 variable "auto_stop" {
-  description = "Habilita desligamento automático fora do horário comercial via AWS Instance Scheduler. Use em homolog e staging para redução de custo."
+  description = "Habilita desligamento automático fora do horário comercial via AWS Instance Scheduler. Use em Homolog e Staging para redução de custo. Gera a tag AutoStop."
   type        = string
   default     = null
   validation {
@@ -104,17 +115,22 @@ variable "auto_stop" {
 }
 
 variable "backup" {
-  description = "Política de backup via AWS Backup: daily-7d, weekly-30d, monthly-90d, none."
+  description = "Política de backup via AWS Backup. Gera a tag Backup."
   type        = string
   default     = null
   validation {
-    condition     = var.backup == null || contains(["daily-7d", "weekly-30d", "monthly-90d", "none"], var.backup)
-    error_message = "backup deve ser daily-7d, weekly-30d, monthly-90d ou none."
+    condition     = var.backup == null || contains(["Daily7d", "Weekly30d", "Monthly90d", "None"], var.backup)
+    error_message = "backup deve ser Daily7d, Weekly30d, Monthly90d ou None."
   }
 }
 
 variable "extra_tags" {
-  description = "Tags adicionais específicas do stack, mescladas ao map final. Sobrescrevem qualquer chave em conflito."
+  description = "Tags adicionais específicas do stack, mescladas ao map final. Chaves devem estar em PascalCase. Sobrescrevem qualquer chave em conflito."
   type        = map(string)
   default     = {}
+
+  validation {
+    condition     = alltrue([for k in keys(var.extra_tags) : can(regex("^[A-Z][A-Za-z0-9]*$", k))])
+    error_message = "Chaves de extra_tags devem estar em PascalCase, iniciando com maiúscula e sem separadores. Ex: BusinessUnit — não business-unit, business_unit ou businessUnit."
+  }
 }
