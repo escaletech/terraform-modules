@@ -17,24 +17,22 @@ variable "ami" {
 }
 
 variable "tags" {
-  description = "Tags do stack em PascalCase. Use module.standard_tags.tags do módulo modules/tags/ para gerar."
+  description = "Tags do stack. Esquema recomendado: module.standard_tags.tags (modules/tags), em PascalCase. O esquema legado (owner, partner, business, product) ainda e aceito, mas gera warning no plan e sera removido na v2.0.0."
   type        = map(string)
 
   validation {
-    condition = alltrue([
-      contains(keys(var.tags), "Environment"),
-      contains(keys(var.tags), "Partner"),
-      contains(keys(var.tags), "Operation"),
-      contains(keys(var.tags), "Owner"),
-      contains(keys(var.tags), "ManagedBy"),
-      contains(keys(var.tags), "Repository"),
-    ])
-    error_message = "Tags obrigatórias ausentes: Environment, Partner, Operation, Owner, ManagedBy, Repository. Use o módulo modules/tags/ para gerar o map."
-  }
-
-  validation {
-    condition     = alltrue([for k in keys(var.tags) : can(regex("^[A-Z][A-Za-z0-9]*$", k))])
-    error_message = "Chaves de tag devem estar em PascalCase, iniciando com maiúscula e sem separadores. Chaves em lowercase, kebab-case ou snake_case não são aceitas. Ex: ManagedBy — não managed-by, managedby ou managed_by."
+    condition = (
+      # esquema legado (case-insensitive, como era aceito antes)
+      alltrue([for k in ["owner", "partner", "business", "product"] :
+        contains([for t in keys(var.tags) : lower(t)], k)
+      ])
+      ||
+      # esquema canonico gerado por modules/tags
+      alltrue([for k in ["Environment", "Partner", "Operation", "Owner", "ManagedBy", "Repository"] :
+        contains(keys(var.tags), k)
+      ])
+    )
+    error_message = "tags deve conter o esquema canonico (Environment, Partner, Operation, Owner, ManagedBy, Repository — use module.standard_tags.tags do modulo modules/tags) ou, temporariamente, o esquema legado (owner, partner, business, product)."
   }
 }
 
