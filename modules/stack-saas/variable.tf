@@ -17,17 +17,22 @@ variable "ami" {
 }
 
 variable "tags" {
-  description = "Tags para o serviço ECS."
+  description = "Tags do stack. Esquema recomendado: module.standard_tags.tags (modules/tags), em PascalCase. O esquema legado (owner, partner, business, product) ainda e aceito, mas gera warning no plan e sera removido na v2.0.0."
   type        = map(string)
 
   validation {
-    condition = alltrue([
-      contains([for k in keys(var.tags) : lower(k)], "owner"),
-      contains([for k in keys(var.tags) : lower(k)], "partner"),
-      contains([for k in keys(var.tags) : lower(k)], "business"),
-      contains([for k in keys(var.tags) : lower(k)], "product")
-    ])
-    error_message = "Tags 'owner', 'partner', 'business' and 'product' is mandatory."
+    condition = (
+      # esquema legado (case-insensitive, como era aceito antes)
+      alltrue([for k in ["owner", "partner", "business", "product"] :
+        contains([for t in keys(var.tags) : lower(t)], k)
+      ])
+      ||
+      # esquema canonico gerado por modules/tags
+      alltrue([for k in ["Environment", "Partner", "Operation", "Owner", "ManagedBy", "Repository"] :
+        contains(keys(var.tags), k)
+      ])
+    )
+    error_message = "tags deve conter o esquema canonico (Environment, Partner, Operation, Owner, ManagedBy, Repository — use module.standard_tags.tags do modulo modules/tags) ou, temporariamente, o esquema legado (owner, partner, business, product)."
   }
 }
 
