@@ -14,8 +14,9 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket" {
 }
 
 resource "aws_s3_bucket_policy" "s3_bucket" {
+  count  = var.s3_policy_document != null ? 1 : 0
   bucket = aws_s3_bucket.s3_bucket.bucket
-  policy = data.aws_iam_policy_document.s3_secure_policy.json
+  policy = data.aws_iam_policy_document.s3_secure_policy[0].json
 }
 
 resource "aws_s3_bucket_website_configuration" "static_website" {

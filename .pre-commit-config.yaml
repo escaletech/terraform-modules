@@ -1,9 +1,14 @@
 repos:
+- repo: local
+  hooks:
+    - id: tflint
+      name: tflint
+      language: system
+      entry: scripts/tflint-pre-commit.sh
+      files: \.tf$
+      pass_filenames: true
+
 - repo: https://github.com/gruntwork-io/pre-commit
   rev: v0.1.12
   hooks:
-    - id: tflint
-      args:
-        - "--module"
-        - "--config=.tflint.hcl"
     - id: terraform-fmt

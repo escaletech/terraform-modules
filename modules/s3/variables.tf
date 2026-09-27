@@ -76,6 +76,7 @@ variable "website_error_document" {
 }
 
 variable "s3_policy_document" {
+  description = "Optional bucket policy. When null, no aws_s3_bucket_policy is created (matches buckets that only use IAM + BPA)."
   type = object({
     statement = list(object({
       sid       = string
@@ -124,7 +125,7 @@ variable "owner_id" {
 variable "redirect" {
   description = "Whether to redirect all requests to the website hostname"
   type        = bool
-  default     = true 
+  default     = true
 }
 
 variable "index_document" {
