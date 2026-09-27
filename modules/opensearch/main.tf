@@ -72,7 +72,7 @@ resource "aws_opensearch_domain" "opensearch" {
   domain_endpoint_options {
     custom_endpoint_enabled         = true
     enforce_https                   = true
-    tls_security_policy             = "Policy-Min-TLS-1-0-2019-07"
+    tls_security_policy             = var.tls_security_policy
     custom_endpoint                 = "${var.name}.${var.domain_name}"
     custom_endpoint_certificate_arn = data.aws_acm_certificate.certificate-opensearch.arn
   }

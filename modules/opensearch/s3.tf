@@ -1,6 +1,6 @@
 module "backup_opensearch" {
   count              = var.enable_s3_backup ? 1 : 0
-  source             = "github.com/escaletech/terraform-modules/modules/s3"
+  source             = "github.com/escaletech/terraform-modules/modules/s3?ref=v1.1.1"
   bucket_name        = var.bucket_name
   website_static_acl = false
 
@@ -12,7 +12,7 @@ module "backup_opensearch" {
   s3_policy_document = {
     statement = [
       {
-        sid     = "PublicReadForGetBucketObjects"
+        sid = "PublicReadForGetBucketObjects"
         actions = [
           "s3:PutObject",
           "s3:GetObject",

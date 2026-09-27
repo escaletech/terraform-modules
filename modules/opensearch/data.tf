@@ -23,7 +23,7 @@ data "aws_acm_certificate" "certificate-opensearch" {
 }
 
 data "aws_route53_zone" "zone" {
-  name         = "${var.domain_name}"
+  name         = var.domain_name
   private_zone = true
 }
 
