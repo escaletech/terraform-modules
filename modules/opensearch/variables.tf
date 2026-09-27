@@ -78,6 +78,12 @@ variable "custom_access_policy" {
   description = "Override access policy JSON"
 }
 
+variable "tls_security_policy" {
+  type        = string
+  default     = "Policy-Min-TLS-1-2-2019-07"
+  description = "TLS security policy for the domain endpoint. Policy-Min-TLS-1-0-2019-07 is disabled by AWS."
+}
+
 
 # =============================================
 # Cross-Cluster Replication (CCR)
@@ -85,9 +91,9 @@ variable "custom_access_policy" {
 
 variable "ccr" {
   type = object({
-    connection_alias             = optional(string, "")
-    connection_mode              = optional(string, "DIRECT")
-    remote_domain                = optional(object({
+    connection_alias = optional(string, "")
+    connection_mode  = optional(string, "DIRECT")
+    remote_domain = optional(object({
       domain_name = string
       region      = string
       owner_id    = string
