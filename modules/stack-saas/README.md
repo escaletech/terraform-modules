@@ -52,6 +52,9 @@ module "stack_saas" {
   s3_name         = "cliente-x-saas"
   create_s3       = true
   ports_ingress_allowed = [22, 80, 443]
+  additional_ingress_rules = [
+    { from_port = 0, to_port = 0, protocol = "-1", cidr_blocks = ["10.29.0.0/16"] },
+  ]
   containers_name = ["chatwoot", "sidekiq", "typebot-builder", "typebot-viewer", "evolution"]
   enable_api_gateway = true
   api_gateway_name = "api.saas.escale.ai"
@@ -137,6 +140,7 @@ Os blocos `check` exigem Terraform >= 1.5 no consumidor.
 | key_name | string | nao | "" | Key pair para SSH |
 | initial_secret_value | string | nao | "{\"placeholder\": \"init\"}" | Valor inicial do secret |
 | ports_ingress_allowed | list(number) | nao | [22,80,443] | Portas liberadas no SG |
+| additional_ingress_rules | list(object) | nao | [] | Regras de ingress extras no SG (`from_port`, `to_port`, `protocol`, `cidr_blocks`, `description` opcional) |
 | s3_name | string | nao | "" | Nome do bucket S3 |
 | create_s3 | bool | nao | true | Criar bucket S3 e anexar policy |
 | enable_api_gateway | bool | nao | false | Criar resources do API Gateway para Escale |
