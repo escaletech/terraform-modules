@@ -28,13 +28,18 @@ variable "tags" {
   type        = map(string)
 
   validation {
-    condition = alltrue([
-      contains([for k in keys(var.tags) : lower(k)], "owner"),
-      contains([for k in keys(var.tags) : lower(k)], "partner"),
-      contains([for k in keys(var.tags) : lower(k)], "business"),
-      contains([for k in keys(var.tags) : lower(k)], "product")
-    ])
-    error_message = "Tags 'owner', 'partner', 'business' and 'product' is mandatory."
+    condition = (
+      # esquema legado (case-insensitive, como era aceito antes)
+      alltrue([for k in ["owner", "partner", "business", "product"] :
+        contains([for t in keys(var.tags) : lower(t)], k)
+      ])
+      ||
+      # esquema canonico gerado por modules/tags
+      alltrue([for k in ["Environment", "Partner", "Operation", "Owner", "ManagedBy", "Repository"] :
+        contains(keys(var.tags), k)
+      ])
+    )
+    error_message = "tags deve conter o esquema canonico (Environment, Partner, Operation, Owner, ManagedBy, Repository — use module.standard_tags.tags do modulo modules/tags) ou o esquema legado (owner, partner, business, product)."
   }
 }
 
@@ -122,4 +127,15 @@ variable "weight_fargate_spot" {
   description = "The weight of the capacity provider strategy"
   type        = number
   default     = 1
+}
+
+variable "propagate_tags" {
+  description = "Propaga tags para as tasks (SERVICE ou TASK_DEFINITION). Necessario para alocar custo de Fargate por tag. null mantem o comportamento atual."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.propagate_tags == null || contains(["SERVICE", "TASK_DEFINITION", "NONE"], coalesce(var.propagate_tags, "NONE"))
+    error_message = "propagate_tags deve ser SERVICE, TASK_DEFINITION, NONE ou null."
+  }
 }

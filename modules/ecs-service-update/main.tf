@@ -57,6 +57,7 @@ resource "aws_ecs_service" "ecs_service_update" {
   }
 
   enable_ecs_managed_tags = true
+  propagate_tags          = var.propagate_tags
 
   tags = var.tags
 }
