@@ -81,6 +81,18 @@ variable "ports_ingress_allowed" {
   default     = [22, 80, 443]
 }
 
+variable "additional_ingress_rules" {
+  description = "Regras de ingress extras no SG, alem das portas fixas liberadas para ipv4_cidr_blocks_allowed"
+  type = list(object({
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+    description = optional(string)
+  }))
+  default = []
+}
+
 variable "s3_name" {
   description = "S3 Bucket name"
   type        = string
