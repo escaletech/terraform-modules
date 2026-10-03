@@ -35,6 +35,8 @@ resource "aws_iam_policy" "policy-bucket-saas" {
       }
     ]
   })
+
+  tags = var.tags
 }
 
 resource "aws_s3_bucket_policy" "bucket-saas-policy" {
