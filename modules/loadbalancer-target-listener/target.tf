@@ -14,6 +14,8 @@ resource "aws_lb_target_group" "target" {
     unhealthy_threshold = 2
     matcher             = var.health_statuscode
   }
+
+  tags = merge(var.tags, { Name = var.target_name })
 }
 
 resource "aws_lb_target_group_attachment" "internal" {

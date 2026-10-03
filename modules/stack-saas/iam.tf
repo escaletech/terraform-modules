@@ -12,6 +12,8 @@ resource "aws_iam_role" "ec2_role" {
       }
     ]
   })
+
+  tags = var.tags
 }
 
 resource "aws_iam_policy" "ec2_policy" {
@@ -100,6 +102,8 @@ resource "aws_iam_policy" "ec2_policy" {
       }
     ]
   })
+
+  tags = var.tags
 }
 
 resource "aws_iam_policy" "pass_role_to_scheduler" {
@@ -121,6 +125,8 @@ resource "aws_iam_policy" "pass_role_to_scheduler" {
       }
     ]
   })
+
+  tags = var.tags
 }
 
 
@@ -143,4 +149,6 @@ resource "aws_iam_role_policy_attachment" "s3_bucket_policy_attachment" {
 resource "aws_iam_instance_profile" "platform_conversational_iam_profile" {
   name = "${local.iam_prefix}_ec2_iam_profile"
   role = aws_iam_role.ec2_role.name
+
+  tags = var.tags
 }

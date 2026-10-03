@@ -19,6 +19,9 @@ module "meu_app_target" {
 
   # Condições para a regra
   host_header = ["app.example.com"]
+
+  # opcional: tags do target group e da listener rule (Name = target_name sempre)
+  tags = module.standard_tags.tags
 }
 ```
 

@@ -33,7 +33,5 @@ resource "aws_lb_listener_rule" "listener" {
     }
   }
 
-  tags = {
-    Name = var.target_name
-  }
+  tags = merge(var.tags, { Name = var.target_name })
 }

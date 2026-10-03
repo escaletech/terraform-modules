@@ -60,6 +60,8 @@ resource "aws_api_gateway_domain_name" "custom_domain_name" {
   endpoint_configuration {
     types = ["REGIONAL"]
   }
+
+  tags = var.tags
 }
 
 resource "aws_route53_record" "domain_name" {
