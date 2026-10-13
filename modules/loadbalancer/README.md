@@ -134,6 +134,9 @@ module "nlb" {
 | alb_egress_ipv6_cidr_blocks | CIDRs IPv6 de egress do security group do ALB. | `list(string)` | `["::/0"]` | no |
 | alb_enable_default_listeners | Criar listeners padrão HTTP→HTTPS e HTTPS fixed-response. | `bool` | `true` | no |
 | alb_certificate_arn | ARN do certificado ACM para o listener HTTPS do ALB. | `string` | `null` | no |
+| alb_ssl_policy | Política SSL do listener HTTPS do ALB (ex.: `ELBSecurityPolicy-TLS13-1-2-2021-06`). Nulo mantém o padrão da AWS. | `string` | `null` | no |
+| alb_drop_invalid_header_fields | Descartar headers HTTP inválidos (mitiga HTTP request smuggling). | `bool` | `false` | no |
+| alb_desync_mitigation_mode | Modo de mitigação de HTTP desync: `monitor`, `defensive` ou `strictest`. | `string` | `"defensive"` | no |
 | alb_https_fixed_response | Resposta fixa para o listener HTTPS do ALB. | `object(...)` | `{ status_code = 404, message_body = "Not Found", content_type = "text/plain" }` | no |
 
 ### NLB

@@ -109,6 +109,28 @@ variable "alb_certificate_arn" {
   # }
 }
 
+variable "alb_ssl_policy" {
+  description = "SSL policy for the ALB HTTPS listener (e.g. ELBSecurityPolicy-TLS13-1-2-2021-06). Null keeps the AWS default."
+  type        = string
+  default     = null
+}
+
+variable "alb_drop_invalid_header_fields" {
+  description = "Whether the ALB drops HTTP headers with invalid header fields (mitigates HTTP request smuggling)."
+  type        = bool
+  default     = false
+}
+
+variable "alb_desync_mitigation_mode" {
+  description = "How the ALB handles requests that might pose an HTTP desync risk: monitor, defensive or strictest."
+  type        = string
+  default     = "defensive"
+  validation {
+    condition     = contains(["monitor", "defensive", "strictest"], var.alb_desync_mitigation_mode)
+    error_message = "alb_desync_mitigation_mode must be one of: monitor, defensive, strictest."
+  }
+}
+
 variable "alb_https_fixed_response" {
   description = "Fixed response for the ALB HTTPS listener."
   type = object({
