@@ -37,6 +37,8 @@ resource "aws_lb" "alb" {
   subnets                    = var.alb_subnet_ids
   enable_deletion_protection = var.enable_deletion_protection
   security_groups            = local.alb_security_group_ids
+  drop_invalid_header_fields = var.alb_drop_invalid_header_fields
+  desync_mitigation_mode     = var.alb_desync_mitigation_mode
 
   tags = merge(var.tags, { Name = var.name })
 }
@@ -63,6 +65,7 @@ resource "aws_lb_listener" "alb_https" {
   port              = 443
   protocol          = "HTTPS"
   certificate_arn   = var.alb_certificate_arn
+  ssl_policy        = var.alb_ssl_policy
 
   default_action {
     type = "fixed-response"
