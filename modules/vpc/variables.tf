@@ -16,16 +16,14 @@ variable "subnets" {
     public  = bool
     nat_key = string
   }))
-  description = "Subnets definition map. For private subnets, nat_key must reference a public subnet key."
+  description = "Subnets definition map. For private subnets, nat_key must reference a public subnet key, or be \"\" for no default route (egress via VPC endpoints only)."
 
   validation {
     condition = length([
       for k, v in var.subnets : k
-      if v.public == false && (
-        v.nat_key == "" || !contains([for pk, pv in var.subnets : pk if pv.public], v.nat_key)
-      )
+      if v.public == false && v.nat_key != "" && !contains([for pk, pv in var.subnets : pk if pv.public], v.nat_key)
     ]) == 0
-    error_message = "Each private subnet must set nat_key to an existing public subnet key."
+    error_message = "Each private subnet must set nat_key to an existing public subnet key, or \"\" for no default route."
   }
 }
 
@@ -67,5 +65,16 @@ variable "db_subnet_group_name" {
   validation {
     condition     = var.create_db_subnet_group ? var.db_subnet_group_name != null && var.db_subnet_group_name != "" : true
     error_message = "db_subnet_group_name must be set when create_db_subnet_group is true."
+  }
+}
+
+variable "nat_strategy" {
+  type        = string
+  default     = "per_public_subnet"
+  description = "NAT Gateway creation strategy. \"per_public_subnet\" (default) creates one NAT per public subnet (current behavior). \"referenced_only\" creates NATs only for public subnets referenced by at least one private subnet's nat_key, avoiding idle NAT Gateways."
+
+  validation {
+    condition     = contains(["per_public_subnet", "referenced_only"], var.nat_strategy)
+    error_message = "nat_strategy must be \"per_public_subnet\" or \"referenced_only\"."
   }
 }

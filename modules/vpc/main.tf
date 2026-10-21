@@ -1,6 +1,20 @@
 locals {
   public_subnets  = { for k, v in var.subnets : k => v if v.public }
   private_subnets = { for k, v in var.subnets : k => v if v.public == false }
+
+  # NAT strategy:
+  # - "per_public_subnet" (default): one NAT per public subnet (current behavior,
+  #   keeps for_each keys and resource addresses unchanged for existing consumers)
+  # - "referenced_only": NAT only for public subnets referenced by some nat_key
+  referenced_nat_keys = distinct([
+    for k, v in local.private_subnets : v.nat_key if v.nat_key != ""
+  ])
+  nat_subnets = var.nat_strategy == "per_public_subnet" ? local.public_subnets : {
+    for k, v in local.public_subnets : k => v if contains(local.referenced_nat_keys, k)
+  }
+
+  # Private subnets with nat_key = "" get no default route (egress via VPC endpoints only)
+  private_subnets_with_nat = { for k, v in local.private_subnets : k => v if v.nat_key != "" }
 }
 
 resource "aws_vpc" "this" {
@@ -36,7 +50,7 @@ resource "aws_subnet" "this" {
 }
 
 resource "aws_eip" "nat" {
-  for_each = local.public_subnets
+  for_each = local.nat_subnets
 
   domain = "vpc"
 
@@ -46,7 +60,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "this" {
-  for_each = local.public_subnets
+  for_each = local.nat_subnets
 
   allocation_id = aws_eip.nat[each.key].id
   subnet_id     = aws_subnet.this[each.key].id
@@ -88,11 +102,11 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private_internet" {
-  for_each = local.private_subnets
+  for_each = local.private_subnets_with_nat
 
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.this[local.private_subnets[each.key].nat_key].id
+  nat_gateway_id         = aws_nat_gateway.this[each.value.nat_key].id
 }
 
 resource "aws_route_table_association" "private" {
