@@ -1,3 +1,15 @@
+# Refactor: optional policy introduced count on these objects (v1.1.1).
+# Keeps state addresses stable for existing callers that still pass s3_policy_document.
+moved {
+  from = aws_s3_bucket_policy.s3_bucket
+  to   = aws_s3_bucket_policy.s3_bucket[0]
+}
+
+moved {
+  from = data.aws_iam_policy_document.s3_secure_policy
+  to   = data.aws_iam_policy_document.s3_secure_policy[0]
+}
+
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = var.bucket_name
 
