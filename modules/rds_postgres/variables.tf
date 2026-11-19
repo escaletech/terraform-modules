@@ -41,3 +41,9 @@ variable "environment" {
   description = "Deployment environment"
   type        = string
 }
+
+variable "publicly_accessible" {
+  description = "Whether the instance gets a public IP. Keep false and reach the database through the VPC/VPN; set true only with an explicit, documented need (SD-3455)."
+  type        = bool
+  default     = false
+}
