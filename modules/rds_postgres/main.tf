@@ -30,7 +30,7 @@ resource "aws_db_instance" "default" {
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
 
   db_subnet_group_name = local.subnet_group_name
-  publicly_accessible  = true
+  publicly_accessible  = var.publicly_accessible
 
   deletion_protection = false
 }
